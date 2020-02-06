@@ -3,7 +3,16 @@
 ## Requirement
 This framework require at least PHP 7.0 to work.
 
-## Install
+## Installation
+
+### Quick install.
+* Extract files to your location.
+* Copy **composer.default.json** to **composer.json**.
+* Run `composer install` command.
+* Browse to your installed URL and follow with **/rundizbones**. Example: http://localhost.localhost/rundizbones
+* If your installed correctly, it will showing the welcome page.
+
+### Detailed installation.
 Extract framework files to your location. The folder structure for the framework will be:
 ```
 config/
@@ -61,7 +70,7 @@ storage/
 
 Or you may upload everything into the same root web server path but you have to modify **index.php** as describe below.
 
-### public folder
+#### public folder
 For any server that has the root web server in different name such as **public_html**, **www** please upload anything in **public** folder to your root web server and edit your **index.php** file as description below.<br>
 Or if you want to use the framework as sub directory please read the description below.
 
@@ -72,10 +81,10 @@ If your **index.php** file is in **/rootweb** and all the framework folders and 
 If your **index.php** file is in **/rootweb/subdirectory1** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', dirname(dirname(__DIR__)));`<br>
 If your **index.php** file is in **/rootweb/subdirectory1/subdirectory2/subdirectory3** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', dirname(dirname(dirname(dirname(__DIR__)))));`
 
-### composer.json
+#### composer.json
 Copy **composer.default.json** to **composer.json** and then run the command `composer install`.
 
-### Verify your installation
+#### Verify your installation
 Browse the web page to http://yourdomain/installdir**/rundizbones** such as http://localhost.localhost/rundizbones.<br>
 If you see welcome message then installation is finished successfully.
 
