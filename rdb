@@ -1,0 +1,75 @@
+<?php
+
+/**
+ * RundizBones via command line.
+ * 
+ * The code below was copied from public/index.php and modify path.<br>
+ * This file is no need to modify anything if you run command `php rdb` and it is showing the list of commands.
+ * 
+ * @package RundizBones
+ * @license http://opensource.org/licenses/MIT MIT
+ */
+
+
+// Defined some constants that will be useful. --------------------------------------------
+if (!defined('APP_ENV')) {
+    /**
+     * Define app environment.
+     *
+     * Value can be 'production', 'development'.
+     * The config value will be auto-detect by order if the files in these environments were not found.
+     */
+    define('APP_ENV', 'development');
+}
+if (!defined('ROOT_PATH')) {
+    /**
+     * Framework root path.
+     *
+     * The full path to the framework's root path where contains "config", "Modules", "storage", "System" folders.
+     */
+    define('ROOT_PATH', __DIR__);
+}
+if (!defined('STORAGE_PATH')) {
+    /**
+     * Storage path.
+     *
+     * The full path to storage folder. This folder contains logs, cache.
+     * By default it is `ROOT_PATH . '/storage'`.
+     */
+    define('STORAGE_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'storage');
+}
+if (!defined('MODULE_PATH')) {
+    /**
+     * Modules path.
+     *
+     * The full path to modules folder.
+     * By default it is `ROOT_PATH . '/Modules'`.
+     */
+    define('MODULE_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'Modules');
+}
+if (!defined('PUBLIC_PATH')) {
+    /**
+     * Public (root web) path.
+     *
+     * The full path to public folder.
+     * By default it is the folder that contain this index.php file.
+     */
+    define('PUBLIC_PATH', __DIR__);
+}
+// End define constants ---------------------------------------------------------------------
+// Do not change anything below this line.
+
+
+// Check required PHP version. Do not change this because the source code inside is based on this version.
+if (version_compare(phpversion(), '7.0', '<')) {
+    throw new \RuntimeException('Required at least PHP 7.0');
+}
+
+
+// Require Composer autoload.
+require ROOT_PATH . DIRECTORY_SEPARATOR . 'System' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+
+
+$App = new \System\App();
+$App->run();
+unset($App);

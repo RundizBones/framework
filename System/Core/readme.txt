@@ -1,0 +1,1 @@
+This folder act as a module that there are controllers, models, views.

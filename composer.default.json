@@ -1,0 +1,38 @@
+{
+    "name": "rundiz/bones",
+    "description": "Just another PHP framework",
+    "keywords": ["PHP framework", "module MVC", "modular MVC"],
+    "homepage": "https://rundiz.com",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Vee W.",
+            "homepage": "https://rundiz.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "nikic/fast-route": "^1.0",
+        "monolog/monolog": "^1.0",
+        "pimple/pimple": "^3.0",
+        "symfony/console": "^3.3.6",
+        "robmorgan/phinx": "^0.11"
+    },
+    "require-dev": {
+        "rundiz/profiler": "^1.1.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "System\\": "System/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "Tests/"
+        }
+    },
+    "config": {
+        "vendor-dir": "System/vendor"
+    }
+}

@@ -1,0 +1,11 @@
+<IfModule mod_rewrite.c>
+    Options -MultiViews
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^ index.php [QSA,L]
+
+    # Change directory index file by .html come first.
+    # This can combine between PHP and any front-end framework which is HTML and JS.
+    DirectoryIndex index.html index.php
+</IfModule>

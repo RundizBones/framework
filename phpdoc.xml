@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<phpdocumentor>
+  <title><![CDATA[RundizBones]]></title>
+  <parser>
+    <target>.phpdoc/cache</target>
+  </parser>
+  <transformer>
+    <target>.apidoc</target>
+  </transformer>
+  <files>
+    <directory>.</directory>
+    <ignore>Modules/*</ignore>
+    <ignore>storage/*</ignore>
+    <ignore>System/vendor/*</ignore>
+    <ignore>Tests/*</ignore>
+    <ignore>phinx.php</ignore>
+  </files>
+</phpdocumentor>
