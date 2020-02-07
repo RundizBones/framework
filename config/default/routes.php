@@ -5,12 +5,12 @@
  * Use route collector from FastRoute directly.<br>
  * Example:
  * <pre>
- * $Rc->addRoute($this->filterMethod('any'), '/', '\\System\\Core\\Controllers\\Default:index');
+ * $Rc->addRoute($this->filterMethod('any'), '/', '\\Rdb\\System\\Core\\Controllers\\Default:index');
  * $Rc->addGroup('/admin', function (\FastRoute\RouteCollector $Rc) {
- *     $Rc->addRoute('GET', '', '\\Modules\\Admin\\Controllers\\Admin\\Index:index');
- *     $Rc->addRoute('GET', '/login', '\\Modules\\Admin\\Controllers\\Admin\\Login:index');
+ *     $Rc->addRoute('GET', '', '\\Rdb\\Modules\\Admin\\Controllers\\Admin\\Index:index');
+ *     $Rc->addRoute('GET', '/login', '\\Rdb\\Modules\\Admin\\Controllers\\Admin\\Login:index');
  *     $Rc->addGroup('/users', , function (\FastRoute\RouteCollector $Rc) {
- *         $Rc->addRoute('GET', '', '\\Modules\\Users\\Controllers\\Admin\\Users:index');
+ *         $Rc->addRoute('GET', '', '\\Rdb\\Modules\\Users\\Controllers\\Admin\\Users:index');
  *     });
  * });
  * </pre>
@@ -18,7 +18,7 @@
  * 
  * Fore more reference, please look at FastRoute document. https://github.com/nikic/FastRoute
  * 
- * You can use methods from `\System\Router` class directly via `$this` object since this file will be include into the class.<br>
+ * You can use methods from `\Rdb\System\Router` class directly via `$this` object since this file will be include into the class.<br>
  * The class in handler will be automatically add `Controller` suffix, and the method in handler will be automatically add `Action` suffix.<br>
  * `Users:index` will be `UsersController` class and `indexAction` method.
  * 
@@ -29,8 +29,8 @@
 
 
 /* @var $Rc \FastRoute\RouteCollector */
-/* @var $this \System\Router */
+/* @var $this \Rdb\System\Router */
 
 
 // The default route and default controller. You can remove or replace it.
-$Rc->addRoute($this->filterMethod('any'), '/rundizbones', '\\System\\Core\\Controllers\\Default:index');
+$Rc->addRoute($this->filterMethod('any'), '/rundizbones', '\\Rdb\\System\\Core\\Controllers\\Default:index');

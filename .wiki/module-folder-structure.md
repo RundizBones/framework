@@ -36,15 +36,15 @@ If there is a file named **.disabled** in the module folder (same location as **
 To make module enable or work again, just delete **.disabled** file.
 
 ### Namespace
-Any classes including controllers in the module should have namespace begins with `Modules\ModuleName` where **ModuleName** is the real folder name of your module.<br>
+Any classes including controllers in the module should have namespace begins with `Rdb\Modules\ModuleName` where **ModuleName** is the real folder name of your module.<br>
 Example:
 ```
 <?php
 // Modules/ModuleName/Controllers/MyPageController.php file.
 
-namespace Modules\ModuleName\Controllers;
+namespace Rdb\Modules\ModuleName\Controllers;
 
-class MyPageController extends \System\Core\Controllers\BaseController
+class MyPageController extends \Rdb\System\Core\Controllers\BaseController
 {
     // your code.
 }
@@ -65,10 +65,10 @@ Example:
 // Modules/ModuleName/config/default/routes.php file.
 
 /* @var $Rc \FastRoute\RouteCollector */
-/* @var $this \System\Router */
+/* @var $this \Rdb\System\Router */
 
 
-$Rc->addRoute('GET', '/modulename', '\\Modules\\ModuleName\\Controllers\\MyPage:index');
+$Rc->addRoute('GET', '/modulename', '\\Rdb\\Modules\\ModuleName\\Controllers\\MyPage:index');
 // the MyPage controller will be MyPageController class and index will be indexAction method.
 ```
 
@@ -82,9 +82,9 @@ Example:
 // Modules/ModuleName/Console/MyConsole.php file.
 // read more about how to write console at https://symfony.com/doc/3.3/components/console.html
 
-namespace Modules\ModuleName\Console;
+namespace Rdb\Modules\ModuleName\Console;
 
-class MyConsole extends \System\Core\Console\BaseConsole
+class MyConsole extends \Rdb\System\Core\Console\BaseConsole
 {
     protected function configure()
     {
@@ -105,7 +105,7 @@ The above code is for setup the new command. If you want to include any existing
 <?php
 // Modules/ModuleName/Console/MyIncludeExternalConsole.php file.
 
-namespace Modules\ModuleName\Console;
+namespace Rdb\Modules\ModuleName\Console;
 
 class MyIncludeExternalConsole
 {
@@ -119,15 +119,15 @@ class MyIncludeExternalConsole
 ### Controllers folder
 
 The **Controller** folder is for the code that will be run via HTTP request. It is optional and only need if you have some HTTP app here.<br>
-Controllers will be resolve from routes in config folder. The controller must extends `\System\Core\Controllers\BaseController` class.<br>
+Controllers will be resolve from routes in config folder. The controller must extends `\Rdb\System\Core\Controllers\BaseController` class.<br>
 Example:
 ```
 <?php
 // Modules/ModuleName/Controllers/MyPageController.php file.
 
-namespace Modules\ModuleName\Controllers;
+namespace Rdb\Modules\ModuleName\Controllers;
 
-class MyPageController extends \System\Core\Controllers\BaseController
+class MyPageController extends \Rdb\System\Core\Controllers\BaseController
 {
     public function indexAction()
     {
@@ -150,7 +150,7 @@ Example:
 <?php
 // Modules/ModuleName/Tests/MyUnitTest.php file.
 
-namespace Modules\ModuleName\Tests;
+namespace Rdb\Modules\ModuleName\Tests;
 
 class MyUnitTest extends \Tests\Rdb\BaseTestCase
 {
@@ -188,16 +188,16 @@ Example:
 <?php
 // Modules/ModuleName/Installer.php file.
 
-namespace Modules\ModuleName;
+namespace Rdb\Modules\ModuleName;
 
-class Installer implements \System\Interfaces\ModuleInstaller
+class Installer implements \Rdb\System\Interfaces\ModuleInstaller
 {
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
     }

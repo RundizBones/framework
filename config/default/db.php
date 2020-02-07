@@ -9,9 +9,9 @@
  */
 
 
-/* @var $Container \System\Container */
-// The global variable `$container` was declare in `\System\Libraries\Db::connect()` method.
-// This is required to use with DB logger class (`\System\Libraries\Db\Logger()`).
+/* @var $Container \Rdb\System\Container */
+// The global variable `$container` was declare in `\Rdb\System\Libraries\Db::connect()` method.
+// This is required to use with DB logger class (`\Rdb\System\Libraries\Db\Logger()`).
 global $Container;
 
 return [
@@ -27,7 +27,7 @@ return [
         'options' => [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT,// use `\PDO::ERRMODE_SILENT` for production, `\PDO::ERRMODE_EXCEPTION` for development. (use warning cannot work with try..catch).
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            \PDO::ATTR_STATEMENT_CLASS => ['\\System\\Libraries\\Db\\Statement', [$Container]],
+            \PDO::ATTR_STATEMENT_CLASS => ['\\Rdb\\System\\Libraries\\Db\\Statement', [$Container]],
         ],
         // Table prefix.
         'tablePrefix' => '',
@@ -41,7 +41,7 @@ return [
         'options' => [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT,// use `\PDO::ERRMODE_SILENT` for production, `\PDO::ERRMODE_EXCEPTION` for development. (use warning cannot work with try..catch).
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
-            \PDO::ATTR_STATEMENT_CLASS => ['\\System\\Libraries\\Db\\Statement', [$Container]],
+            \PDO::ATTR_STATEMENT_CLASS => ['\\Rdb\\System\\Libraries\\Db\\Statement', [$Container]],
         ],
         'tablePrefix' => 'prefix_',
     ],*/

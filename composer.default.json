@@ -24,12 +24,12 @@
     },
     "autoload": {
         "psr-4": {
-            "System\\": "System/"
+            "Rdb\\System\\": "System/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\": "Tests/"
+            "Rdb\\Tests\\": "Tests/"
         }
     },
     "config": {
