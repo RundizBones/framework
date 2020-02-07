@@ -99,6 +99,31 @@ function packDist(cb) {
 }// packDist
 
 
+/**
+ * Get module version from Install.php and write it to package.json.
+ * 
+ * @param {type} cb
+ * @returns {unresolved}
+ */
+function writePackageVersion(cb) {
+    let installerPhpContent = fs.readFileSync('./System/App.php', 'utf-8');
+    let regexPattern = /@version(\s?)(?<version>[\d\.]+)/miu;
+    let matched = installerPhpContent.match(regexPattern);
+    let moduleVersion = 'unknown';
+    if (matched && matched.groups && matched.groups.version) {
+        moduleVersion = matched.groups.version;
+    }
+
+    let packageJson = JSON.parse(fs.readFileSync('./package.json'));
+    packageJson.version = moduleVersion;
+
+    fs.writeFileSync('./package.json', JSON.stringify(packageJson, null, 4));
+
+    return cb();
+}// writePackageVersion
+
+
 exports.pack = series(
+    writePackageVersion,
     packDist
 );
