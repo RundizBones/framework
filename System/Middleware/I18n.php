@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Middleware;
+namespace Rdb\System\Middleware;
 
 
 /**
@@ -20,13 +20,13 @@ class I18n
 
 
     /**
-     * @var \System\Config
+     * @var \Rdb\System\Config
      */
     protected $Config;
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -34,9 +34,9 @@ class I18n
     /**
      * The class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
 
@@ -44,7 +44,7 @@ class I18n
             $this->Config = $Container->get('Config');
             $this->Config->setModule('');
         } else {
-            $this->Config = new \System\Config();
+            $this->Config = new \Rdb\System\Config();
         }
     }// __construct
 
@@ -129,7 +129,7 @@ class I18n
             }
         } else {
             // if config set to detect language using URL
-            $Url = new \System\Libraries\Url($this->Container);
+            $Url = new \Rdb\System\Libraries\Url($this->Container);
             $urlPath = trim($Url->getPath(), '/');
             $urlSegments = explode('/', $urlPath);
             unset($urlPath);

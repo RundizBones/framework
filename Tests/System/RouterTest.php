@@ -4,10 +4,10 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
-class RouterTest extends \Tests\Rdb\BaseTestCase
+class RouterTest extends \Rdb\Tests\BaseTestCase
 {
 
 

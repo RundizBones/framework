@@ -70,6 +70,6 @@ if (version_compare(phpversion(), '7.0', '<')) {
 require ROOT_PATH . DIRECTORY_SEPARATOR . 'System' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 
-$App = new \System\App();
+$App = new \Rdb\System\App();
 $App->run();
 unset($App);

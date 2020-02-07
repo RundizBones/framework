@@ -4,19 +4,19 @@
  */
 
 
-namespace Tests\Rdb\System\Core\Console;
+namespace Rdb\Tests\System\Core\Console;
 
 
 use \Symfony\Component\Console\Application;
 use \Symfony\Component\Console\Tester\CommandTester;
 
 
-class StorageTest extends \Tests\Rdb\BaseTestCase
+class StorageTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     /**
-     * @var \System\Libraries\FileSystem
+     * @var \Rdb\System\Libraries\FileSystem
      */
     protected $FileSystem;
 
@@ -44,7 +44,7 @@ class StorageTest extends \Tests\Rdb\BaseTestCase
             umask($umask);
         }
 
-        $this->FileSystem = new \System\Libraries\FileSystem($this->targetTestDir);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem($this->targetTestDir);
         $this->FileSystem->createFile('readme.txt', 'You can delete this folder if it exists. It is for test only. This folder was created from ' . __FILE__);
         $this->FileSystem->createFolder('logs');
         $this->FileSystem->createFile('logs/test-01.log', 'Hello.');
@@ -58,7 +58,7 @@ class StorageTest extends \Tests\Rdb\BaseTestCase
     public function tearDown()
     {
         $this->FileSystem->deleteFolder('', true);
-        $this->FileSystem = new \System\Libraries\FileSystem(STORAGE_PATH);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem(STORAGE_PATH);
         $this->FileSystem->deleteFolder('tests', true);
         @rmdir($this->targetTestDir);
     }// tearDown
@@ -67,7 +67,7 @@ class StorageTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteClear()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Storage());
+        $application->add(new \Rdb\System\Core\Console\Storage());
         $command = $application->find('system:storage');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -92,7 +92,7 @@ class StorageTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteDelete()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Storage());
+        $application->add(new \Rdb\System\Core\Console\Storage());
         $command = $application->find('system:storage');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -131,7 +131,7 @@ class StorageTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteList()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Storage());
+        $application->add(new \Rdb\System\Core\Console\Storage());
         $command = $application->find('system:storage');
         unset($application);
         $commandTester = new CommandTester($command);

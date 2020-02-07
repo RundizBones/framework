@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries;
+namespace Rdb\System\Libraries;
 
 
 /**
@@ -93,7 +93,7 @@ class ArrayUtil
     /**
      * Static version of `recursiveKsort()`.
      * 
-     * @see \System\Libraries\ArrayUtil:recursiveKsort()
+     * @see \Rdb\System\Libraries\ArrayUtil:recursiveKsort()
      */
     public static function staticRecursiveKsort(array &$array, $sortFlags = SORT_REGULAR)
     {

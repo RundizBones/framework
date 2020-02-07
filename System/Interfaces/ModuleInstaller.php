@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Interfaces;
+namespace Rdb\System\Interfaces;
 
 
 /**
@@ -19,9 +19,9 @@ interface ModuleInstaller
     /**
      * The class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container);
+    public function __construct(\Rdb\System\Container $Container);
 
 
     /**

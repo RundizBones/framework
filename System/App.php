@@ -3,12 +3,12 @@
  * RundizBones main application class.
  *
  * @package RundizBones
- * @version 0.1
+ * @version 0.2.0
  * @license http://opensource.org/licenses/MIT MIT
  */
 
 
-namespace System;
+namespace Rdb\System;
 
 
 /**
@@ -21,19 +21,19 @@ class App
 
 
     /**
-     * @var \System\Config The system configuration class.
+     * @var \Rdb\System\Config The system configuration class.
      */
     protected $Config;
 
 
     /**
-     * @var \System\Container The DI container.
+     * @var \Rdb\System\Container The DI container.
      */
     protected $Container;
 
 
     /**
-     * @var \System\Libraries\Logger Logger class.
+     * @var \Rdb\System\Libraries\Logger Logger class.
      */
     protected $Logger;
 
@@ -45,7 +45,7 @@ class App
     {
         $this->Container = new Container();
         $this->Container['Config'] = function ($c) {
-            return new \System\Config();
+            return new \Rdb\System\Config();
         };
         $this->Config = $this->Container['Config'];
     }// __construct
@@ -80,7 +80,7 @@ class App
     /**
      * Get container object.
      * 
-     * @return \System\Container|null Return container object or `null` if it was not exists.
+     * @return \Rdb\System\Container|null Return container object or `null` if it was not exists.
      */
     public function getContainer()
     {
@@ -171,7 +171,7 @@ class App
         }
 
         if ($this->Container->has('Profiler')) {
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->timeload('Before process controller.', __FILE__, __LINE__, 'rdb_process_controller');
             $Profiler->Console->memoryUsage('Before process controller.', __FILE__, (__LINE__ - 1), 'rdb_process_controller');
@@ -184,7 +184,7 @@ class App
         if (!class_exists($controllerClass)) {
             $pageNotFound = true;
         } else {
-            $ReflectionClassTargetInstance = new \ReflectionClass('\\System\\Core\\Controllers\\BaseController');
+            $ReflectionClassTargetInstance = new \ReflectionClass('\\Rdb\\System\\Core\\Controllers\\BaseController');
             $ReflectionController = new \ReflectionClass($controllerClass);
             $controllerInstance = $ReflectionController->newInstanceWithoutConstructor();
 
@@ -207,7 +207,7 @@ class App
 
             // force display 404 page.
             http_response_code(404);
-            $controllerClass = '\\System\\Core\\Controllers\\Error\\E404Controller';
+            $controllerClass = '\\Rdb\\System\\Core\\Controllers\\Error\\E404Controller';
             $method = 'indexAction';
         }
         unset($pageNotFound);
@@ -267,7 +267,7 @@ class App
         }
 
         if ($this->Container->has('Profiler')) {
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->timeload('Before process route.', __FILE__, __LINE__, 'rdb_process_route');
             $Profiler->Console->memoryUsage('Before process route.', __FILE__, (__LINE__ - 1), 'rdb_process_route');

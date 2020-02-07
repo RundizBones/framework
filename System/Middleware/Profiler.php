@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Middleware;
+namespace Rdb\System\Middleware;
 
 
 /**
@@ -19,13 +19,13 @@ class Profiler
 
 
     /**
-     * @var \System\Config
+     * @var \Rdb\System\Config
      */
     protected $Config;
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -33,9 +33,9 @@ class Profiler
     /**
      * The class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
     }// __construct
@@ -49,7 +49,7 @@ class Profiler
      */
     protected function appendProfiler($response = '')
     {
-        /* @var $Profiler \System\Libraries\Profiler */
+        /* @var $Profiler \Rdb\System\Libraries\Profiler */
         $Profiler = $this->Container['Profiler'];
         $displayResult = $Profiler->display($this->Container['Db'], [$this, 'displayDb']);
 
@@ -77,8 +77,8 @@ class Profiler
      */
     public function displayDb()
     {
-        /* @var $Dbh \System\Libraries\Db */
-        /* @var $Profiler \System\Libraries\Profiler */
+        /* @var $Dbh \Rdb\System\Libraries\Db */
+        /* @var $Profiler \Rdb\System\Libraries\Profiler */
         list($Profiler, $Dbh, $dataValues) = func_get_args();
 
         if ($Dbh == null) {
@@ -223,7 +223,7 @@ class Profiler
                 $donotDisplayProfiler = true;
             }
 
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->timeload('Profiler end (after middleware).', __FILE__, __LINE__, 'rdb_profiler_middleware');
             $Profiler->Console->memoryUsage('Profiler end (after middleware).', __FILE__, (__LINE__ - 1), 'rdb_profiler_middleware');
@@ -260,13 +260,13 @@ class Profiler
             $this->Config = $this->Container->get('Config');
             $this->Config->setModule('');
         } else {
-            $this->Config = new \System\Config();
+            $this->Config = new \Rdb\System\Config();
         }
 
         $this->Config->load('app');
         if ($this->Config->get('profiler', 'app', false) === true) {
             // if config enabled for profiler and class exists.
-            $Profiler = new \System\Libraries\Profiler();
+            $Profiler = new \Rdb\System\Libraries\Profiler();
             $Profiler->minifyHtml = true;
             $Profiler->Console->registerLogSections($this->Config->get('profilerSections', 'app', ['Logs']));
             $Profiler->Console->timeload('Profiler started (before middleware).', __FILE__, __LINE__, 'rdb_profiler_middleware');

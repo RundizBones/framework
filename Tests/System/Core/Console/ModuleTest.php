@@ -4,14 +4,14 @@
  */
 
 
-namespace Tests\Rdb\System\Core\Console;
+namespace Rdb\Tests\System\Core\Console;
 
 
 use \Symfony\Component\Console\Application;
 use \Symfony\Component\Console\Tester\CommandTester;
 
 
-class ModuleTest extends \Tests\Rdb\BaseTestCase
+class ModuleTest extends \Rdb\Tests\BaseTestCase
 {
 
 
@@ -22,7 +22,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
 
 
     /**
-     * @var \System\Libraries\FileSystem
+     * @var \Rdb\System\Libraries\FileSystem
      */
     protected $FileSystem;
 
@@ -57,22 +57,22 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
         }
 
         // create folders and files for this test module.
-        $this->FileSystem = new \System\Libraries\FileSystem($this->targetTestDir);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem($this->targetTestDir);
         // create assets for test copy to public folder.
         $this->FileSystem->createFolder('assets/css');
         $this->FileSystem->createFile('assets/css/style.css', '.unknown' . time() . '{background: #fff; color: #333;}');
         // create installer for test install, uninstall, update.
         $this->FileSystem->createFile('Installer.php', '<?php
-            namespace Modules\\' . $this->testModuleName . ';
+            namespace Rdb\\Modules\\' . $this->testModuleName . ';
 
-            class Installer implements \\System\\Interfaces\\ModuleInstaller
+            class Installer implements \\Rdb\\System\\Interfaces\\ModuleInstaller
             {
                 /**
-                 * @var \System\Container
+                 * @var \Rdb\System\Container
                  */
                 protected $Container;
 
-                public function __construct(\System\Container $Container)
+                public function __construct(\Rdb\System\Container $Container)
                 {
                     $this->Container = $Container;
                 }
@@ -113,7 +113,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
         copy(ROOT_PATH . '/composer.json', ROOT_PATH . DIRECTORY_SEPARATOR . $this->backupComposerName);
 
         // start the framework to load enabled modules.
-        $this->RdbApp = new \Tests\Rdb\System\AppExtended();
+        $this->RdbApp = new \Rdb\Tests\System\AppExtended();
         $this->RdbApp->addDependencyInjection();
         $this->Container = $this->RdbApp->getContainer();
     }// setup
@@ -149,7 +149,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
         }
 
         // delete copied test folders in public
-        $this->FileSystem = new \System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
         $this->FileSystem->deleteFolder($this->testModuleName, true);
         $this->FileSystem = null;
         if (
@@ -160,7 +160,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
         }
 
         // delete created file in storage.
-        $this->FileSystem = new \System\Libraries\FileSystem(STORAGE_PATH);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem(STORAGE_PATH);
         $this->FileSystem->deleteFolder('tests', true);
         $this->FileSystem = null;
     }// tearDown
@@ -169,7 +169,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteDisable()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Module(null, $this->Container));
+        $application->add(new \Rdb\System\Core\Console\Module(null, $this->Container));
         $command = $application->find('system:module');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -194,7 +194,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteEnable()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Module(null, $this->Container));
+        $application->add(new \Rdb\System\Core\Console\Module(null, $this->Container));
         $command = $application->find('system:module');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -219,7 +219,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteInstall()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Module(null, $this->Container));
+        $application->add(new \Rdb\System\Core\Console\Module(null, $this->Container));
         $command = $application->find('system:module');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -247,7 +247,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteUninstall()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Module(null, $this->Container));
+        $application->add(new \Rdb\System\Core\Console\Module(null, $this->Container));
         $command = $application->find('system:module');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -288,7 +288,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
     {
         // test uninstall but no delete.
         $application = new Application();
-        $application->add(new \System\Core\Console\Module(null, $this->Container));
+        $application->add(new \Rdb\System\Core\Console\Module(null, $this->Container));
         $command = $application->find('system:module');
         unset($application);
         $commandTester = new CommandTester($command);
@@ -329,7 +329,7 @@ class ModuleTest extends \Tests\Rdb\BaseTestCase
     public function testExecuteUpdate()
     {
         $application = new Application();
-        $application->add(new \System\Core\Console\Module(null, $this->Container));
+        $application->add(new \Rdb\System\Core\Console\Module(null, $this->Container));
         $command = $application->find('system:module');
         unset($application);
         $commandTester = new CommandTester($command);

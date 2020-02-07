@@ -4,16 +4,16 @@
  */
 
 
-namespace Tests\Rdb\System\Libraries;
+namespace Rdb\Tests\System\Libraries;
 
 
-class ArrayUtilTest extends \Tests\Rdb\BaseTestCase
+class ArrayUtilTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     public function testInArrayI()
     {
-        $ArrayUtil = new \System\Libraries\ArrayUtil();
+        $ArrayUtil = new \Rdb\System\Libraries\ArrayUtil();
 
         $this->assertTrue($ArrayUtil->inArrayI('two', ['one', 'two', 'three']));
         $this->assertTrue($ArrayUtil->inArrayI('two', ['one', 'Two', 'three']));
@@ -21,16 +21,16 @@ class ArrayUtilTest extends \Tests\Rdb\BaseTestCase
         $this->assertFalse($ArrayUtil->inArrayI('two', ['one', 'three', 'five']));
 
         // test for static
-        $this->assertTrue(\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'two', 'three']));
-        $this->assertTrue(\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'Two', 'three']));
-        $this->assertTrue(\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'TWO', 'three']));
-        $this->assertFalse(\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'five', 'three']));
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'two', 'three']));
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'Two', 'three']));
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'TWO', 'three']));
+        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticInArrayI('two', ['one', 'five', 'three']));
     }// testInArrayI
 
 
     public function testIsAssoc()
     {
-        $ArrayUtil = new \System\Libraries\ArrayUtil();
+        $ArrayUtil = new \Rdb\System\Libraries\ArrayUtil();
 
         $this->assertTrue($ArrayUtil->isAssoc(['one', 'two', 'three' => 3, 4 => 'four']));
         $this->assertTrue($ArrayUtil->isAssoc(['car' => 'Honda', 'bike' => 'Yamaha']));
@@ -40,18 +40,18 @@ class ArrayUtilTest extends \Tests\Rdb\BaseTestCase
         $this->assertFalse($ArrayUtil->isAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
 
         // test for static
-        $this->assertTrue(\System\Libraries\ArrayUtil::staticIsAssoc(['one', 'two', 'three' => 3, 4 => 'four']));
-        $this->assertTrue(\System\Libraries\ArrayUtil::staticIsAssoc(['car' => 'Honda', 'bike' => 'Yamaha']));
-        $this->assertFalse(\System\Libraries\ArrayUtil::staticIsAssoc(['one', 'two', 'three']));
-        $this->assertFalse(\System\Libraries\ArrayUtil::staticIsAssoc([0 => 'one', 1 => 'two', 2 => 'three']));
-        $this->assertFalse(\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 0 => 'two', 2 => 'three']));
-        $this->assertFalse(\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc(['one', 'two', 'three' => 3, 4 => 'four']));
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc(['car' => 'Honda', 'bike' => 'Yamaha']));
+        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc(['one', 'two', 'three']));
+        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([0 => 'one', 1 => 'two', 2 => 'three']));
+        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 0 => 'two', 2 => 'three']));
+        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
     }// testIsAssoc
 
 
     public function testRecursiveKsort()
     {
-        $ArrayUtil = new \System\Libraries\ArrayUtil();
+        $ArrayUtil = new \Rdb\System\Libraries\ArrayUtil();
 
         $array1 = [
             1 => 'b',
@@ -95,7 +95,7 @@ class ArrayUtilTest extends \Tests\Rdb\BaseTestCase
                 2 => 'c.2',
             ],
         ];
-        \System\Libraries\ArrayUtil::staticRecursiveKsort($array1, SORT_NATURAL);
+        \Rdb\System\Libraries\ArrayUtil::staticRecursiveKsort($array1, SORT_NATURAL);
         $this->assertSame($array1, $assert);
     }// testRecursiveKsort
 

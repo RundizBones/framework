@@ -4,7 +4,7 @@
  */
 
 
-namespace System;
+namespace Rdb\System;
 
 
 /**
@@ -23,7 +23,7 @@ class Cli
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -31,7 +31,7 @@ class Cli
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
     public function __construct(Container $Container)
     {
@@ -40,13 +40,13 @@ class Cli
 
 
     /**
-     * Automatic get all available commands in System\Core\Console and Modules\[ModuleName]\Console
+     * Automatic get all available commands in Rdb\System\Core\Console and Rdb\Modules\[ModuleName]\Console
      */
     protected function getAvailableCommands()
     {
         $ReflectionClassTargetInstance = new \ReflectionClass('\\Symfony\\Component\\Console\\Command\\Command');
 
-        // add commands in System\Core\Console\*
+        // add commands in Rdb\System\Core\Console\*
         $systemConsoleFolder = ROOT_PATH . DIRECTORY_SEPARATOR . 'System' . DIRECTORY_SEPARATOR . 'Core' . DIRECTORY_SEPARATOR . 'Console';
         if (is_dir($systemConsoleFolder)) {
             $RecurItIt = new \RecursiveIteratorIterator(
@@ -61,6 +61,11 @@ class Cli
                 foreach ($RecurItIt as $filePath => $object) {
                     if (is_file($filePath) && strpos($filePath, 'Core'.DIRECTORY_SEPARATOR.'Console'.DIRECTORY_SEPARATOR.'BaseConsole.php') === false) {
                         $pathToClass = str_replace([ROOT_PATH, '.php', '/'], ['', '', '\\'], $filePath);// from /Path/To/Class.php => \Path\To\Class
+                        if (mb_substr($pathToClass, 0, 1) === '\\') {
+                            $pathToClass = 'Rdb' . $pathToClass;
+                        } else {
+                            $pathToClass = 'Rdb\\' . $pathToClass;
+                        }
 
                         if (class_exists($pathToClass)) {
                             $ReflectionCommand = new \ReflectionClass($pathToClass);
@@ -85,14 +90,14 @@ class Cli
                 unset($filePath, $object);
             }
             unset($RecurItIt);
-        }// endif check that System\Core\Console is folder.
+        }// endif check that Rdb\System\Core\Console is folder.
         unset($systemConsoleFolder);
         
-        // add commands in Modules\[ModuleName]\Console\*
+        // add commands in Rdb\Modules\[ModuleName]\Console\*
         // the module's console name should start with namespace `modules:`.
         // example: `$this->setName('modules:modulename:whatever');`.
         if ($this->Container->has('Modules')) {
-            /* @var $Modules \System\Modules */
+            /* @var $Modules \Rdb\System\Modules */
             $Modules = $this->Container->get('Modules');
             $enabledModules = $Modules->getModules();
 
@@ -113,6 +118,12 @@ class Cli
                             foreach ($RecurItIt as $filePath => $object) {
                                 if (is_file($filePath)) {
                                     $pathToClass = str_replace([ROOT_PATH, '.php', '/'], ['', '', '\\'], $filePath);// from /Path/To/Class.php => \Path\To\Class
+                                    if (mb_substr($pathToClass, 0, 1) === '\\') {
+                                        $pathToClass = 'Rdb' . $pathToClass;
+                                    } else {
+                                        $pathToClass = 'Rdb\\' . $pathToClass;
+                                    }
+
                                     if (class_exists($pathToClass)) {
                                         $ReflectionCommand = new \ReflectionClass($pathToClass);
                                         $commandInstance = $ReflectionCommand->newInstanceWithoutConstructor();
@@ -136,7 +147,7 @@ class Cli
                             unset($filePath, $object);
                         }
                         unset($RecurItIt);
-                    }// endif; check that Modules\[module]\Console is folder.
+                    }// endif; check that Rdb\Modules\[module]\Console is folder.
                     unset($moduleConsoleFolder);
                 }// endforeach;
                 unset($moduleSystemName);

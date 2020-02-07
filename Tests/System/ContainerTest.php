@@ -4,24 +4,24 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
-class ContainerTest extends \Tests\Rdb\BaseTestCase
+class ContainerTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     public function testOffsets()
     {
-        $Container = new \System\Container();
+        $Container = new \Rdb\System\Container();
         $Container['Config'] = function ($c) {
-            return new \System\Config();
+            return new \Rdb\System\Config();
         };
         $Container['Db'] = function ($c) {
             return new Libraries\Db($c['Config']);
         };
 
-        $this->assertInstanceOf(\System\Config::class, $Container['Config']);
+        $this->assertInstanceOf(\Rdb\System\Config::class, $Container['Config']);
         unset($Container['Config']);
         $this->assertFalse(isset($Container['Config']));
     }// testOffsets
@@ -32,9 +32,9 @@ class ContainerTest extends \Tests\Rdb\BaseTestCase
      */
     public function testOffsetException()
     {
-        $Container = new \System\Container();
+        $Container = new \Rdb\System\Container();
         $Container['Config'] = function ($c) {
-            return new \System\Config();
+            return new \Rdb\System\Config();
         };
 
         unset($Container['Config']);
@@ -45,13 +45,13 @@ class ContainerTest extends \Tests\Rdb\BaseTestCase
 
     public function testPsr()
     {
-        $Container = new \System\Container();
+        $Container = new \Rdb\System\Container();
         $Container['Config'] = function ($c) {
-            return new \System\Config();
+            return new \Rdb\System\Config();
         };
 
         $this->assertTrue($Container->has('Config'));
-        $this->assertInstanceOf(\System\Config::class, $Container->get('Config'));
+        $this->assertInstanceOf(\Rdb\System\Config::class, $Container->get('Config'));
         unset($Container['Config']);
         $this->assertFalse($Container->has('Config'));
     }// testPsr

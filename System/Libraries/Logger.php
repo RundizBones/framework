@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries;
+namespace Rdb\System\Libraries;
 
 
 /**
@@ -17,13 +17,13 @@ class Logger
 
 
     /**
-     * @var \System\Config
+     * @var \Rdb\System\Config
      */
     protected $Config;
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -56,12 +56,12 @@ class Logger
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      * @param array $options The options that will be override config file. 
      *                                      The options array keys must be the same as keys in side `log` in `app.php` config file.
      *                                      Example: `['enable' => true, 'donotLogLevel' => 1]`.
      */
-    public function __construct(\System\Container $Container, array $options = [])
+    public function __construct(\Rdb\System\Container $Container, array $options = [])
     {
         $this->Container = $Container;
 
@@ -69,7 +69,7 @@ class Logger
             $this->Config = $Container->get('Config');
             $this->Config->setModule('');
         } else {
-            $this->Config = new \System\Config();
+            $this->Config = new \Rdb\System\Config();
         }
 
         $options += $this->Config->get('log', 'app', []);
@@ -223,7 +223,7 @@ class Logger
             }// endif; $context
 
             // write the message to profiler log for display it.
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->log($this->logLevelName, $profilerLogMessage, $traceFile, $traceLine);
             unset($profilerLogMessage, $traceFile, $traceLine);
@@ -233,7 +233,7 @@ class Logger
         $logFile = STORAGE_PATH . '/logs/' . $this->logLevelName . '/' . $channel . '/' . date('Y-m-d') . '.log';
         $Logger->pushHandler(new \Monolog\Handler\StreamHandler($logFile, $this->logLevel));
         unset($logFile);
-        $Logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor(\Monolog\Logger::DEBUG, ['System\\Libraries\\Db\\Logger', 'System\\Libraries\\Db\\Statement', 'System\\Libraries\\Logger']));
+        $Logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor(\Monolog\Logger::DEBUG, ['Rdb\\System\\Libraries\\Db\\Logger', 'Rdb\\System\\Libraries\\Db\\Statement', 'Rdb\\System\\Libraries\\Logger']));
         $Logger->pushProcessor(new \Monolog\Processor\PsrLogMessageProcessor());
 
         if (strtolower(PHP_SAPI) !== 'cli') {

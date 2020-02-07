@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Console\Phinx;
+namespace Rdb\System\Core\Console\Phinx;
 
 
 /**
@@ -26,9 +26,9 @@ class Phinx
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container = null)
+    public function __construct(\Rdb\System\Container $Container = null)
     {
         $this->PhinxApplication = new \Phinx\Console\PhinxApplication();
     }// __construct

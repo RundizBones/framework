@@ -4,16 +4,16 @@
  */
 
 
-namespace Tests\Rdb\System\Libraries;
+namespace Rdb\Tests\System\Libraries;
 
 
-class XmlTest extends \Tests\Rdb\BaseTestCase
+class XmlTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     public function testFromArray()
     {
-        $Xml = new \System\Libraries\Xml();
+        $Xml = new \Rdb\System\Libraries\Xml();
 
         $data = [];
         $data['name'] = 'Vee';

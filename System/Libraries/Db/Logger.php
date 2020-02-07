@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries\Db;
+namespace Rdb\System\Libraries\Db;
 
 
 /**
@@ -18,7 +18,7 @@ class Logger
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -26,9 +26,9 @@ class Logger
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
     }// __construct
@@ -44,7 +44,7 @@ class Logger
     public function queryLog(string $statement, $inputParams = null)
     {
         if ($this->Container->has('Config')) {
-            /* @var $Config \System\Config */
+            /* @var $Config \Rdb\System\Config */
             $Config = $this->Container->get('Config');
             $Config->setModule('');
             $configLog = $Config->get('log', 'app', []);
@@ -55,7 +55,7 @@ class Logger
         }
 
         if ($this->Container->has('Profiler')) {
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
         }
 
@@ -115,7 +115,7 @@ class Logger
             unset($key, $val);
         }
 
-        $ArrayUtil = new \System\Libraries\ArrayUtil();
+        $ArrayUtil = new \Rdb\System\Libraries\ArrayUtil();
         if (is_array($values) && $ArrayUtil->isAssoc($values)) {
             // if values is array and it is associative array.
             foreach ($values as $key => $val) {
@@ -146,7 +146,7 @@ class Logger
         if (!isset($dontWriteLog) || (isset($dontWriteLog) && $dontWriteLog === false)) {
             // if config was set to write log.
             if ($this->Container->has('Logger')) {
-                /* @var $Logger \System\Libraries\Logger */
+                /* @var $Logger \Rdb\System\Libraries\Logger */
                 $Logger = $this->Container['Logger'];
                 $Logger->write('system/libraries/db/logger', 0, $statement, ($cloneParams !== null ? $cloneParams : []), ['dontLogProfiler' => true]);
                 unset($Logger);

@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries;
+namespace Rdb\System\Libraries;
 
 
 /**
@@ -23,7 +23,7 @@ class Xml
      * <pre>
      * // initialize the class.
      * $SimpleXml = new \SimpleXMLElement('&lt;?xml version="1.0"?&gt;&lt;data&gt;&lt;/data&gt;');
-     * $Xml = new \System\Libraries\Xml();
+     * $Xml = new \Rdb\System\Libraries\Xml();
      * $Xml->fromArray(array('key1' => 'val1', 'key2_array' => array('k2.1' => 'v2.1', 'k2.2' => 'v2.2')), $SimpleXml);
      * // then generate XML content.
      * $content = $SimpleXml->asXML();

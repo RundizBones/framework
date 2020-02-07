@@ -4,10 +4,10 @@
  */
 
 
-namespace Tests\Rdb\System\Libraries;
+namespace Rdb\Tests\System\Libraries;
 
 
-class DbTest extends \Tests\Rdb\BaseTestCase
+class DbTest extends \Rdb\Tests\BaseTestCase
 {
 
 
@@ -18,7 +18,7 @@ class DbTest extends \Tests\Rdb\BaseTestCase
 
 
     /**
-     * @var \System\Libraries\Db
+     * @var \Rdb\System\Libraries\Db
      */
     private $Db;
 
@@ -51,8 +51,8 @@ class DbTest extends \Tests\Rdb\BaseTestCase
 
     public function setup()
     {
-        $Config = new \System\Config();
-        $this->Db = new \System\Libraries\Db(new \System\Container);
+        $Config = new \Rdb\System\Config();
+        $this->Db = new \Rdb\System\Libraries\Db(new \Rdb\System\Container);
 
         $dbConfigVals = $Config->get('ALL', 'db', []);
         foreach ($dbConfigVals as $key => $item) {

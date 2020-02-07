@@ -4,17 +4,17 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
-class RouterExtended extends \System\Router
+class RouterExtended extends \Rdb\System\Router
 {
 
 
-    public function __construct(\System\Container $Container = null)
+    public function __construct(\Rdb\System\Container $Container = null)
     {
         if ($Container === null) {
-            $Container = new \System\Container();
+            $Container = new \Rdb\System\Container();
         }
 
         parent::__construct($Container);

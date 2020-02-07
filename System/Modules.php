@@ -4,7 +4,7 @@
  */
 
 
-namespace System;
+namespace Rdb\System;
 
 
 /**
@@ -17,7 +17,7 @@ class Modules
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -37,9 +37,9 @@ class Modules
     /**
      * The class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
     }// __construct
@@ -157,7 +157,7 @@ class Modules
      * Make sure that the module you specified is enabled otherwise the autoload will not working.
      * 
      * @param string $controllerMethod The module's `controller:method`. The class name and its method should not has suffix.
-     *                                                      Example: `Modules\MyModule\Controllers\MyPage:index` will be automatically converted to `Modules\MyModule\Controllers\MyPageController:indexAction`.
+     *                                                      Example: `Rdb\Modules\MyModule\Controllers\MyPage:index` will be automatically converted to `Rdb\Modules\MyModule\Controllers\MyPageController:indexAction`.
      * @param array $args The arguments of controller's method.
      * @return string Return response content of `controller:method`.
      * @throws \InvalidArgumentException Throw invalid argument exception if `controller:method` format is invalid.
@@ -167,7 +167,7 @@ class Modules
         $controllerMethod = '\\' . ltrim($controllerMethod, '\\');
 
         if (stripos($controllerMethod, ':') === false) {
-            throw new \InvalidArgumentException('Invalid argument value for $controllerMethod. The controller method format must be Modules\YourModule\Controller:method.');
+            throw new \InvalidArgumentException('Invalid argument value for $controllerMethod. The controller method format must be Rdb\Modules\YourModule\Controller:method.');
         }
 
         $Router = new Router($this->Container);
@@ -176,7 +176,7 @@ class Modules
 
         if ($this->Container->has('Logger')) {
             // if there is logger class.
-            /* @var $Logger \System\Libraries\Logger */
+            /* @var $Logger \Rdb\System\Libraries\Logger */
             $Logger = $this->Container->get('Logger');
             // get backtrace for logging.
             $backtrace = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT, 1);
@@ -342,7 +342,7 @@ class Modules
     /**
      * Register auto load for modules that is not disabled.
      * 
-     * This class was called at very first from `\System\App` class. So, it has nothing like `$Profiler` to access.
+     * This class was called at very first from `\Rdb\System\App` class. So, it has nothing like `$Profiler` to access.
      */
     public function registerAutoload()
     {
@@ -354,7 +354,7 @@ class Modules
                 if (!is_file($FileInfo->getRealPath() . DIRECTORY_SEPARATOR . '.disabled')) {
                     // if there is no .disabled file in this module then it is enabled, register auto load for it.
                     $this->modules[] = $FileInfo->getFilename();
-                    $Loader->addPsr4('Modules\\' . $FileInfo->getFilename() . '\\', $FileInfo->getRealPath());
+                    $Loader->addPsr4('Rdb\\Modules\\' . $FileInfo->getFilename() . '\\', $FileInfo->getRealPath());
                 }
             }
         }// endforeach;
@@ -373,14 +373,14 @@ class Modules
         $explodedClass = explode('\\', $controller);
 
         if (
-            isset($explodedClass[0]) && 
-            isset($explodedClass[1]) &&
-            $explodedClass[0] === 'System' &&
-            $explodedClass[1] === 'Core'
+            isset($explodedClass[1]) && 
+            isset($explodedClass[2]) &&
+            $explodedClass[1] === 'System' &&
+            $explodedClass[2] === 'Core'
         ) {
-            $this->currentModule = 'System\\Core';
-        } elseif (isset($explodedClass[1])) {
-            $this->currentModule = $explodedClass[1];
+            $this->currentModule = 'Rdb\\System\\Core';
+        } elseif (isset($explodedClass[2])) {
+            $this->currentModule = $explodedClass[2];
         }
 
         unset($explodedClass);

@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Controllers\Error;
+namespace Rdb\System\Core\Controllers\Error;
 
 
 /**
@@ -14,7 +14,7 @@ namespace System\Core\Controllers\Error;
  * 
  * @since 0.1
  */
-class E405Controller extends \System\Core\Controllers\BaseController
+class E405Controller extends \Rdb\System\Core\Controllers\BaseController
 {
 
 

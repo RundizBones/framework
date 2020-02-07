@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries;
+namespace Rdb\System\Libraries;
 
 
 /**
@@ -36,13 +36,13 @@ class Db
 
 
     /**
-     * @var \System\Config
+     * @var \Rdb\System\Config
      */
     protected $Config;
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -68,9 +68,9 @@ class Db
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
 
@@ -78,7 +78,7 @@ class Db
             $this->Config = $Container->get('Config');
             $this->Config->setModule('');
         } else {
-            $this->Config = new \System\Config();
+            $this->Config = new \Rdb\System\Config();
         }
 
         $this->connect();
@@ -257,7 +257,7 @@ class Db
             $this->currentConnectionKey = $connectionKey;
 
             if ($this->Container->has('Profiler')) {
-                /* @var $Profiler \System\Libraries\Profiler */
+                /* @var $Profiler \Rdb\System\Libraries\Profiler */
                 $Profiler = $this->Container->get('Profiler');
                 $row = $this->query('SELECT CONNECTION_ID() AS connectionID')->fetch(\PDO::FETCH_OBJ);
                 $Profiler->Console->log('debug', 'DB connected. (connection id: ' . $row->connectionID . ')', __FILE__, __LINE__);
@@ -541,7 +541,7 @@ class Db
         }
 
         if ($this->Container->has('Profiler')) {
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->log('debug', 'DB disconnected.', __FILE__, __LINE__);
             unset($Profiler);

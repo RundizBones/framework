@@ -4,23 +4,23 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
-class ViewsTest extends \Tests\Rdb\BaseTestCase
+class ViewsTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     public function testRender()
     {
-        $Modules = new \System\Modules(new \System\Container());
-        $Modules->setCurrentModule('System\\Core');
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
+        $Modules->setCurrentModule('Rdb\\System\\Core');
 
-        $Container = new \System\Container();
+        $Container = new \Rdb\System\Container();
         $Container['Modules'] = $Modules;
         unset($Modules);
 
-        $Views = new \System\Views($Container);
+        $Views = new \Rdb\System\Views($Container);
         $rendered = $Views->render('Default/index_v', ['controllerPath' => __FILE__]);
         $this->assertGreaterThanOrEqual(5, strlen($rendered));
     }// testRender

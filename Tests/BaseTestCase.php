@@ -4,7 +4,7 @@
  */
 
 
-namespace Tests\Rdb;
+namespace Rdb\Tests;
 
 
 class BaseTestCase extends \PHPUnit\Framework\TestCase
@@ -12,13 +12,13 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
 
 
     /**
-     * @var \System\Container;
+     * @var \Rdb\System\Container;
      */
     protected $Container;
 
 
     /**
-     * @var \System\App
+     * @var \Rdb\System\App
      */
     protected $RdbApp;
 
@@ -53,7 +53,7 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
             define('APP_ENV', 'development');
         }
         if (!defined('ROOT_PATH')) {
-            define('ROOT_PATH', dirname(dirname(__DIR__)));
+            define('ROOT_PATH', dirname(__DIR__));
         }
         if (!defined('STORAGE_PATH')) {
             define('STORAGE_PATH', ROOT_PATH . DIRECTORY_SEPARATOR . 'storage');
@@ -83,7 +83,7 @@ class BaseTestCase extends \PHPUnit\Framework\TestCase
         }
 
         // below is copied bottom part of public/index.php --------------------------
-        $App = new \System\App();
+        $App = new \Rdb\System\App();
         $this->RdbApp = $App;
         unset($App);
         // end bottom part of public/index.php ----------------------------------------

@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Console;
+namespace Rdb\System\Core\Console;
 
 
 use \Symfony\Component\Console\Input\InputArgument;
@@ -25,7 +25,7 @@ class Storage extends BaseConsole
 
 
     /**
-     * @var \System\Libraries\FileSystem
+     * @var \Rdb\System\Libraries\FileSystem
      */
     protected $FileSystem;
 
@@ -84,7 +84,7 @@ class Storage extends BaseConsole
     protected function execute(InputInterface $Input, OutputInterface $Output)
     {
         $Io = new SymfonyStyle($Input, $Output);
-        $this->FileSystem = new \System\Libraries\FileSystem(STORAGE_PATH);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem(STORAGE_PATH);
 
         if ($Input->getArgument('act') === 'list') {
             // if action is list.

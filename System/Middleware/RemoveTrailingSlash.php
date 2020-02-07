@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Middleware;
+namespace Rdb\System\Middleware;
 
 
 /**
@@ -17,7 +17,7 @@ class RemoveTrailingSlash
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -25,9 +25,9 @@ class RemoveTrailingSlash
     /**
      * The class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
     }// __construct
@@ -48,7 +48,7 @@ class RemoveTrailingSlash
         }
 
         if ($this->Container->has('Profiler')) {
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->timeload('Before begins trailing slash redirect process.', __FILE__, __LINE__, 'rdb_mdw_trailingslash');
         }
@@ -65,7 +65,7 @@ class RemoveTrailingSlash
         }
 
         $path = str_replace($appInstalledPath, '', $url);
-        $Url = new \System\Libraries\Url();
+        $Url = new \Rdb\System\Libraries\Url();
         $path = $Url->removeQuerystring($path);
         unset($Url);
 

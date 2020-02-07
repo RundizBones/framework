@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries;
+namespace Rdb\System\Libraries;
 
 
 /**
@@ -67,7 +67,7 @@ class FileSystem
      * 
      * Example:
      * <pre>
-     * $Fs = new \System\Libraries\FileSystem('/www/my-installed-path/public/Modules');
+     * $Fs = new \Rdb\System\Libraries\FileSystem('/www/my-installed-path/public/Modules');
      * $Fs->copyFolderRecursive('/www/my-installed-path/Modules/MyModule/assets', 'MyModules/assets');
      * // then every thing in /www/my-installed-path/Modules/MyModule/assets will be copy to /www/my-installed-path/public/Modules/MyModules/assets
      * </pre>

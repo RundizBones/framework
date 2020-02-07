@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries\Db;
+namespace Rdb\System\Libraries\Db;
 
 
 /**
@@ -18,7 +18,7 @@ class Statement extends \PDOStatement
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -32,14 +32,14 @@ class Statement extends \PDOStatement
     /**
      * Class constructor is required.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    protected function __construct(\System\Container $Container = null)
+    protected function __construct(\Rdb\System\Container $Container = null)
     {
-        if ($Container instanceof \System\Container) {
+        if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;
         } else {
-            $this->Container = new \System\Container();
+            $this->Container = new \Rdb\System\Container();
         }
     }// __construct
 

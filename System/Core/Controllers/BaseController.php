@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Controllers;
+namespace Rdb\System\Core\Controllers;
 
 
 /**
@@ -17,25 +17,25 @@ abstract class BaseController
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
 
     /**
-     * @var \System\Libraries\Db
+     * @var \Rdb\System\Libraries\Db
      */
     protected $Db;
 
 
     /**
-     * @var \System\Modules
+     * @var \Rdb\System\Modules
      */
     protected $Modules;
 
 
     /**
-     * @var \System\Views
+     * @var \Rdb\System\Views
      */
     protected $Views;
 
@@ -43,9 +43,9 @@ abstract class BaseController
     /**
      * Based controller.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
 
@@ -58,7 +58,7 @@ abstract class BaseController
             $this->Db = $this->Container->get('Db');
         }
 
-        $this->Views = new \System\Views($this->Container);
+        $this->Views = new \Rdb\System\Views($this->Container);
     }// __construct
 
 
@@ -159,7 +159,7 @@ abstract class BaseController
         }
 
         $SimpleXml = new \SimpleXMLElement('<?xml version="1.0"?><data></data>');
-        $Xml = new \System\Libraries\Xml();
+        $Xml = new \Rdb\System\Libraries\Xml();
         $Xml->fromArray($output, $SimpleXml);
         $content = $SimpleXml->asXML();
         unset($SimpleXml, $Xml);

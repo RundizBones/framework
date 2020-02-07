@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Libraries;
+namespace Rdb\System\Libraries;
 
 
 /**
@@ -17,7 +17,7 @@ class Url
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -25,11 +25,11 @@ class Url
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class. This is only required for some method, leave null if you don't use it.
+     * @param \Rdb\System\Container $Container The DI container class. This is only required for some method, leave null if you don't use it.
      */
-    public function __construct(\System\Container $Container = null)
+    public function __construct(\Rdb\System\Container $Container = null)
     {
-        if ($Container instanceof \System\Container) {
+        if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;
         }
     }// __construct
@@ -80,11 +80,11 @@ class Url
 
         if ($raw === true) {
             if ($this->Container != null && $this->Container->has('Config')) {
-                /* @var $Config \System\Config */
+                /* @var $Config \Rdb\System\Config */
                 $Config = $this->Container->get('Config');
                 $Config->setModule('');
             } else {
-                $Config = new \System\Config();
+                $Config = new \Rdb\System\Config();
             }
 
             if ($Config->get('languageMethod', 'language', 'url') === 'url') {
@@ -201,7 +201,7 @@ class Url
     /**
      * Get public/Modules URL from specific module path.
      * 
-     * This method require class constructor to contain `\System\Container` object.
+     * This method require class constructor to contain `\Rdb\System\Container` object.
      * 
      * Example: If you install this framework on /myapp and your index.php (public folder) is in /myapp URL.<br>
      * If your module is Contact then it will return `/myapp/Modules/Contact`.
@@ -224,11 +224,11 @@ class Url
 
         $output = $appBase . '/Modules';
         if ($this->Container != null && $this->Container->has('Modules')) {
-            /* @var $Modules \System\Modules */
+            /* @var $Modules \Rdb\System\Modules */
             $Modules = $this->Container->get('Modules');
         } else {
-            /* @var $Modules \System\Modules */
-            $Modules = new \System\Modules(new \System\Container());
+            /* @var $Modules \Rdb\System\Modules */
+            $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         }
         $output .= '/' . $Modules->getModuleSystemName($modulePath);
         $output = str_replace(['///', '//'], '/', $output);

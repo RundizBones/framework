@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Models;
+namespace Rdb\System\Core\Models;
 
 
 /**
@@ -24,13 +24,13 @@ abstract class BaseModel
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
 
     /**
-     * @var \System\Libraries\Db
+     * @var \Rdb\System\Libraries\Db
      */
     protected $Db;
 
@@ -38,11 +38,11 @@ abstract class BaseModel
     /**
      * Base model class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
-        if ($Container instanceof \System\Container) {
+        if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;
 
             if ($Container->has('Db')) {

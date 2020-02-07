@@ -4,10 +4,10 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
-class ConfigTest extends \Tests\Rdb\BaseTestCase
+class ConfigTest extends \Rdb\Tests\BaseTestCase
 {
 
 
@@ -19,7 +19,7 @@ class ConfigTest extends \Tests\Rdb\BaseTestCase
 
     public function testLoad()
     {
-        $Config = new \System\Config();
+        $Config = new \Rdb\System\Config();
         $result1 = $Config->load('app');
         $result2 = $Config->load('config-file-never-exists-' . mt_rand());
         unset($Config);
@@ -32,7 +32,7 @@ class ConfigTest extends \Tests\Rdb\BaseTestCase
 
     public function testGet()
     {
-        $Config = new \System\Config();
+        $Config = new \Rdb\System\Config();
         $result1 = $Config->get('profiler', 'app', 'none');
         $result2 = $Config->get('config-key-never-exists-' . mt_rand(), 'app', 'notexist2');
         $result3 = $Config->get('config-key-never-exists-' . mt_rand(), 'config-file-never-exists-' . mt_rand(), 'notexist3');
@@ -47,7 +47,7 @@ class ConfigTest extends \Tests\Rdb\BaseTestCase
 
     public function testGetDefaultLanguage()
     {
-        $Config = new \System\Config();
+        $Config = new \Rdb\System\Config();
         $result1 = $Config->getDefaultLanguage($Config->get('languages', 'language', []));
         $result2 = $Config->getDefaultLanguage();
         unset($Config);
@@ -61,7 +61,7 @@ class ConfigTest extends \Tests\Rdb\BaseTestCase
 
     public function testSet()
     {
-        $Config = new \System\Config();
+        $Config = new \Rdb\System\Config();
         $Config->load('app');
         $Config->set('app', 'newconfigkey', 'newconfigvalue');
         $result1 = $Config->get('newconfigkey', 'app', 'none');

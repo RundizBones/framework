@@ -4,15 +4,15 @@
  */
 
 
-namespace Tests\Rdb\System\Libraries;
+namespace Rdb\Tests\System\Libraries;
 
 
-class FileSystemTest extends \Tests\Rdb\BaseTestCase
+class FileSystemTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     /**
-     * @var \System\Libraries\FileSystem
+     * @var \Rdb\System\Libraries\FileSystem
      */
     protected $FileSystem;
 
@@ -33,7 +33,7 @@ class FileSystemTest extends \Tests\Rdb\BaseTestCase
             umask($umask);
         }
 
-        $this->FileSystem = new \System\Libraries\FileSystem($this->targetTestDir);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem($this->targetTestDir);
     }// setUp
 
 

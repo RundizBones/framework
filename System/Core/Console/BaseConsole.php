@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Console;
+namespace Rdb\System\Core\Console;
 
 
 use Symfony\Component\Console\Command\Command;
@@ -20,7 +20,7 @@ class BaseConsole extends Command
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -28,13 +28,13 @@ class BaseConsole extends Command
     /**
      * Class constructor.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct($name = null, \System\Container $Container = null)
+    public function __construct($name = null, \Rdb\System\Container $Container = null)
     {
         parent::__construct($name);
 
-        if ($Container instanceof \System\Container) {
+        if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;
         }
     }// __construct

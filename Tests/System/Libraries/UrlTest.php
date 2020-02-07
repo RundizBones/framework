@@ -4,21 +4,21 @@
  */
 
 
-namespace Tests\Rdb\System\Libraries;
+namespace Rdb\Tests\System\Libraries;
 
 
-class UrlTest extends \Tests\Rdb\BaseTestCase
+class UrlTest extends \Rdb\Tests\BaseTestCase
 {
 
 
     /**
-     * @var \System\Config
+     * @var \Rdb\System\Config
      */
     protected $Config;
 
 
     /**
-     * @var \System\Libraries\Url 
+     * @var \Rdb\System\Libraries\Url 
      */
     protected $Url;
 
@@ -26,13 +26,13 @@ class UrlTest extends \Tests\Rdb\BaseTestCase
     /**
      * Run app with some of middleware that needed to test.
      * 
-     * @see Tests\Rdb\BaseTestCase::runApp()
+     * @see Rdb\Tests\BaseTestCase::runApp()
      */
     protected function runAppWithMiddleWare(string $method, string $url, array $cookies = [], array $additionalData = [])
     {
         $this->runApp($method, $url, $cookies, $additionalData);
 
-        $I18n = new \System\Middleware\I18n($this->Container);
+        $I18n = new \Rdb\System\Middleware\I18n($this->Container);
         $I18n->init();
     }// runAppWithMiddleWare
 
@@ -47,12 +47,12 @@ class UrlTest extends \Tests\Rdb\BaseTestCase
             $this->Config->setModule('');
         } else {
             $this->Container['Config'] = function ($c) {
-                return new \System\Config();
+                return new \Rdb\System\Config();
             };
             $this->Config = $this->Container['Config'];
         }
 
-        $this->Url = new \System\Libraries\Url($this->Container);
+        $this->Url = new \Rdb\System\Libraries\Url($this->Container);
     }// setup
 
 
@@ -295,7 +295,7 @@ class UrlTest extends \Tests\Rdb\BaseTestCase
 
     public function testGetPublicModuleUrl()
     {
-        $Modules = new \System\Modules($this->Container);
+        $Modules = new \Rdb\System\Modules($this->Container);
         $this->Container['Modules'] = function ($c) use ($Modules) {
             return $Modules;
         };

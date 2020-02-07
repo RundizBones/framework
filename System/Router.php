@@ -4,7 +4,7 @@
  */
 
 
-namespace System;
+namespace Rdb\System;
 
 
 /**
@@ -17,7 +17,7 @@ class Router
 
 
     /**
-     * @var \System\Container
+     * @var \Rdb\System\Container
      */
     protected $Container;
 
@@ -25,9 +25,9 @@ class Router
     /**
      * Router class.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         $this->Container = $Container;
     }// __construct
@@ -118,13 +118,13 @@ class Router
     protected function setupRoute()
     {
         if ($this->Container->has('Profiler')) {
-            /* @var $Profiler \System\Libraries\Profiler */
+            /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
             $Profiler->Console->timeload('Before setup route.', __FILE__, __LINE__, 'rdb_setup_route');
             $Profiler->Console->memoryUsage('Before setup route.', __FILE__, (__LINE__ - 1), 'rdb_setup_route');
         }
 
-        /* @var $Config \System\Config */
+        /* @var $Config \Rdb\System\Config */
         if ($this->Container->has('Config')) {
             $Config = $this->Container->get('Config');
             $Config->setModule('');
@@ -132,7 +132,7 @@ class Router
             $Config = new Config();
         }
 
-        /* @var $Modules \System\Modules */
+        /* @var $Modules \Rdb\System\Modules */
         if ($this->Container->has('Modules')) {
             $Modules = $this->Container->get('Modules');
             $Modules->setCurrentModule('');
@@ -143,8 +143,8 @@ class Router
         // create anonymous function for route definition call.
         // this will not being called if config was set to use cache.
         $routeDefinition = function (\FastRoute\RouteCollector $Rc) use ($Config, $Modules) {
-            /* @var $Config \System\Config */
-            /* @var $Modules \System\Modules */
+            /* @var $Config \Rdb\System\Config */
+            /* @var $Modules \Rdb\System\Modules */
             require_once $Config->getFile('routes');
         
             // get routes config in all modules.

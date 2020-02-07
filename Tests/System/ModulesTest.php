@@ -4,10 +4,10 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
-class ModulesTest extends \Tests\Rdb\BaseTestCase
+class ModulesTest extends \Rdb\Tests\BaseTestCase
 {
 
 
@@ -18,7 +18,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
 
 
     /**
-     * @var \System\Libraries\FileSystem
+     * @var \Rdb\System\Libraries\FileSystem
      */
     protected $FileSystem;
 
@@ -40,7 +40,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
         $this->newModule = 'ModuleForTest' . date('YmdHis') . mt_rand(1, 999) . 'M' . round(microtime(true) * 1000);
         $this->newModule2 = 'ModuleForTest2' . date('YmdHis') . mt_rand(1, 999) . 'M' . round(microtime(true) * 1000);
 
-        $this->FileSystem = new \System\Libraries\FileSystem(MODULE_PATH);
+        $this->FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH);
         $this->FileSystem->createFolder($this->newModule);
         $this->FileSystem->createFile($this->newModule . '/Installer.php', '<?php');
 
@@ -49,8 +49,8 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
         $this->FileSystem->createFile(
             $this->newModule2 . '/Controllers/DataController.php', 
             '<?php' . "\n" .
-            'namespace Modules\\' . $this->newModule2 . '\\Controllers; 
-                class DataController extends \\System\\Core\\Controllers\\BaseController {
+            'namespace Rdb\\Modules\\' . $this->newModule2 . '\\Controllers; 
+                class DataController extends \\Rdb\\System\\Core\\Controllers\\BaseController {
                     public function indexAction($name1 = \'\', $name2 = \'\') {
                         return \'Hello world \' . $name1 . \' \' . $name2 . \'.\';
                     }
@@ -95,7 +95,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
             }
         ');
 
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $this->assertTrue($Modules->copyComposer($this->newModule));
         unset($Modules);
         $composerContents = file_get_contents(ROOT_PATH . '/composer.json');
@@ -115,7 +115,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
             }
         ');
 
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $Modules->registerAutoload();
         $copiedResult = $Modules->copyComposerAllModules();
         unset($Modules);
@@ -128,12 +128,12 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
 
     public function testExecute()
     {
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $this->assertFalse($Modules->exists($this->newModule2, true));// not yet register
 
         $Modules->registerAutoload();
         $this->assertTrue($Modules->exists($this->newModule2, true));// already registered
-        $result = $Modules->execute('\\Modules\\' . $this->newModule2 . '\\Controllers\\Data:index', ['Thailand', 'Bangkok']);
+        $result = $Modules->execute('\\Rdb\\Modules\\' . $this->newModule2 . '\\Controllers\\Data:index', ['Thailand', 'Bangkok']);
         $this->assertEquals('Hello world Thailand Bangkok.', $result);
     }// testExecute
 
@@ -141,7 +141,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
     public function testExists()
     {
         // test module just exists only, not strict for enabled modules.
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
 
         $this->assertFalse($Modules->exists($this->newModule));
         $this->assertTrue($Modules->exists($this->newModule, false));
@@ -156,7 +156,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
     public function testExists2()
     {
         // test module exists in enabled and registered modules.
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $Modules->registerAutoload();
 
         $this->assertTrue($Modules->exists($this->newModule));
@@ -173,7 +173,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
     {
         // test module disabled. not exists in enabled modules but exists in file system.
         $this->FileSystem->createFile($this->newModule . '/.disabled', '');
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $Modules->registerAutoload();
 
         $this->assertFalse($Modules->exists($this->newModule));// not exists in enabled modules.
@@ -188,18 +188,21 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
 
     public function testGetCurrentModule()
     {
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         
-        $Modules->setCurrentModule('\\System\\Core\\Controllers\\DefaultController');
-        $this->assertEquals('System\\Core', $Modules->getCurrentModule());
+        $Modules->setCurrentModule('\\Rdb\\System\\Core\\Controllers\\DefaultController');
+        $this->assertEquals('Rdb\\System\\Core', $Modules->getCurrentModule());
 
-        $Modules->setCurrentModule('\\Modules\\System\\Core\\Controllers\\DefaultController');
+        $Modules->setCurrentModule('\\Rdb\\Modules\\Rdb\\System\\Core\\Controllers\\DefaultController');
+        $this->assertEquals('Rdb', $Modules->getCurrentModule());
+
+        $Modules->setCurrentModule('\\Rdb\\Modules\\System\\Core\\Controllers\\DefaultController');
         $this->assertEquals('System', $Modules->getCurrentModule());
 
-        $Modules->setCurrentModule('\\Modules\\Contact\\Controllers\\DefaultController');
+        $Modules->setCurrentModule('\\Rdb\\Modules\\Contact\\Controllers\\DefaultController');
         $this->assertEquals('Contact', $Modules->getCurrentModule());
 
-        $Modules->setCurrentModule('\\Modules\\Contact\\Controllers\\Admin\\DefaultController');
+        $Modules->setCurrentModule('\\Rdb\\Modules\\Contact\\Controllers\\Admin\\DefaultController');
         $this->assertEquals('Contact', $Modules->getCurrentModule());
 
         unset($Modules);
@@ -208,7 +211,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
 
     public function testGetModules()
     {
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $Modules->registerAutoload();
 
         $this->assertTrue(in_array($this->newModule, $Modules->getModules()));// found in enabled modules only.
@@ -222,7 +225,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
     {
         $this->FileSystem->createFile($this->newModule . '/.disabled', '');// add .disabled file.
 
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
         $Modules->registerAutoload();
 
         $this->assertFalse(in_array($this->newModule, $Modules->getModules()));// not found in enabled modules only.
@@ -234,7 +237,7 @@ class ModulesTest extends \Tests\Rdb\BaseTestCase
 
     public function testGetModuleSystemName()
     {
-        $Modules = new \System\Modules(new \System\Container());
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
 
         $this->assertEquals('SystemCore', $Modules->getModuleSystemName(''));
         $this->assertEquals($this->newModule, $Modules->getModuleSystemName(MODULE_PATH . DIRECTORY_SEPARATOR . $this->newModule));

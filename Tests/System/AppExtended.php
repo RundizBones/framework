@@ -4,7 +4,7 @@
  */
 
 
-namespace Tests\Rdb\System;
+namespace Rdb\Tests\System;
 
 
 /**
@@ -12,7 +12,7 @@ namespace Tests\Rdb\System;
  *
  * @author mr.v
  */
-class AppExtended extends \System\App
+class AppExtended extends \Rdb\System\App
 {
 
 

@@ -4,7 +4,7 @@
  */
 
 
-namespace System\Core\Console;
+namespace Rdb\System\Core\Console;
 
 
 use \Symfony\Component\Console\Formatter\OutputFormatterStyle;
@@ -28,7 +28,7 @@ class Module extends BaseConsole
 
 
     /**
-     * @var \System\Modules
+     * @var \Rdb\System\Modules
      */
     protected $Modules;
 
@@ -179,7 +179,7 @@ class Module extends BaseConsole
             $Io->error('The module you entered is not exists.');
         } elseif ($validated === true) {
             // if validated the module.
-            $FileSystem = new \System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
+            $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
             if (!$FileSystem->isFile('.disabled', false)) {
                 // if .disabled file is not exists.
                 $FileSystem->createFile('.disabled', '');
@@ -210,7 +210,7 @@ class Module extends BaseConsole
             $Io->error('The module you entered is not exists.');
         } elseif ($validated === true) {
             // if validated the module.
-            $FileSystem = new \System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
+            $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
             $FileSystem->deleteFile('.disabled');
             $Io->success('Success, your module has been enabled.');
         }
@@ -259,11 +259,11 @@ class Module extends BaseConsole
             $installed = $this->isTargetFileFolderWritable($Io);
 
             // try to call installer class if exists. ---------------------------------------------------------------------
-            $InstallerClassName = '\\Modules\\' . $mname . '\\Installer';
+            $InstallerClassName = '\\Rdb\\Modules\\' . $mname . '\\Installer';
             if ($installed === true && class_exists($InstallerClassName)) {
                 // if class exists.
                 $Installer = new $InstallerClassName($this->Container);
-                if ($Installer instanceof \System\Interfaces\ModuleInstaller) {
+                if ($Installer instanceof \Rdb\System\Interfaces\ModuleInstaller) {
                     // if class really is the installer.
                     try {
                         $Installer->install();
@@ -281,7 +281,7 @@ class Module extends BaseConsole
                 // if installed or installer class was called.
                 // copy assets folder to public/Modules/[module_name]/assets folder. ----------------
                 if (is_dir(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')) {
-                    $Fs = new \System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
+                    $Fs = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
                     $Fs->copyFolderRecursive(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets', $mname . DIRECTORY_SEPARATOR . 'assets');
                     unset($Fs);
                 }
@@ -362,11 +362,11 @@ class Module extends BaseConsole
                 $uninstalled = $this->isTargetFileFolderWritable($Io);
 
                 // try to call installer class if exists. ---------------------------------------------------------------------
-                $InstallerClassName = '\\Modules\\' . $mname . '\\Installer';
+                $InstallerClassName = '\\Rdb\\Modules\\' . $mname . '\\Installer';
                 if ($uninstalled === true && class_exists($InstallerClassName)) {
                     // if class exists.
                     $Installer = new $InstallerClassName($this->Container);
-                    if ($Installer instanceof \System\Interfaces\ModuleInstaller) {
+                    if ($Installer instanceof \Rdb\System\Interfaces\ModuleInstaller) {
                         // if class really is the installer.
                         try {
                             $Installer->uninstall();
@@ -384,7 +384,7 @@ class Module extends BaseConsole
                     // if uninstalled or installer class was called.
                     // delete public/Modules/[module_name] folder.-----------------------------------------
                     if (realpath(ROOT_PATH) !== realpath(PUBLIC_PATH) && is_dir(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . $mname) && $mname != 'SystemCore') {
-                        $Fs = new \System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
+                        $Fs = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
                         $Fs->deleteFolder($mname, true);
                         unset($Fs);
                     }
@@ -402,7 +402,7 @@ class Module extends BaseConsole
                             }
                         }
                         // then try delete the module folders and files using php.
-                        $Fs = new \System\Libraries\FileSystem(MODULE_PATH);
+                        $Fs = new \Rdb\System\Libraries\FileSystem(MODULE_PATH);
                         $Fs->deleteFolder($mname, true);
                         unset($Fs);
                     } else {
@@ -490,11 +490,11 @@ class Module extends BaseConsole
             $updated = $this->isTargetFileFolderWritable($Io);
 
             // try to call installer class if exists (for update). ----------------------------------------------------------
-            $InstallerClassName = '\\Modules\\' . $mname . '\\Installer';
+            $InstallerClassName = '\\Rdb\\Modules\\' . $mname . '\\Installer';
             if ($updated === true && class_exists($InstallerClassName)) {
                 // if class exists.
                 $Installer = new $InstallerClassName($this->Container);
-                if ($Installer instanceof \System\Interfaces\ModuleInstaller) {
+                if ($Installer instanceof \Rdb\System\Interfaces\ModuleInstaller) {
                     // if class really is the installer.
                     try {
                         $Installer->update();
@@ -512,14 +512,14 @@ class Module extends BaseConsole
                 // if updated or installer class for update was called.
                 // delete public/Modules/[module_name] folder.-----------------------------------------
                 if (realpath(ROOT_PATH) !== realpath(PUBLIC_PATH) && is_dir(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . $mname) && $mname != 'SystemCore') {
-                    $Fs = new \System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
+                    $Fs = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
                     $Fs->deleteFolder($mname, true);
                     unset($Fs);
                 }
 
                 // then copy assets folder to public/Modules/[module_name]/assets folder. ----------
                 if (is_dir(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')) {
-                    $Fs = new \System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
+                    $Fs = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
                     $Fs->copyFolderRecursive(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets', $mname . DIRECTORY_SEPARATOR . 'assets');
                     unset($Fs);
                 }

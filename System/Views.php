@@ -4,7 +4,7 @@
  */
 
 
-namespace System;
+namespace Rdb\System;
 
 
 /**
@@ -17,7 +17,7 @@ class Views
 
 
     /**
-     * @var \System\Modules
+     * @var \Rdb\System\Modules
      */
     protected $Modules;
 
@@ -25,9 +25,9 @@ class Views
     /**
      * Load the views file.
      * 
-     * @param \System\Container $Container The DI container class.
+     * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\System\Container $Container)
+    public function __construct(\Rdb\System\Container $Container)
     {
         if ($Container->has('Modules')) {
             $this->Modules = $Container->get('Modules');
@@ -52,13 +52,13 @@ class Views
             $debugBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
             if (
                 isset($debugBacktrace[2]['class']) && 
-                stripos($debugBacktrace[2]['class'], 'Modules\\') !== false
+                stripos($debugBacktrace[2]['class'], 'Rdb\\Modules\\') !== false
             ) {
                 // if found modules in trace.
                 $expClass = explode('\\', $debugBacktrace[2]['class']);
-                if (isset($expClass[1])) {
+                if (isset($expClass[2])) {
                     // if found the module name.
-                    $currentModule = $expClass[1];
+                    $currentModule = $expClass[2];
                 } else {
                     // if not found the module name.
                     $currentModule = $this->Modules->getCurrentModule();
@@ -72,8 +72,10 @@ class Views
         }
 
         $ds = DIRECTORY_SEPARATOR;
-        if ($currentModule === 'System\\Core') {
-            $moduleBasePath = ROOT_PATH . $ds . str_replace('\\', '/', $currentModule) . $ds . 'Views';
+        if ($currentModule === 'Rdb\\System\\Core') {
+            $currentModuleRemoveRdb = mb_substr($currentModule, 4);
+            $moduleBasePath = ROOT_PATH . $ds . str_replace('\\', '/', $currentModuleRemoveRdb) . $ds . 'Views';
+            unset($currentModuleRemoveRdb);
         } else {
             $moduleBasePath = MODULE_PATH . $ds . $currentModule . $ds . 'Views';
         }
