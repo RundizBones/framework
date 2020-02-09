@@ -5,4 +5,5 @@ composer.json
 composer.lock
 node_modules
 package-lock.json
+public/favicon.ico
 public/rdbadmin-public
