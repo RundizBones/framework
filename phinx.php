@@ -24,6 +24,20 @@ if (is_array($glob_results)) {
     unset($file);
 }
 unset($glob_results);
+if (!isset($indexFile)) {
+    $glob_results = glob(__DIR__.'/*', GLOB_NOSORT);
+    if (is_array($glob_results)) {
+        foreach ($glob_results as $file) {
+            $file = realpath($file);
+            if (strpos($file, 'index.php') !== false) {
+                $indexFile = $file;
+                break;
+            }
+        }// endforeach;
+        unset($file);
+    }
+    unset($glob_results);
+}
 // get index contents.
 if (isset($indexFile)) {
     $indexContent = file_get_contents($indexFile);
