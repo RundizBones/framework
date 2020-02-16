@@ -141,7 +141,8 @@ class MyPageController extends \Rdb\System\Core\Controllers\BaseController
 
 ### phinxdb folder
 This folder is contain the DB migration using [Phinx](http://docs.phinx.org). There are 2 more sub folders in here 1. is **migrations**, 2. is **seeds**.<br>
-The **phinxdb** folder is optional and only need if you have DB migration to work.
+The **phinxdb** folder is optional and only need if you have DB migration to work.<br>
+To run Phinx on Windows, use this command `.\System\vendor\bin\phinx`
 
 ### Tests folder
 The **Tests** folder is for unit test, and is optional. It is only need if you have some unit testing.<br>
