@@ -387,6 +387,7 @@ class FileSystem
     /**
      * List all files only, folders only, files and folders in single level of specified $dirname.
      * 
+     * @since 0.2.2
      * @param string $dirname Path to folder inside the root.
      * @param string $filterType Filter type of listing. Accept: 'files', 'folders', '' (empty string or all files and folders). Default is empty string.
      * @return array Return the array list of files (or folders).
