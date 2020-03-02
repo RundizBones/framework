@@ -390,6 +390,8 @@ class FileSystem
      * @param string $dirname Path to folder inside the root.
      * @param string $filterType Filter type of listing. Accept: 'files', 'folders', '' (empty string or all files and folders). Default is empty string.
      * @return array Return the array list of files (or folders).
+     *                          Example: if dirname is "a" then result will be `array(0 => a/file1.txt, 1 =>  a/folder1, 2 => a/file2.txt)`.
+     *                          The return value will be relative path from `$root`.
      */
     public function listFiles(string $dirname, string $filterType = ''): array
     {
