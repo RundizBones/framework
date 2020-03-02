@@ -161,6 +161,23 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// testIsFile
 
 
+    public function testListFiles()
+    {
+        for ($i = 1; $i <= 5; $i++) {
+            $this->FileSystem->createFolder('test-list-dirs-files' . $i);
+            $this->FileSystem->writeFile('test-list-dirs-files' . $i . '.txt', 'file number ' . $i);
+        }
+        $this->assertCount(10, $this->FileSystem->listFiles(''));
+        $this->assertCount(5, $this->FileSystem->listFiles('', 'files'));
+        $this->assertCount(5, $this->FileSystem->listFiles('', 'folders'));
+
+        $folders = $this->FileSystem->listFiles('', 'folders');
+        foreach ($folders as $folder) {
+            $this->assertTrue($this->FileSystem->isDir($folder));
+        }
+    }// testListFiles
+
+
     public function testListFilesSubFolders()
     {
         for ($i = 1; $i <= 5; $i++) {

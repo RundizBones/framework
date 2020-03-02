@@ -385,6 +385,50 @@ class FileSystem
 
 
     /**
+     * List all files only, folders only, files and folders in single level of specified $dirname.
+     * 
+     * @param string $dirname Path to folder inside the root.
+     * @param string $filterType Filter type of listing. Accept: 'files', 'folders', '' (empty string or all files and folders). Default is empty string.
+     * @return array Return the array list of files (or folders).
+     */
+    public function listFiles(string $dirname, string $filterType = ''): array
+    {
+        // sanitize filter type.
+        if ($filterType === 'file' || $filterType === 'files') {
+            $filterType = 'files';
+        } elseif ($filterType === 'folder' || $filterType === 'folders') {
+            $filterType = 'folders';
+        } else {
+            $filterType = '';
+        }
+
+        $dirname = $this->removeUpperPath($dirname);
+        $files = [];
+
+        if (is_dir($this->root . DIRECTORY_SEPARATOR . $dirname) && is_readable($this->root . DIRECTORY_SEPARATOR . $dirname)) {
+            $handle = opendir($this->root . DIRECTORY_SEPARATOR . $dirname);
+            while (($file = readdir($handle)) !== false) {
+                if ($file != '.' && $file != '..') {
+                    $relativePath = ($dirname != '' ? $dirname . DIRECTORY_SEPARATOR . $file : $dirname . $file);
+                    if ($filterType !== '') {
+                        if (is_dir($this->root . DIRECTORY_SEPARATOR . $relativePath) && $filterType === 'folders') {
+                            $files[] = $relativePath;
+                        } elseif (is_file($this->root . DIRECTORY_SEPARATOR . $relativePath) && $filterType === 'files') {
+                            $files[] = $relativePath;
+                        }
+                    } else {
+                        $files[] = $relativePath;
+                    }
+                }
+            }// endwhile;
+            closedir($handle);
+        }
+
+        return $files;
+    }// listFiles
+
+
+    /**
      * List all files and subfolders in specified $dirname.
      * 
      * @param string $dirname Path to folder inside the root.
