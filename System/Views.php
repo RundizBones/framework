@@ -17,6 +17,20 @@ class Views
 
 
     /**
+     * @var \Rdb\System\Container
+     * @since 0.2.3
+     */
+    protected $Container;
+
+
+    /**
+     * @var string The controller class and method for use in hook. Example: `Rdb\Modules\RdbAdmin\Controllers\Admin\Users\EditController->indexAction`
+     * @since 0.2.3
+     */
+    protected $controllerMethodHook;
+
+
+    /**
      * @var \Rdb\System\Modules
      */
     protected $Modules;
@@ -29,8 +43,10 @@ class Views
      */
     public function __construct(\Rdb\System\Container $Container)
     {
-        if ($Container->has('Modules')) {
-            $this->Modules = $Container->get('Modules');
+        $this->Container = $Container;
+
+        if ($this->Container->has('Modules')) {
+            $this->Modules = $this->Container->get('Modules');
         }
     }// __construct
 
@@ -126,6 +142,14 @@ class Views
 
             $viewsFullPath = $this->locateViews($viewsFile, $currentModule);
         }
+
+        $debugTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,2);
+        if (isset($debugTrace[1]['class']) && isset($debugTrace[1]['function'])) {
+            $this->controllerMethodHook = $debugTrace[1]['class'] . '->' . $debugTrace[1]['function'];
+        } else {
+            $this->controllerMethodHook = null;
+        }
+        unset($debugTrace);
 
         extract($data);
         ob_start();
