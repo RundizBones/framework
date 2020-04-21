@@ -8,3 +8,5 @@ API doc is no need to generate every commit, just when there are changes on rele
 
 ## Release
 * Update version name in System/App.php
+* Run command `npm run pack && npm run pack -- --development` to pack the files into zip files.
+* Then commit to GitHub.
