@@ -24,10 +24,10 @@ class Views
 
 
     /**
-     * @var string The controller class and method for use in hook. Example: `Rdb\Modules\RdbAdmin\Controllers\Admin\Users\EditController->indexAction`
+     * @var string The controller class and method that call the views. This is useful in hook. Result example: `Rdb\Modules\RdbAdmin\Controllers\Admin\Users\EditController->indexAction`
      * @since 0.2.3
      */
-    protected $controllerMethodHook;
+    protected $controllerMethod;
 
 
     /**
@@ -145,9 +145,9 @@ class Views
 
         $debugTrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS,2);
         if (isset($debugTrace[1]['class']) && isset($debugTrace[1]['function'])) {
-            $this->controllerMethodHook = $debugTrace[1]['class'] . '->' . $debugTrace[1]['function'];
+            $this->controllerMethod = $debugTrace[1]['class'] . '->' . $debugTrace[1]['function'];
         } else {
-            $this->controllerMethodHook = null;
+            $this->controllerMethod = null;
         }
         unset($debugTrace);
 
