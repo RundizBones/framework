@@ -53,13 +53,13 @@
 <path fill="none" stroke="gray" d="M482.178,-1488C482.178,-1488 551.178,-1488 551.178,-1488 557.178,-1488 563.178,-1494 563.178,-1500 563.178,-1500 563.178,-1602 563.178,-1602 563.178,-1608 557.178,-1614 551.178,-1614 551.178,-1614 482.178,-1614 482.178,-1614 476.178,-1614 470.178,-1608 470.178,-1602 470.178,-1602 470.178,-1500 470.178,-1500 470.178,-1494 476.178,-1488 482.178,-1488"/>
 <text text-anchor="middle" x="516.678" y="-1601.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Db</text>
 </g>
-<g id="clust13" class="cluster"><title>cluster_\Rdb\System\Interfaces</title>
-<path fill="none" stroke="gray" d="M461.678,-590C461.678,-590 571.678,-590 571.678,-590 577.678,-590 583.678,-596 583.678,-602 583.678,-602 583.678,-650 583.678,-650 583.678,-656 577.678,-662 571.678,-662 571.678,-662 461.678,-662 461.678,-662 455.678,-662 449.678,-656 449.678,-650 449.678,-650 449.678,-602 449.678,-602 449.678,-596 455.678,-590 461.678,-590"/>
-<text text-anchor="middle" x="516.678" y="-649.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Interfaces</text>
-</g>
 <g id="clust12" class="cluster"><title>cluster_\Rdb\System\Middleware</title>
-<path fill="none" stroke="gray" d="M448.178,-402C448.178,-402 585.178,-402 585.178,-402 591.178,-402 597.178,-408 597.178,-414 597.178,-414 597.178,-570 597.178,-570 597.178,-576 591.178,-582 585.178,-582 585.178,-582 448.178,-582 448.178,-582 442.178,-582 436.178,-576 436.178,-570 436.178,-570 436.178,-414 436.178,-414 436.178,-408 442.178,-402 448.178,-402"/>
-<text text-anchor="middle" x="516.678" y="-569.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Middleware</text>
+<path fill="none" stroke="gray" d="M448.178,-482C448.178,-482 585.178,-482 585.178,-482 591.178,-482 597.178,-488 597.178,-494 597.178,-494 597.178,-650 597.178,-650 597.178,-656 591.178,-662 585.178,-662 585.178,-662 448.178,-662 448.178,-662 442.178,-662 436.178,-656 436.178,-650 436.178,-650 436.178,-494 436.178,-494 436.178,-488 442.178,-482 448.178,-482"/>
+<text text-anchor="middle" x="516.678" y="-649.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Middleware</text>
+</g>
+<g id="clust13" class="cluster"><title>cluster_\Rdb\System\Interfaces</title>
+<path fill="none" stroke="gray" d="M461.678,-402C461.678,-402 571.678,-402 571.678,-402 577.678,-402 583.678,-408 583.678,-414 583.678,-414 583.678,-462 583.678,-462 583.678,-468 577.678,-474 571.678,-474 571.678,-474 461.678,-474 461.678,-474 455.678,-474 449.678,-468 449.678,-462 449.678,-462 449.678,-414 449.678,-414 449.678,-408 455.678,-402 461.678,-402"/>
+<text text-anchor="middle" x="516.678" y="-461.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Interfaces</text>
 </g>
 <g id="clust14" class="cluster"><title>cluster_Global\Symfony</title>
 <path fill="none" stroke="gray" d="M28,-977C28,-977 165.491,-977 165.491,-977 171.491,-977 177.491,-983 177.491,-989 177.491,-989 177.491,-1145 177.491,-1145 177.491,-1151 171.491,-1157 165.491,-1157 165.491,-1157 28,-1157 28,-1157 22,-1157 16,-1151 16,-1145 16,-1145 16,-989 16,-989 16,-983 22,-977 28,-977"/>
@@ -77,6 +77,10 @@
 <path fill="none" stroke="gray" d="M52,-1001C52,-1001 141.491,-1001 141.491,-1001 147.491,-1001 153.491,-1007 153.491,-1013 153.491,-1013 153.491,-1061 153.491,-1061 153.491,-1067 147.491,-1073 141.491,-1073 141.491,-1073 52,-1073 52,-1073 46,-1073 40,-1067 40,-1061 40,-1061 40,-1013 40,-1013 40,-1007 46,-1001 52,-1001"/>
 <text text-anchor="middle" x="96.7457" y="-1060.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Command</text>
 </g>
+<g id="clust20" class="cluster"><title>cluster_Global\Pimple</title>
+<path fill="none" stroke="gray" d="M252.689,-2018C252.689,-2018 336.98,-2018 336.98,-2018 342.98,-2018 348.98,-2024 348.98,-2030 348.98,-2030 348.98,-2078 348.98,-2078 348.98,-2084 342.98,-2090 336.98,-2090 336.98,-2090 252.689,-2090 252.689,-2090 246.689,-2090 240.689,-2084 240.689,-2078 240.689,-2078 240.689,-2030 240.689,-2030 240.689,-2024 246.689,-2018 252.689,-2018"/>
+<text text-anchor="middle" x="294.834" y="-2077.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Pimple</text>
+</g>
 <g id="clust18" class="cluster"><title>cluster_Global\Rundiz</title>
 <path fill="none" stroke="gray" d="M253.138,-1902C253.138,-1902 336.531,-1902 336.531,-1902 342.531,-1902 348.531,-1908 348.531,-1914 348.531,-1914 348.531,-1998 348.531,-1998 348.531,-2004 342.531,-2010 336.531,-2010 336.531,-2010 253.138,-2010 253.138,-2010 247.138,-2010 241.138,-2004 241.138,-1998 241.138,-1998 241.138,-1914 241.138,-1914 241.138,-1908 247.138,-1902 253.138,-1902"/>
 <text text-anchor="middle" x="294.834" y="-1997.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Rundiz</text>
@@ -84,10 +88,6 @@
 <g id="clust19" class="cluster"><title>cluster_Global\Rundiz\Profiler</title>
 <path fill="none" stroke="gray" d="M261.138,-1910C261.138,-1910 328.531,-1910 328.531,-1910 334.531,-1910 340.531,-1916 340.531,-1922 340.531,-1922 340.531,-1970 340.531,-1970 340.531,-1976 334.531,-1982 328.531,-1982 328.531,-1982 261.138,-1982 261.138,-1982 255.138,-1982 249.138,-1976 249.138,-1970 249.138,-1970 249.138,-1922 249.138,-1922 249.138,-1916 255.138,-1910 261.138,-1910"/>
 <text text-anchor="middle" x="294.834" y="-1969.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Profiler</text>
-</g>
-<g id="clust20" class="cluster"><title>cluster_Global\Pimple</title>
-<path fill="none" stroke="gray" d="M252.689,-2018C252.689,-2018 336.98,-2018 336.98,-2018 342.98,-2018 348.98,-2024 348.98,-2030 348.98,-2030 348.98,-2078 348.98,-2078 348.98,-2084 342.98,-2090 336.98,-2090 336.98,-2090 252.689,-2090 252.689,-2090 246.689,-2090 240.689,-2084 240.689,-2078 240.689,-2078 240.689,-2030 240.689,-2030 240.689,-2024 246.689,-2018 252.689,-2018"/>
-<text text-anchor="middle" x="294.834" y="-2077.2" font-family="Times New Roman,serif" font-size="11.00" fill="gray">Pimple</text>
 </g>
 <g id="clust21" class="cluster"><title>cluster_Global\Psr</title>
 <path fill="none" stroke="gray" d="M213.491,-2098C213.491,-2098 376.178,-2098 376.178,-2098 382.178,-2098 388.178,-2104 388.178,-2110 388.178,-2110 388.178,-2194 388.178,-2194 388.178,-2200 382.178,-2206 376.178,-2206 376.178,-2206 213.491,-2206 213.491,-2206 207.491,-2206 201.491,-2200 201.491,-2194 201.491,-2194 201.491,-2110 201.491,-2110 201.491,-2104 207.491,-2098 213.491,-2098"/>
@@ -251,23 +251,23 @@
 </g>
 <!-- \\Rdb\\System\\Middleware\\Profiler -->
 <g id="node20" class="node"><title>\\Rdb\\System\\Middleware\\Profiler</title>
-<polygon fill="none" stroke="black" points="552.178,-554 481.178,-554 481.178,-518 552.178,-518 552.178,-554"/>
-<text text-anchor="middle" x="516.678" y="-533.2" font-family="Courier,monospace" font-size="11.00">Profiler</text>
+<polygon fill="none" stroke="black" points="552.178,-634 481.178,-634 481.178,-598 552.178,-598 552.178,-634"/>
+<text text-anchor="middle" x="516.678" y="-613.2" font-family="Courier,monospace" font-size="11.00">Profiler</text>
 </g>
 <!-- \\Rdb\\System\\Middleware\\RemoveTrailingSlash -->
 <g id="node21" class="node"><title>\\Rdb\\System\\Middleware\\RemoveTrailingSlash</title>
-<polygon fill="none" stroke="black" points="589.178,-500 444.178,-500 444.178,-464 589.178,-464 589.178,-500"/>
-<text text-anchor="middle" x="516.678" y="-479.2" font-family="Courier,monospace" font-size="11.00">RemoveTrailingSlash</text>
+<polygon fill="none" stroke="black" points="589.178,-580 444.178,-580 444.178,-544 589.178,-544 589.178,-580"/>
+<text text-anchor="middle" x="516.678" y="-559.2" font-family="Courier,monospace" font-size="11.00">RemoveTrailingSlash</text>
 </g>
 <!-- \\Rdb\\System\\Middleware\\I18n -->
 <g id="node22" class="node"><title>\\Rdb\\System\\Middleware\\I18n</title>
-<polygon fill="none" stroke="black" points="543.678,-446 489.678,-446 489.678,-410 543.678,-410 543.678,-446"/>
-<text text-anchor="middle" x="516.678" y="-425.2" font-family="Courier,monospace" font-size="11.00">I18n</text>
+<polygon fill="none" stroke="black" points="543.678,-526 489.678,-526 489.678,-490 543.678,-490 543.678,-526"/>
+<text text-anchor="middle" x="516.678" y="-505.2" font-family="Courier,monospace" font-size="11.00">I18n</text>
 </g>
 <!-- \\Rdb\\System\\Interfaces\\ModuleInstaller -->
 <g id="node23" class="node"><title>\\Rdb\\System\\Interfaces\\ModuleInstaller</title>
-<polygon fill="none" stroke="black" points="575.678,-634 457.678,-634 457.678,-598 575.678,-598 575.678,-634"/>
-<text text-anchor="middle" x="516.678" y="-613.2" font-family="Courier,monospace" font-size="11.00">ModuleInstaller</text>
+<polygon fill="none" stroke="black" points="575.678,-446 457.678,-446 457.678,-410 575.678,-410 575.678,-446"/>
+<text text-anchor="middle" x="516.678" y="-425.2" font-family="Courier,monospace" font-size="11.00">ModuleInstaller</text>
 </g>
 <!-- \\Rdb\\System\\Config -->
 <g id="node24" class="node"><title>\\Rdb\\System\\Config</title>
