@@ -3,7 +3,7 @@
  * RundizBones main application class.
  *
  * @package RundizBones
- * @version 0.2.4
+ * @version 1.0.0
  * @license http://opensource.org/licenses/MIT MIT
  */
 
