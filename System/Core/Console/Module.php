@@ -282,8 +282,18 @@ class Module extends BaseConsole
                 // copy assets folder to public/Modules/[module_name]/assets folder. ----------------
                 if (is_dir(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')) {
                     $Fs = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
-                    $Fs->copyFolderRecursive(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets', $mname . DIRECTORY_SEPARATOR . 'assets');
+                    $Fs->copyFolderRecursive(
+                        MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets', 
+                        $mname . DIRECTORY_SEPARATOR . 'assets'
+                    );
                     unset($Fs);
+
+                    if ($this->Container->has('Logger')) {
+                        /* @var $Logger \Rdb\System\Libraries\Logger */
+                        $Logger = $this->Container->get('Logger');
+                        $Logger->write('system/core/console', 0, 'This module contain assets folder ({assetdir}).', ['assetdir' => MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets']);
+                        $Logger->write('system/core/console', 0, 'Copied to destination ({dest}).', ['dest' => (PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')]);
+                    }
                 }
 
                 // copy moduleComposer.json --------------------------------------------------------------
@@ -520,8 +530,18 @@ class Module extends BaseConsole
                 // then copy assets folder to public/Modules/[module_name]/assets folder. ----------
                 if (is_dir(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')) {
                     $Fs = new \Rdb\System\Libraries\FileSystem(PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules');
-                    $Fs->copyFolderRecursive(MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets', $mname . DIRECTORY_SEPARATOR . 'assets');
+                    $Fs->copyFolderRecursive(
+                        MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets', 
+                        $mname . DIRECTORY_SEPARATOR . 'assets'
+                    );
                     unset($Fs);
+
+                    if ($this->Container->has('Logger')) {
+                        /* @var $Logger \Rdb\System\Libraries\Logger */
+                        $Logger = $this->Container->get('Logger');
+                        $Logger->write('system/core/console', 0, 'This module contain assets folder ({assetdir}).', ['assetdir' => MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets']);
+                        $Logger->write('system/core/console', 0, 'Copied to destination ({dest}).', ['dest' => (PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')]);
+                    }
                 }
 
                 // copy moduleComposer.json --------------------------------------------------------------

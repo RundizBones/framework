@@ -54,7 +54,7 @@ if (!defined('PUBLIC_PATH')) {
      * The full path to public folder.
      * By default it is the folder that contain this index.php file.
      */
-    define('PUBLIC_PATH', __DIR__);
+    define('PUBLIC_PATH', __DIR__ . DIRECTORY_SEPARATOR . 'public');
 }
 // End define constants ---------------------------------------------------------------------
 // Do not change anything below this line.
