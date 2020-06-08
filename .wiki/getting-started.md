@@ -81,6 +81,8 @@ If your **index.php** file is in **/rootweb** and all the framework folders and 
 If your **index.php** file is in **/rootweb/subdirectory1** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', dirname(dirname(__DIR__)));`<br>
 If your **index.php** file is in **/rootweb/subdirectory1/subdirectory2/subdirectory3** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', dirname(dirname(dirname(dirname(__DIR__)))));`
 
+Also modify `PUBLIC_PATH` in the **rdb** file to correct path to the index.php file.
+
 #### composer.json
 Copy **composer.default.json** to **composer.json** and then run the command `composer install`.
 
