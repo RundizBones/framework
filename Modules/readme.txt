@@ -1,1 +1,1 @@
-The namespace in this folder must always start with `Modules` even if it placed in any sub folders.
+The namespace in this folder must always start with `Rdb\Modules` even if it placed in any sub folders.
