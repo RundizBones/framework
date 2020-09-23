@@ -268,6 +268,7 @@ class Url
      * Example: The URL is 'hello/สวัสดี/ลาก่อน' the result will be 'hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5/%E0%B8%A5%E0%B8%B2%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99'.<br>
      * 'hello/สวัสดี?query=string' the result will be 'hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5?query=string'.
      *
+     * @since 1.0.1
      * @param string $url The original URL without encoded.
      * @return string Return URL encoded only in each segments but not slash.
      */
