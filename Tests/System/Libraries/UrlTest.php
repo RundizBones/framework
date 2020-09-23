@@ -344,6 +344,16 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     }// testGetQuerystring
 
 
+    public function testRawUrlEncodeSegments()
+    {
+        $this->assertSame('hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5/%E0%B8%A5%E0%B8%B2%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99', $this->Url->rawUrlEncodeSegments('hello/สวัสดี/ลาก่อน'));
+        $this->assertSame('hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5?search=search+value&option[0]=no&option[1]=no&option[2]=yes', $this->Url->rawUrlEncodeSegments('hello/สวัสดี?search=search+value&option[0]=no&option[1]=no&option[2]=yes'));
+        $this->assertSame('hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5?', $this->Url->rawUrlEncodeSegments('hello/สวัสดี?'));
+        $this->assertSame('php/%E0%B8%9E%E0%B8%B5%E0%B9%80%E0%B8%AD%E0%B9%87%E0%B8%8A%E0%B8%9E%E0%B8%B5', $this->Url->rawUrlEncodeSegments('php/พีเอ็ชพี'));
+        $this->assertSame('hello%20world', $this->Url->rawUrlEncodeSegments('hello world'));// space will be `%20` NOT `+`.
+    }// testRawUrlEncodeSegments
+
+
     public function testRemoveQuerystring()
     {
         $this->assertEquals('/my/controller/method', $this->Url->removeQuerystring('/my/controller/method?name1=value1&name2=value2&encoded1=hello%3Dworld%26goodbye%3Dworld'));
