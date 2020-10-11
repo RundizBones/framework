@@ -315,4 +315,47 @@ class Url
     }// removeQuerystring
 
 
+    /**
+     * Remove unsafe URL characters but not URL encode.
+     * 
+     * This will not remove new line (if `$alphanumOnly` is `false`).
+     * 
+     * @link https://www.w3.org/Addressing/URL/url-spec.html URL specific.
+     * @link https://help.marklogic.com/Knowledgebase/Article/View/251/0/using-url-encoding-to-handle-special-characters-in-a-document-uri Reference.
+     * @link https://perishablepress.com/stop-using-unsafe-characters-in-urls/ Reference.
+     * @link https://stackoverflow.com/questions/12317049/how-to-split-a-long-regular-expression-into-multiple-lines-in-javascript Multiple line regular expression reference.
+     * @param string $name The URL name.
+     * @param bool $alphanumOnly Alpha-numeric only or not. Default is `false` (not).
+     * @returns string Return formatted URL name.
+     */
+    public function removeUnsafeUrlCharacters(string $name, bool $alphanumOnly = false): string
+    {
+        // replace multiple spaces, tabs, new lines.
+        // @link https://stackoverflow.com/questions/1981349/regex-to-replace-multiple-spaces-with-a-single-space Reference.
+        $name = preg_replace('/\s\s+/', ' ', $name);
+        // replace space to dash (-).
+        $name = str_replace(' ', '-', $name);
+
+        if ($alphanumOnly === true) {
+            // if alpha-numeric only.
+            $name = preg_replace('/[^a-zA-Z0-9\-_\.]/', '', $name);
+            return $name;
+        }
+
+        $pattern = [
+            '$@&+', // w3 - safe
+            '!*"\'(),', // w3 - extra
+            '=;/#?:', // w3 - reserved
+            '%', // w3 - escape
+            '{}[]\\^~', // w3 - national
+            '<>', // w3 - punctuation
+            '|', // other unsafe characters.
+        ];
+        $pattern = preg_quote(implode('', $pattern), '/');
+        $name = preg_replace('/[' . $pattern . ']/', '', $name);
+
+        return $name;
+    }// removeUnsafeUrlCharacters
+
+
 }

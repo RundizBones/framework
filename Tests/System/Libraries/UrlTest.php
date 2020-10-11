@@ -360,4 +360,72 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     }// testRemoveQuerystring
 
 
+    public function testRemoveUnsafeUrlCharacters()
+    {
+        // test multiple spaces, new lines, tabs------
+        $string = <<<EOT
+space space       spaces
+new line
+
+
+new lines
+tab tab                 tabs
+EOT;
+        // multiple spaces, new lines, tabs become a single space.
+        // space become dash.
+        $assert =  <<<EOT
+space-space-spaces
+new-line-new-lines
+tab-tab-tabs
+EOT;
+        $this->assertSame($assert, $this->Url->removeUnsafeUrlCharacters($string));
+
+        // test alpha-numeric only ----------------------
+        $string = <<<EOT
+space space       spaces พทว่าง    พทว่าง
+new line
+
+
+new lines
+tab tab                 tabs
+EOT;
+        // new line is non alpha-numeric then it will be removed.
+        $assert =  <<<EOT
+space-space-spaces--new-line-new-linestab-tab-tabs
+EOT;
+        $this->assertSame($assert, $this->Url->removeUnsafeUrlCharacters($string, true));
+
+        // test non alpha-numeric. ---------------------
+        $string = <<<EOT
+space space       spaces พทว่าง    พทว่าง
+new line
+
+
+new lines
+tab tab                 tabs
+w3safe $@&+
+w3extra !*"\'(),
+w3reserved =;/#?:
+w3escape %
+w3national {}[]\\^~
+w3punctation <>
+other unsafe |
+EOT;
+        // new line is non alpha-numeric then it will be removed.
+        $assert =  <<<EOT
+space-space-spaces-พทว่าง-พทว่าง
+new-line-new-lines
+tab-tab-tabs
+w3safe-
+w3extra-
+w3reserved-
+w3escape-
+w3national-
+w3punctation-
+other-unsafe-
+EOT;
+        $this->assertSame($assert, $this->Url->removeUnsafeUrlCharacters($string));
+    }// testRemoveUnsafeUrlCharacters
+
+
 }
