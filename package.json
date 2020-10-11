@@ -1,6 +1,6 @@
 {
     "name": "rundizbones",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "description": "Mini modular PHP framework that use MVC architecture.",
     "main": "gulpfile.js",
     "keywords": [
