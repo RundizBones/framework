@@ -425,6 +425,15 @@ w3punctation-
 other-unsafe-
 EOT;
         $this->assertSame($assert, $this->Url->removeUnsafeUrlCharacters($string));
+
+        // test special characters. -----------------------
+        $string = <<<EOT
+abc/กขค/123/๑๒๓/after this are special chars available on keyboards./!@#$%^&*()_+-=\|[]{};:'"?,.<>/end
+EOT;
+        $assert = <<<EOT
+abcกขค123๑๒๓after-this-are-special-chars-available-on-keyboards._-.end
+EOT;
+        $this->assertSame($assert, $this->Url->removeUnsafeUrlCharacters($string));
     }// testRemoveUnsafeUrlCharacters
 
 
