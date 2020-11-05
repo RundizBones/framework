@@ -1,5 +1,6 @@
 .dist
 .phpdoc
+.vs
 build
 composer.json
 composer.lock
