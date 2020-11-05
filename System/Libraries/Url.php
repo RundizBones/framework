@@ -199,6 +199,31 @@ class Url
 
 
     /**
+     * Get public URL.
+     * 
+     * Example: If you install this framework on /myapp and your index.php (public folder) is in /myapp URL.<br>
+     * It will be return `/myapp`.
+     *
+     * @since 1.0.3
+     * @return string Return the URL start with /app-based-path. This will not return trailing slash.
+     */
+    public function getPublicUrl(): string
+    {
+        $scriptName = (isset($_SERVER['SCRIPT_NAME']) ? str_replace('\\', '/', $_SERVER['SCRIPT_NAME']) : '');
+        $scriptNameUpper = str_replace('\\', '/', dirname($scriptName));
+        $appBase = $this->getAppBasedPath();
+
+        if (mb_substr($appBase, 0, mb_strlen($_SERVER['SCRIPT_NAME'])) === $scriptName) {
+            // if found /install-dir/index.php (install dir with file name).
+            $appBase = preg_replace('#^' . preg_quote($scriptName) . '#u', $scriptNameUpper, $appBase, 1);
+        }
+        unset($scriptName, $scriptNameUpper);
+
+        return $appBase;
+    }// getPublicUrl
+
+
+    /**
      * Get public/Modules URL from specific module path.
      * 
      * This method require class constructor to contain `\Rdb\System\Container` object.
@@ -212,15 +237,7 @@ class Url
      */
     public function getPublicModuleUrl(string $modulePath): string
     {
-        $scriptName = (isset($_SERVER['SCRIPT_NAME']) ? str_replace('\\', '/', $_SERVER['SCRIPT_NAME']) : '');
-        $scriptNameUpper = str_replace('\\', '/', dirname($scriptName));
-        $appBase = $this->getAppBasedPath();
-
-        if (mb_substr($appBase, 0, mb_strlen($_SERVER['SCRIPT_NAME'])) === $scriptName) {
-            // if found /install-dir/index.php (install dir with file name).
-            $appBase = preg_replace('#^' . preg_quote($scriptName) . '#u', $scriptNameUpper, $appBase, 1);
-        }
-        unset($scriptName, $scriptNameUpper);
+        $appBase = $this->getPublicUrl();
 
         $output = $appBase . '/Modules';
         if ($this->Container != null && $this->Container->has('Modules')) {

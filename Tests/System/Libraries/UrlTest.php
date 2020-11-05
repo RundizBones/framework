@@ -293,6 +293,24 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     }// testGetPath
 
 
+    public function testGetPublicUrl()
+    {
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/en-US');
+        $this->assertSame('', $this->Url->getPublicUrl());
+        
+        $_SERVER['SCRIPT_NAME'] = '/myapp/index.php';// required
+        $this->runAppWithMiddleWare('get', '/myapp/en-US');
+        $this->assertSame('/myapp', $this->Url->getPublicUrl());
+
+        // will not test with /myapp/[default-lang] because it will be redirect and `exit()`.
+        // will not test with /myapp/index.php/[default-lang] because it will be redirect and `exit()`.
+
+        $this->runAppWithMiddleWare('get', '/myapp/en-US/admin');
+        $this->assertSame('/myapp', $this->Url->getPublicUrl());
+    }// testGetPublicUrl
+
+
     public function testGetPublicModuleUrl()
     {
         $Modules = new \Rdb\System\Modules($this->Container);
