@@ -8,3 +8,8 @@ node_modules
 package-lock.json
 public/favicon.ico
 public/rdbadmin-public
+
+#eclipse project files.
+.buildpath
+.project
+.settings
