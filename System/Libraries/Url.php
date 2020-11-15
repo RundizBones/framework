@@ -122,7 +122,7 @@ class Url
      *                  Set `$raw` to `true` will show url segments as see in address bar (maybe visible language locale URL or not depend on configuration), set to `false` will show just '/installDir'.<br>
      *                  If the 'en-US' is default language and it is set to show default language...<br>
      *                  Set `$raw` to `true` will show language locale URL as see in address bar, set to `false` will show just '/installDir'.
-     * @return string Return current URL without querystring and without trailing slash. Example: /installDir/public/my-current-uri
+     * @return string Return current URL without query string and without trailing slash. Example: /installDir/public/my-current-uri
      */
     public function getCurrentUrl(bool $raw = false): string
     {
@@ -256,7 +256,7 @@ class Url
 
 
     /**
-     * Get query string (?param=value) with question mark sign (?) if it is not empty.
+     * Get current query string (?param=value) with question mark sign (?) if it is not empty.
      * 
      * The query string will be automatically url encoded.
      * 
@@ -279,13 +279,13 @@ class Url
 
 
     /**
-     * Use `RFC 3986` to encode the querystring (same as `rawurlencode` function).
+     * Use `RFC 3986` to encode the query string (same as `rawurlencode` function).
      * 
-     * It will be encode only querystring (Example: name1=value1&name2=value2&arr[]=valuearr1).<br>
+     * It will be encode only query string (Example: name1=value1&name2=value2&arr[]=valuearr1).<br>
      * The argument separator (`&`) is depend on the URL input, if it contains `&amp;` then it will be return as-is. Otherwise it will be return as setting in `arg_separator.output`.
      *
      * @param string $url The original URL without encoded.
-     * @return string Return URL encoded only querystring.
+     * @return string Return URL encoded only query string.
      */
     public function rawUrlEncodeQuerystring(string $url): string
     {
@@ -357,7 +357,7 @@ class Url
 
 
     /**
-     * Remove querystring.
+     * Remove query string.
      * 
      * @param string $url
      * @return string
@@ -365,7 +365,7 @@ class Url
     public function removeQuerystring(string $url): string
     {
         if (false !== $pos = strpos($url, '?')) {
-            // if found querystring (?foo=bar).
+            // if found query string (?foo=bar).
             $url = substr($url, 0, $pos);
         }
 
