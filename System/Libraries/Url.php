@@ -36,6 +36,55 @@ class Url
 
 
     /**
+     * Build URL from `parse_url()` function.
+     *
+     * @since 1.0.5
+     * @param array $parsedUrl The value from `parse_url()` function.
+     * @return string Return built URL.
+     */
+    public function buildUrl(array $parsedUrl): string
+    {
+        $output = '';
+
+        if (array_key_exists('scheme', $parsedUrl)) {
+            $output .= $parsedUrl['scheme'] . ':';
+        }
+        if (
+            array_key_exists('user', $parsedUrl) ||
+            array_key_exists('host', $parsedUrl)
+        ) {
+            $output .= '//';
+        }
+        if (array_key_exists('user', $parsedUrl)) {
+            $output .= $parsedUrl['user'];
+        }
+        if (array_key_exists('pass', $parsedUrl)) {
+            $output .= ':' . $parsedUrl['pass'];
+        }
+        if (array_key_exists('user', $parsedUrl)) {
+            $output .= '@';
+        }
+        if (array_key_exists('host', $parsedUrl)) {
+            $output .= $parsedUrl['host'];
+        }
+        if (array_key_exists('port', $parsedUrl)) {
+            $output .= ':' . $parsedUrl['port'];
+        }
+        if (array_key_exists('path', $parsedUrl)) {
+            $output .= $parsedUrl['path'];
+        }
+        if (array_key_exists('query', $parsedUrl)) {
+            $output .= '?' . $parsedUrl['query'];
+        }
+        if (array_key_exists('fragment', $parsedUrl)) {
+            $output .= '#' . $parsedUrl['fragment'];
+        }
+
+        return $output;
+    }// buildUrl
+
+
+    /**
      * Get application based path without trailing slash.
      * 
      * For example: if you install this framework on /myapp sub folder then it will return /myapp.<br>
@@ -279,6 +328,85 @@ class Url
 
 
     /**
+     * Encode all parts of the URL.
+     * 
+     * This will not encode username:password, path or segments, query string, fragment.
+     *
+     * @since 1.0.5
+     * @param string $url The original URL without encoded.
+     * @return string Return URL encoded only fragment.
+     */
+    public function rawUrlEncodeAllParts(string $url): string
+    {
+        $parsedUrl = parse_url($url);
+
+        if (array_key_exists('user', $parsedUrl)) {
+            $parsedUrl['user'] = rawurlencode($parsedUrl['user']);
+        }
+        if (array_key_exists('pass', $parsedUrl)) {
+            $parsedUrl['pass'] = rawurlencode($parsedUrl['pass']);
+        }
+
+        if (array_key_exists('path', $parsedUrl)) {
+            $expPath = explode('/', $parsedUrl['path']);
+            foreach ($expPath as $index => $segment) {
+                $expPath[$index] = rawurlencode($segment);
+            }
+            $parsedUrl['path'] = implode('/', $expPath);
+            unset($expPath);
+        }
+
+        if (array_key_exists('query', $parsedUrl)) {
+            parse_str($parsedUrl['query'], $queryStringArray);
+            if (is_array($queryStringArray)) {
+                $numericPrefix = '';
+                $argSep = ini_get('arg_separator.output');
+                if (stripos($url, '&amp;') !== false) {
+                    $argSep = '&amp;';
+                }
+                $encType = PHP_QUERY_RFC3986;
+                $parsedUrl['query'] = http_build_query($queryStringArray, $numericPrefix, $argSep, $encType);
+                unset($argSep, $encType, $numericPrefix);
+            }
+            unset($queryStringArray);
+        }
+
+        if (array_key_exists('fragment', $parsedUrl)) {
+            $parsedUrl['fragment'] = rawurlencode($parsedUrl['fragment']);
+        }
+
+        $output = $this->buildUrl($parsedUrl);
+
+        unset($parsedUrl);
+        return $output;
+    }// rawUrlEncodeAllParts
+
+
+    /**
+     * Encode the fragment (#anchor) on the URL use `rawurlencode()`.
+     * 
+     * This will not encode other parts.
+     *
+     * @since 1.0.5
+     * @param string $url The original URL without encoded.
+     * @return string Return URL encoded only fragment.
+     */
+    public function rawUrlEncodeFragment(string $url): string
+    {
+        $parsedUrl = parse_url($url);
+
+        if (array_key_exists('fragment', $parsedUrl)) {
+            $parsedUrl['fragment'] = rawurlencode($parsedUrl['fragment']);
+        }
+
+        $output = $this->buildUrl($parsedUrl);
+
+        unset($parsedUrl);
+        return $output;
+    }// rawUrlEncodeFragment
+
+
+    /**
      * Use `RFC 3986` to encode the query string (same as `rawurlencode` function).
      * 
      * It will be encode only query string (Example: name1=value1&name2=value2&arr[]=valuearr1).<br>
@@ -334,27 +462,50 @@ class Url
      */
     public function rawUrlEncodeSegments(string $url): string
     {
-        $queryString = parse_url($url, PHP_URL_QUERY);
-        $urlNoQuery = $this->removeQuerystring($url);
-        $urlExploded = explode('/', $urlNoQuery);
-        $newUrlEncoded = [];
-        foreach ($urlExploded as $segment) {
-            $newUrlEncoded[] = rawurlencode($segment);
-        }// endforeach;
-        unset($segment, $urlExploded, $urlNoQuery);
+        $parsedUrl = parse_url($url);
 
-        if (is_array($newUrlEncoded) && !empty($newUrlEncoded)) {
-            $output = implode('/', $newUrlEncoded);
-            if (strpos($url, '?')!== false) {
-                $output .= '?';
+        // encode each segment of path.
+        if (array_key_exists('path', $parsedUrl)) {
+            $expPath = explode('/', $parsedUrl['path']);
+            foreach ($expPath as $index => $segment) {
+                $expPath[$index] = rawurlencode($segment);
             }
-            if (!empty($queryString)) {
-                $output .= $queryString;
-            }
-            return $output;
+            $parsedUrl['path'] = implode('/', $expPath);
+            unset($expPath);
         }
-        return $url;
+
+        $output = $this->buildUrl($parsedUrl);
+
+        unset($parsedUrl);
+        return $output;
     }// rawUrlEncodeSegments
+
+
+    /**
+     * Encode the username and password on the URL use `rawurlencode()`.
+     * 
+     * This will not encode other parts.
+     *
+     * @since 1.0.5
+     * @param string $url The original URL without encoded.
+     * @return string Return URL encoded only username and password.
+     */
+    public function rawUrlEncodeUsernamePassword(string $url): string
+    {
+        $parsedUrl = parse_url($url);
+
+        if (array_key_exists('user', $parsedUrl)) {
+            $parsedUrl['user'] = rawurlencode($parsedUrl['user']);
+        }
+        if (array_key_exists('pass', $parsedUrl)) {
+            $parsedUrl['pass'] = rawurlencode($parsedUrl['pass']);
+        }
+
+        $output = $this->buildUrl($parsedUrl);
+
+        unset($parsedUrl);
+        return $output;
+    }// rawUrlEncodeUsernamePassword
 
 
     /**
