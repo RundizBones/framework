@@ -284,6 +284,7 @@ class Url
      * It will be encode only query string (Example: name1=value1&name2=value2&arr[]=valuearr1).<br>
      * The argument separator (`&`) is depend on the URL input, if it contains `&amp;` then it will be return as-is. Otherwise it will be return as setting in `arg_separator.output`.
      *
+     * @since 1.0.4
      * @param string $url The original URL without encoded.
      * @return string Return URL encoded only query string.
      */
@@ -379,6 +380,7 @@ class Url
      * 
      * This will not remove new line (if `$alphanumOnly` is `false`).
      * 
+     * @since 1.0.2
      * @link https://www.w3.org/Addressing/URL/url-spec.html URL specific.
      * @link https://help.marklogic.com/Knowledgebase/Article/View/251/0/using-url-encoding-to-handle-special-characters-in-a-document-uri Reference.
      * @link https://perishablepress.com/stop-using-unsafe-characters-in-urls/ Reference.
