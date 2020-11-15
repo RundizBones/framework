@@ -362,6 +362,13 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     }// testGetQuerystring
 
 
+    public function testRawUrlEncodeQuerystring()
+    {
+        $this->assertSame('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A', $this->Url->rawUrlEncodeQuerystring('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ'));
+        $this->assertSame('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A&one=%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87&arr%5B0%5D=1&arr%5B1%5D=2#anchor', $this->Url->rawUrlEncodeQuerystring('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ&one=หนึ่ง&arr[]=1&arr[]=2#anchor'));
+    }// testRawUrlEncodeQuerystring
+
+
     public function testRawUrlEncodeSegments()
     {
         $this->assertSame('hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5/%E0%B8%A5%E0%B8%B2%E0%B8%81%E0%B9%88%E0%B8%AD%E0%B8%99', $this->Url->rawUrlEncodeSegments('hello/สวัสดี/ลาก่อน'));
@@ -369,12 +376,15 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
         $this->assertSame('hello/%E0%B8%AA%E0%B8%A7%E0%B8%B1%E0%B8%AA%E0%B8%94%E0%B8%B5?', $this->Url->rawUrlEncodeSegments('hello/สวัสดี?'));
         $this->assertSame('php/%E0%B8%9E%E0%B8%B5%E0%B9%80%E0%B8%AD%E0%B9%87%E0%B8%8A%E0%B8%9E%E0%B8%B5', $this->Url->rawUrlEncodeSegments('php/พีเอ็ชพี'));
         $this->assertSame('hello%20world', $this->Url->rawUrlEncodeSegments('hello world'));// space will be `%20` NOT `+`.
+        $this->assertSame('question%20%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A', $this->Url->rawUrlEncodeSegments('question คำตอบ'));
+        $this->assertSame('question คำตอบ', rawurldecode('question%20%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A'));
     }// testRawUrlEncodeSegments
 
 
     public function testRemoveQuerystring()
     {
         $this->assertEquals('/my/controller/method', $this->Url->removeQuerystring('/my/controller/method?name1=value1&name2=value2&encoded1=hello%3Dworld%26goodbye%3Dworld'));
+        $this->assertEquals('/my/controller/method', $this->Url->removeQuerystring('/my/controller/method?name1=value1&name2=value2&encoded1=hello%3Dworld%26goodbye%3Dworld?invalud=querystring'));
     }// testRemoveQuerystring
 
 

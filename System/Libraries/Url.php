@@ -279,6 +279,48 @@ class Url
 
 
     /**
+     * Use `RFC 3986` to encode the querystring (same as `rawurlencode` function).
+     * 
+     * It will be encode only querystring (Example: name1=value1&name2=value2&arr[]=valuearr1).<br>
+     * The argument separator (`&`) is depend on the URL input, if it contains `&amp;` then it will be return as-is. Otherwise it will be return as setting in `arg_separator.output`.
+     *
+     * @param string $url The original URL without encoded.
+     * @return string Return URL encoded only querystring.
+     */
+    public function rawUrlEncodeQuerystring(string $url): string
+    {
+        $parsedUrl = parse_url($url);
+        $output = $this->removeQuerystring($url);
+
+        if (array_key_exists('query', $parsedUrl)) {
+            $output .= '?';
+            parse_str($parsedUrl['query'], $queryStringArray);
+            if (is_array($queryStringArray)) {
+                $numericPrefix = '';
+                $argSep = ini_get('arg_separator.output');
+                if (stripos($url, '&amp;') !== false) {
+                    $argSep = '&amp;';
+                }
+                $encType = PHP_QUERY_RFC3986;
+                $queryString = http_build_query($queryStringArray, $numericPrefix, $argSep, $encType);
+                unset($argSep, $encType, $numericPrefix);
+                $output .= $queryString;
+                unset($queryString);
+            }
+            unset($queryStringArray);
+        }
+
+        if (array_key_exists('fragment', $parsedUrl)) {
+            $output .= '#' . $parsedUrl['fragment'];
+        }
+
+        unset($parsedUrl);
+
+        return $output;
+    }// rawUrlEncodeQuerystring
+
+
+    /**
      * Use `rawurlencode()` to encode multiple segments.
      * 
      * It will not encode slash (/) to `%2F`. It will also not encode the query string.<br>
