@@ -328,6 +328,50 @@ class Url
 
 
     /**
+     * Get the specific URL segment.
+     *
+     * @param int $number Segment number to get. Start from 1.
+     * @return string Return value of the selected URL segment.
+     */
+    public function getSegment(int $number): string
+    {
+        $segments = $this->getSegments();
+
+        $output = '';
+
+        $number = ($number - 1);
+        if (array_key_exists($number, $segments)) {
+            $output = $segments[$number];
+        }
+
+        return $output;
+    }// getSegment
+
+
+    /**
+     * Get URL segments.
+     *
+     * @return array Return all URL segments except language URL if the configuration file was use detect language on the URL.
+     */
+    public function getSegments(): array
+    {
+        $path = $this->getPath();
+
+        $expPath = explode('/', $path);
+        if (is_array($expPath)) {
+            if (isset($expPath[0]) && $expPath[0] === '') {
+                unset($expPath[0]);
+                $expPath = array_values($expPath);
+            }
+            return $expPath;
+        }
+
+        unset($expPath, $parsed);
+        return [];
+    }// getSegments
+
+
+    /**
      * Encode all parts of the URL.
      * 
      * This will not encode username:password, path or segments, query string, fragment.

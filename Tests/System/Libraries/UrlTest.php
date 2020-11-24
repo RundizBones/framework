@@ -373,6 +373,33 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
         $this->runApp('get', '/?name1=value1&url=http%3A%2F%2Frundiz.com%2Ftest%2Furlencode%3Fsearch%3Dsearchvalue%26sort%3Ddesc%26order%3Dname&name2=value2');
         $this->assertEquals('?name1=value1&url=http%3A%2F%2Frundiz.com%2Ftest%2Furlencode%3Fsearch%3Dsearchvalue%26sort%3Ddesc%26order%3Dname&name2=value2', $this->Url->getQuerystring());
     }// testGetQuerystring
+
+
+    public function testGetSegment()
+    {
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/en-US');
+        $this->assertSame('', $this->Url->getSegment(1));
+
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/en-US/categories/food/steak?some=query&string=not-affect');
+        $this->assertSame('', $this->Url->getSegment(0));
+        $this->assertSame('categories', $this->Url->getSegment(1));
+        $this->assertSame('food', $this->Url->getSegment(2));
+        $this->assertSame('steak', $this->Url->getSegment(3));
+    }// testGetSegment
+
+
+    public function testGetSegments()
+    {
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/en-US');
+        $this->assertArraySubset([], $this->Url->getSegments());
+
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/en-US/categories/food/steak');
+        $this->assertArraySubset(['categories', 'food', 'steak'], $this->Url->getSegments());
+    }// testGetSegment
     
 
     public function testRawUrlEncodeAllParts()
