@@ -330,6 +330,7 @@ class Url
     /**
      * Get the specific URL segment.
      *
+     * @since 1.0.6
      * @param int $number Segment number to get. Start from 1.
      * @return string Return value of the selected URL segment.
      */
@@ -351,6 +352,7 @@ class Url
     /**
      * Get URL segments.
      *
+     * @since 1.0.6
      * @return array Return all URL segments except language URL if the configuration file was use detect language on the URL.
      */
     public function getSegments(): array
