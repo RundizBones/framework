@@ -27,9 +27,6 @@ class ContainerTest extends \Rdb\Tests\BaseTestCase
     }// testOffsets
 
 
-    /**
-     * @expectedException \Pimple\Exception\UnknownIdentifierException
-     */
     public function testOffsetException()
     {
         $Container = new \Rdb\System\Container();
@@ -38,8 +35,8 @@ class ContainerTest extends \Rdb\Tests\BaseTestCase
         };
 
         unset($Container['Config']);
+        $this->expectException(\Pimple\Exception\UnknownIdentifierException::class);// throw errors.
         $Container['Config'];// throw errors.
-        $this->expectException($Container['Config']);// throw errors.
     }// testOffsetException
 
 

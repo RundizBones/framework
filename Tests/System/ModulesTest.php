@@ -35,7 +35,7 @@ class ModulesTest extends \Rdb\Tests\BaseTestCase
     protected $newModule2 = '';
 
 
-    public function setup()
+    public function setup(): void
     {
         $this->newModule = 'ModuleForTest' . date('YmdHis') . mt_rand(1, 999) . 'M' . round(microtime(true) * 1000);
         $this->newModule2 = 'ModuleForTest2' . date('YmdHis') . mt_rand(1, 999) . 'M' . round(microtime(true) * 1000);
@@ -64,7 +64,7 @@ class ModulesTest extends \Rdb\Tests\BaseTestCase
     }// setup
 
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // restore root composer.json
         $deleteResult = @unlink(ROOT_PATH . '/composer.json');
@@ -99,7 +99,7 @@ class ModulesTest extends \Rdb\Tests\BaseTestCase
         $this->assertTrue($Modules->copyComposer($this->newModule));
         unset($Modules);
         $composerContents = file_get_contents(ROOT_PATH . '/composer.json');
-        $this->assertContains('"rundiz/serial-number-generator"', $composerContents);// composer.json contain required item.
+        $this->assertStringContainsString('"rundiz/serial-number-generator"', $composerContents);// composer.json contain required item.
         unset($composerContents);
     }// testCopyComposer
 

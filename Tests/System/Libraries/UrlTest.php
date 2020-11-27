@@ -38,7 +38,7 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     }// runAppWithMiddleWare
 
 
-    public function setup()
+    public function setup(): void
     {
         $this->runApp('get', '/my/controller/method?name1=value1&name2=value2&encoded1=hello%3Dworld%26goodbye%3Dworld');
 
@@ -394,11 +394,14 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     {
         $_SERVER['SCRIPT_NAME'] = '/index.php';// required
         $this->runAppWithMiddleWare('get', '/en-US');
-        $this->assertArraySubset([], $this->Url->getSegments());
+        $segments = $this->Url->getSegments();
+        $this->assertTrue(is_array($segments));
+        $this->assertSame([], $segments);
 
         $_SERVER['SCRIPT_NAME'] = '/index.php';// required
         $this->runAppWithMiddleWare('get', '/en-US/categories/food/steak');
-        $this->assertArraySubset(['categories', 'food', 'steak'], $this->Url->getSegments());
+        $segments = $this->Url->getSegments();
+        $this->assertSame(['categories', 'food', 'steak'], $segments);
     }// testGetSegment
     
 
@@ -416,18 +419,43 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
                 . '#anchorภาษาไทย'
             )
         );
+        $this->assertSame(
+            'http://my%40email.tld:%E0%B8%9C%E0%B9%88%E0%B8%B2%E0%B8%99word@localhost.localhost:80'
+            . '/lang/%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2/question/%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A'
+            . '?question=%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A&one=%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87&arr%5B0%5D=1&arr%5B1%5D=2&ques%3Ftion=answer',
+            $this->Url->rawUrlEncodeAllParts(
+                'http://my@email.tld:ผ่านword@localhost.localhost:80'
+                . '/lang/ภาษาไทย/question/คำตอบ'
+                . '?question=คำตอบ&one=หนึ่ง&arr[]=1&arr[]=2&ques?tion=answer'
+                . '#'
+            )
+        );
+        $this->assertSame(
+            'http://my%40email.tld:%E0%B8%9C%E0%B9%88%E0%B8%B2%E0%B8%99word@localhost.localhost:80'
+            . '/lang/%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2/question/%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A',
+            $this->Url->rawUrlEncodeAllParts(
+                'http://my@email.tld:ผ่านword@localhost.localhost:80'
+                . '/lang/ภาษาไทย/question/คำตอบ'
+                . '?'
+                . '#'
+            )
+        );
     }// testRawUrlEncodeAllParts
 
 
     public function testRawUrlEncodeFragment()
     {
         $this->assertSame('http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ&one=หนึ่ง&arr[]=1&arr[]=2&ques?tion=answer#anchor%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2', $this->Url->rawUrlEncodeFragment('http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ&one=หนึ่ง&arr[]=1&arr[]=2&ques?tion=answer#anchorภาษาไทย'));
+        $this->assertSame('http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ#anchor%E0%B8%A0%E0%B8%B2%E0%B8%A9%E0%B8%B2%E0%B9%84%E0%B8%97%E0%B8%A2', $this->Url->rawUrlEncodeFragment('http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ?#anchorภาษาไทย'));
+        $this->assertSame('http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ', $this->Url->rawUrlEncodeFragment('http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ?#'));
     }// testRawUrlEncodeFragment
 
 
     public function testRawUrlEncodeQuerystring()
     {
         $this->assertSame('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A', $this->Url->rawUrlEncodeQuerystring('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ'));
+        $this->assertSame('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A', $this->Url->rawUrlEncodeQuerystring('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ#'));
+        $this->assertSame('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ', $this->Url->rawUrlEncodeQuerystring('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?#'));
         $this->assertSame('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=%E0%B8%84%E0%B8%B3%E0%B8%95%E0%B8%AD%E0%B8%9A&one=%E0%B8%AB%E0%B8%99%E0%B8%B6%E0%B9%88%E0%B8%87&arr%5B0%5D=1&arr%5B1%5D=2#anchorไทย', $this->Url->rawUrlEncodeQuerystring('http://localhost.localhost/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ&one=หนึ่ง&arr[]=1&arr[]=2#anchorไทย'));
     }// testRawUrlEncodeQuerystring
 

@@ -49,7 +49,7 @@ class DbTest extends \Rdb\Tests\BaseTestCase
     }// removeNewlineAndSpaces
 
 
-    public function setup()
+    public function setup(): void
     {
         $Config = new \Rdb\System\Config();
         $this->Db = new \Rdb\System\Libraries\Db(new \Rdb\System\Container);
@@ -96,7 +96,7 @@ class DbTest extends \Rdb\Tests\BaseTestCase
     }// setup
 
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->dropTestTableBeforeDisconnect();
         $this->Db->disconnectAll();
@@ -163,9 +163,9 @@ class DbTest extends \Rdb\Tests\BaseTestCase
         $values = $generatedResult['values'];
         unset($generatedResult);
 
-        $this->assertArraySubset([':field' => 'value'], $values);
-        $this->assertArraySubset([':table_field' => 'table.fieldValue'], $values);
-        $this->assertArraySubset([':isNotNullField' => 'IS NOT NULL'], $values);
+        $this->assertTrue(array_key_exists(':field', $values) && $values[':field'] === 'value');
+        $this->assertTrue(array_key_exists(':table_field', $values) && $values[':table_field'] === 'table.fieldValue');
+        $this->assertTrue(array_key_exists(':isNotNullField', $values) && $values[':isNotNullField'] === 'IS NOT NULL');
         $this->assertTrue(in_array('`field` = :field', $placeholders));
         $this->assertTrue(in_array('`isNotNullField` = :isNotNullField', $placeholders));
 
@@ -206,9 +206,9 @@ class DbTest extends \Rdb\Tests\BaseTestCase
         $values = $generatedResult['values'];
         unset($generatedResult);
 
-        $this->assertArraySubset([0 => 'value'], $values);
-        $this->assertArraySubset([1 => 'table.fieldValue'], $values);
-        $this->assertArraySubset([2 => 'IS NOT NULL'], $values);
+        $this->assertTrue(array_key_exists(0, $values) && $values[0] === 'value');
+        $this->assertTrue(array_key_exists(1, $values) && $values[1] === 'table.fieldValue');
+        $this->assertTrue(array_key_exists(2, $values) && $values[2] === 'IS NOT NULL');
         $this->assertTrue(in_array('`field` = ?', $placeholders));
         $this->assertTrue(in_array('`table`.`field` = ?', $placeholders));
         $this->assertTrue(in_array('`isNotNullField` = ?', $placeholders));

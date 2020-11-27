@@ -33,7 +33,7 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
     protected $testSubfolder;
 
 
-    public function setup()
+    public function setup(): void
     {
         $this->testSubfolder = 'tests' . DIRECTORY_SEPARATOR . '_testConsole' . date('YmdHis') . '_' . mt_rand(1, 999) . round(microtime(true) * 1000);
         $this->targetTestDir = STORAGE_PATH . DIRECTORY_SEPARATOR . $this->testSubfolder;
@@ -55,7 +55,7 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
     }// setup
 
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->FileSystem->deleteFolder('', true);
         $this->FileSystem = new \Rdb\System\Libraries\FileSystem(STORAGE_PATH);
@@ -80,10 +80,10 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertContains(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertContains('logs', $output);
-        $this->assertContains('logs2', $output);
-        $this->assertContains('test-01.log', $output);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
+        $this->assertStringContainsString('logs', $output);
+        $this->assertStringContainsString('logs2', $output);
+        $this->assertStringContainsString('test-01.log', $output);
 
         unset($command, $commandTester, $output);
     }// testExecuteClear
@@ -107,8 +107,8 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertContains(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertContains('logs', $output);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
+        $this->assertStringContainsString('logs', $output);
 
         // test delete using normal folder name.
         $commandTester->execute([
@@ -120,9 +120,9 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertContains(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertContains('logs', $output);
-        $this->assertContains('logs2', $output);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
+        $this->assertStringContainsString('logs', $output);
+        $this->assertStringContainsString('logs2', $output);
 
         unset($command, $commandTester, $output);
     }// testExecuteDelete
@@ -146,8 +146,8 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertContains(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertContains('logs', $output);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
+        $this->assertStringContainsString('logs', $output);
 
         // test list using normal subfolder name.
         $commandTester->execute([
@@ -159,9 +159,9 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertContains(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertContains('logs', $output);
-        $this->assertContains('logs2', $output);
+        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
+        $this->assertStringContainsString('logs', $output);
+        $this->assertStringContainsString('logs2', $output);
 
         unset($command, $commandTester, $output);
     }// testExecuteList

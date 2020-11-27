@@ -23,7 +23,7 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     protected $targetTestDir;
 
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->targetTestDir = RDB_TEST_PATH . DIRECTORY_SEPARATOR . '_forTestFileSystem';
 
@@ -37,7 +37,7 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// setUp
 
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $this->FileSystem->deleteFolder('', true);
         @rmdir($this->targetTestDir);

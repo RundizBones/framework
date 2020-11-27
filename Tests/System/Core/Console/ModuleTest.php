@@ -39,7 +39,7 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
     protected $testModuleName;
 
 
-    public function setup()
+    public function setup(): void
     {
         if (!defined('NOREMOVEDIRBYSHELL')) {
             // define NOREMOVEDIRBYSHELL constant to not running RMDIR command and get "cannot find the path" error message even it exists.
@@ -119,7 +119,7 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
     }// setup
 
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // restore root composer.json
         $deleteResult = @unlink(ROOT_PATH . '/composer.json');
@@ -183,8 +183,8 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
             '--mname' => $this->testModuleName,
         ]);
         $output = $commandTester->getDisplay();
-        $this->assertContains('Success', $output);
-        $this->assertContains('disabled', $output);
+        $this->assertStringContainsString('Success', $output);
+        $this->assertStringContainsString('disabled', $output);
         $this->assertTrue($this->FileSystem->isFile('.disabled'));// module disabled.
 
         unset($command, $commandTester, $output);
@@ -208,8 +208,8 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
             '--mname' => $this->testModuleName,
         ]);
         $output = $commandTester->getDisplay();
-        $this->assertContains('Success', $output);
-        $this->assertContains('enabled', $output);
+        $this->assertStringContainsString('Success', $output);
+        $this->assertStringContainsString('enabled', $output);
         $this->assertFalse($this->FileSystem->isFile('.disabled'));// module enabled.
 
         unset($command, $commandTester, $output);
@@ -233,12 +233,12 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
             '--mname' => $this->testModuleName,
         ]);
         $output = $commandTester->getDisplay();
-        $this->assertContains('Success', $output);
-        $this->assertContains('installed', $output);
+        $this->assertStringContainsString('Success', $output);
+        $this->assertStringContainsString('installed', $output);
         $this->assertFalse($this->FileSystem->isFile('.disabled'));// module enabled.
         $this->assertTrue($this->FileSystem->isFile('installed.txt'));// installer class create installed.txt file.
         $this->assertTrue(is_dir(PUBLIC_PATH . '/Modules/' . $this->testModuleName . '/assets'));// assets folder copied to public.
-        $this->assertContains('"vendor/some-dep-not-exists"', file_get_contents(ROOT_PATH . '/composer.json'));// composer.json contain required item.
+        $this->assertStringContainsString('"vendor/some-dep-not-exists"', file_get_contents(ROOT_PATH . '/composer.json'));// composer.json contain required item.
 
         unset($command, $commandTester, $output);
     }// testExecuteInstall
@@ -271,14 +271,14 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
             '--mname' => $this->testModuleName,
         ]);
         $output = $commandTester->getDisplay();
-        $this->assertContains('Success', $output);
-        $this->assertContains('uninstalled', $output);
-        $this->assertContains('composer', $output);
+        $this->assertStringContainsString('Success', $output);
+        $this->assertStringContainsString('uninstalled', $output);
+        $this->assertStringContainsString('composer', $output);
         $this->assertFalse($this->FileSystem->isDir(''));// module folder already deleted.
         $this->assertFalse(is_dir(PUBLIC_PATH . '/Modules/' . $this->testModuleName . '/assets'));// assets folder deleted from public.
         $this->assertFalse(stripos(file_get_contents(ROOT_PATH . '/composer.json'), '"vendor/some-dep-not-exists"'));// composer.json does not contain required item.
         $this->assertTrue(is_file(STORAGE_PATH . '/tests/tests-module-installer/' . $this->testModuleName . '/uninstalled.txt'));// there is uninstall log.
-        $this->assertContains(date('Y-m-d'), file_get_contents(STORAGE_PATH . '/tests/tests-module-installer/' . $this->testModuleName . '/uninstalled.txt'));// uninstall log contain today date.
+        $this->assertStringContainsString(date('Y-m-d'), file_get_contents(STORAGE_PATH . '/tests/tests-module-installer/' . $this->testModuleName . '/uninstalled.txt'));// uninstall log contain today date.
 
         unset($command, $commandTester, $output);
     }// testExecuteUninstall
@@ -313,14 +313,14 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
             '--nodelete' => null,
         ]);
         $output = $commandTester->getDisplay();
-        $this->assertContains('Success', $output);
-        $this->assertContains('uninstalled', $output);
-        $this->assertContains('composer', $output);
+        $this->assertStringContainsString('Success', $output);
+        $this->assertStringContainsString('uninstalled', $output);
+        $this->assertStringContainsString('composer', $output);
         $this->assertTrue($this->FileSystem->isDir(''));// module folder NOT deleted.
         $this->assertFalse(is_dir(PUBLIC_PATH . '/Modules/' . $this->testModuleName . '/assets'));// assets folder deleted from public.
         $this->assertFalse(stripos(file_get_contents(ROOT_PATH . '/composer.json'), '"vendor/some-dep-not-exists"'));// composer.json does not contain required item.
         $this->assertTrue(is_file(STORAGE_PATH . '/tests/tests-module-installer/' . $this->testModuleName . '/uninstalled.txt'));// there is uninstall log.
-        $this->assertContains(date('Y-m-d'), file_get_contents(STORAGE_PATH . '/tests/tests-module-installer/' . $this->testModuleName . '/uninstalled.txt'));// uninstall log contain today date.
+        $this->assertStringContainsString(date('Y-m-d'), file_get_contents(STORAGE_PATH . '/tests/tests-module-installer/' . $this->testModuleName . '/uninstalled.txt'));// uninstall log contain today date.
 
         unset($command, $commandTester, $output);
     }// testExecuteUninstall2
@@ -343,13 +343,13 @@ class ModuleTest extends \Rdb\Tests\BaseTestCase
             '--mname' => $this->testModuleName,
         ]);
         $output = $commandTester->getDisplay();
-        $this->assertContains('Success', $output);
-        $this->assertContains('updated', $output);
+        $this->assertStringContainsString('Success', $output);
+        $this->assertStringContainsString('updated', $output);
         $this->assertFalse($this->FileSystem->isFile('.disabled'));// module enabled.
         $this->assertTrue($this->FileSystem->isFile('installed.txt'));// installer class create installed.txt file.
-        $this->assertContains('Updated', file_get_contents($this->targetTestDir . '/installed.txt'));// contain updated txt.
+        $this->assertStringContainsString('Updated', file_get_contents($this->targetTestDir . '/installed.txt'));// contain updated txt.
         $this->assertTrue(is_dir(PUBLIC_PATH . '/Modules/' . $this->testModuleName . '/assets'));// assets folder copied to public.
-        $this->assertContains('"vendor/some-dep-not-exists"', file_get_contents(ROOT_PATH . '/composer.json'));// composer.json contain required item.
+        $this->assertStringContainsString('"vendor/some-dep-not-exists"', file_get_contents(ROOT_PATH . '/composer.json'));// composer.json contain required item.
 
         unset($command, $commandTester, $output);
     }// testExecuteUpdate

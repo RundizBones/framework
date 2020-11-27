@@ -11,7 +11,7 @@ class LoggerTest extends \Rdb\Tests\BaseTestCase
 {
 
 
-    public function tearDown()
+    public function tearDown(): void
     {
         $FileSystem = new \Rdb\System\Libraries\FileSystem(STORAGE_PATH . '/logs');
         $FileSystem->deleteFolder('tests', true);

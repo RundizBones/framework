@@ -17,7 +17,7 @@ class RouterTest extends \Rdb\Tests\BaseTestCase
     protected $Router;
 
 
-    public function setup()
+    public function setup(): void
     {
         $this->Router = new RouterExtended();
     }// setup
@@ -25,16 +25,16 @@ class RouterTest extends \Rdb\Tests\BaseTestCase
 
     public function testFilterMethod()
     {
-        $this->assertArraySubset(['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], $this->Router->filterMethod('any'));
-        $this->assertEquals('POST', $this->Router->filterMethod('post'));
-        $this->assertArraySubset(['GET', 'POST'], $this->Router->filterMethod(['Get', 'post']));
+        $this->assertSame(['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'], $this->Router->filterMethod('any'));
+        $this->assertSame('POST', $this->Router->filterMethod('post'));
+        $this->assertSame(['GET', 'POST'], $this->Router->filterMethod(['Get', 'post']));
     }// testFilterMethod
 
 
     public function testGetControllerMethodName()
     {
-        $this->assertArraySubset(['ContactController', 'indexAction'], $this->Router->getControllerMethodName('Contact:index'));
-        $this->assertArraySubset(['myContactFunction', ''], $this->Router->getControllerMethodName('myContactFunction'));
+        $this->assertSame(['ContactController', 'indexAction'], $this->Router->getControllerMethodName('Contact:index'));
+        $this->assertSame(['myContactFunction', ''], $this->Router->getControllerMethodName('myContactFunction'));
     }// testGetControllerMethodName
 
 

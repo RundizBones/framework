@@ -44,8 +44,8 @@ class FormTest extends \Rdb\Tests\BaseTestCase
 
         $this->assertSame(' checked="checked"', $Form->setChecked(123, 123));
         $this->assertSame(' checked="checked"', \Rdb\System\Libraries\Form::staticSetChecked(123, 123));
-        $this->assertContains('checked="checked"', \Rdb\System\Libraries\Form::staticSetChecked(123, '123'));
-        $this->assertContains('checked="checked"', \Rdb\System\Libraries\Form::staticSetChecked('Select', 'select', true));
+        $this->assertStringContainsString('checked="checked"', \Rdb\System\Libraries\Form::staticSetChecked(123, '123'));
+        $this->assertStringContainsString('checked="checked"', \Rdb\System\Libraries\Form::staticSetChecked('Select', 'select', true));
     }// testSetChecked
 
 
@@ -55,8 +55,8 @@ class FormTest extends \Rdb\Tests\BaseTestCase
 
         $this->assertSame(' selected="selected"', $Form->setSelected(123, 123));
         $this->assertSame(' selected="selected"', \Rdb\System\Libraries\Form::staticSetSelected(123, 123));
-        $this->assertContains('selected="selected"', \Rdb\System\Libraries\Form::staticSetSelected(123, '123'));
-        $this->assertContains('selected="selected"', \Rdb\System\Libraries\Form::staticSetSelected('Select', 'select', true));
+        $this->assertStringContainsString('selected="selected"', \Rdb\System\Libraries\Form::staticSetSelected(123, '123'));
+        $this->assertStringContainsString('selected="selected"', \Rdb\System\Libraries\Form::staticSetSelected('Select', 'select', true));
     }// testSetSelected
 
 

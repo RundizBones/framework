@@ -79,7 +79,7 @@ class ArrayUtilTest extends \Rdb\Tests\BaseTestCase
         ];
 
         $ArrayUtil->recursiveKsort($array1, SORT_NATURAL);
-        $this->assertArraySubset($assert, $array1);
+        $this->assertSame($assert, $array1);
 
         // test for static.
         unset($array1);

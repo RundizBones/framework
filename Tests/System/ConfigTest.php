@@ -11,7 +11,7 @@ class ConfigTest extends \Rdb\Tests\BaseTestCase
 {
 
 
-    public function setup()
+    public function setup(): void
     {
         $this->runApp('get', '/');
     }// setup
