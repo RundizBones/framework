@@ -198,7 +198,7 @@ class Modules
 
                 ob_start();
                 $newObject = $ReflectionController->newInstance($this->Container);
-                $output = call_user_func_array([$newObject, $method], $args);
+                $output = call_user_func_array([$newObject, $method], array_values($args));
                 $responseWithoutReturn = ob_get_contents();// in case the controller just echo out immediately.
                 if (!empty($responseWithoutReturn)) {
                     $responseWithoutReturn .= $output;// append the return content to the echo out.

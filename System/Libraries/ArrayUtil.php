@@ -27,7 +27,7 @@ class ArrayUtil
     {
         if (stripos($name, 'static') === 0) {
             $name = lcfirst(substr($name, 6));
-            return call_user_func_array([new self, $name], $arguments);
+            return call_user_func_array([new self, $name], array_values($arguments));
         }
     }// __callStatic
 
