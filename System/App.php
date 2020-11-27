@@ -214,7 +214,7 @@ class App
 
         ob_start();
         $newObject = new $controllerClass($this->Container);
-        $response = call_user_func_array([$newObject, $method], $arguments);
+        $response = call_user_func_array([$newObject, $method], array_values($arguments));
         $responseWithoutReturn = ob_get_contents();// in case the controller just echo out immediately.
         unset($controllerClass, $method, $newObject);
 
