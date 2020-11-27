@@ -402,7 +402,7 @@ class Url
             unset($expPath);
         }
 
-        if (array_key_exists('query', $parsedUrl)) {
+        if (array_key_exists('query', $parsedUrl) && !empty($parsedUrl['query'])) {
             parse_str($parsedUrl['query'], $queryStringArray);
             if (is_array($queryStringArray)) {
                 $numericPrefix = '';
@@ -415,10 +415,14 @@ class Url
                 unset($argSep, $encType, $numericPrefix);
             }
             unset($queryStringArray);
+        } elseif (array_key_exists('query', $parsedUrl) && empty($parsedUrl['query'])) {
+            unset($parsedUrl['query']);
         }
 
-        if (array_key_exists('fragment', $parsedUrl)) {
+        if (array_key_exists('fragment', $parsedUrl) && !empty($parsedUrl['fragment'])) {
             $parsedUrl['fragment'] = rawurlencode($parsedUrl['fragment']);
+        } elseif (array_key_exists('fragment', $parsedUrl) && empty($parsedUrl['fragment'])) {
+            unset($parsedUrl['fragment']);
         }
 
         $output = $this->buildUrl($parsedUrl);
@@ -441,8 +445,16 @@ class Url
     {
         $parsedUrl = parse_url($url);
 
-        if (array_key_exists('fragment', $parsedUrl)) {
+        if (array_key_exists('fragment', $parsedUrl) && !empty($parsedUrl['fragment'])) {
             $parsedUrl['fragment'] = rawurlencode($parsedUrl['fragment']);
+        } elseif (array_key_exists('fragment', $parsedUrl) && empty($parsedUrl['fragment'])) {
+            unset($parsedUrl['fragment']);
+        }
+
+        // remove query, etc if empty.
+        // @see https://bugs.php.net/bug.php?id=80431 for more info.
+        if (array_key_exists('query', $parsedUrl) && empty($parsedUrl['query'])) {
+            unset($parsedUrl['query']);
         }
 
         $output = $this->buildUrl($parsedUrl);
@@ -467,7 +479,7 @@ class Url
         $parsedUrl = parse_url($url);
         $output = $this->removeQuerystring($url);
 
-        if (array_key_exists('query', $parsedUrl)) {
+        if (array_key_exists('query', $parsedUrl) && !empty($parsedUrl['query'])) {
             $output .= '?';
             parse_str($parsedUrl['query'], $queryStringArray);
             if (is_array($queryStringArray)) {
@@ -483,6 +495,12 @@ class Url
                 unset($queryString);
             }
             unset($queryStringArray);
+        }
+
+        // remove fragment, etc if empty.
+        // @see https://bugs.php.net/bug.php?id=80431 for more info.
+        if (array_key_exists('fragment', $parsedUrl) && empty($parsedUrl['fragment'])) {
+            unset($parsedUrl['fragment']);
         }
 
         if (array_key_exists('fragment', $parsedUrl)) {
@@ -518,6 +536,15 @@ class Url
             }
             $parsedUrl['path'] = implode('/', $expPath);
             unset($expPath);
+        }
+
+        // remove query, fragment, etc if empty.
+        // @see https://bugs.php.net/bug.php?id=80431 for more info.
+        if (array_key_exists('fragment', $parsedUrl) && empty($parsedUrl['fragment'])) {
+            unset($parsedUrl['fragment']);
+        }
+        if (array_key_exists('query', $parsedUrl) && empty($parsedUrl['query'])) {
+            unset($parsedUrl['query']);
         }
 
         $output = $this->buildUrl($parsedUrl);
