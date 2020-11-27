@@ -1,5 +1,6 @@
 .dist
 .phpdoc
+.phpunit.result.cache
 .vs
 build
 composer.json
