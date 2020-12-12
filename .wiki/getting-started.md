@@ -1,7 +1,7 @@
 # Getting started
 
 ## Requirement
-This framework require at least PHP 7.0 to work.
+This framework require at least PHP 7.1 to work.
 
 ## Installation
 
