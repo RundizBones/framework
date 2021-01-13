@@ -230,7 +230,7 @@ class Logger
         }// endif; $Profiler
         // end works with profiler. ------------------------------------------------------
 
-        $logFile = STORAGE_PATH . '/logs/' . $this->logLevelName . '/' . $channel . '/' . date('Y-m-d') . '.log';
+        $logFile = STORAGE_PATH . '/logs/' . date('Y-m-d') . '.log';
         $Logger->pushHandler(new \Monolog\Handler\StreamHandler($logFile, $this->logLevel));
         unset($logFile);
         $Logger->pushProcessor(new \Monolog\Processor\IntrospectionProcessor(\Monolog\Logger::DEBUG, ['Rdb\\System\\Libraries\\Db\\Logger', 'Rdb\\System\\Libraries\\Db\\Statement', 'Rdb\\System\\Libraries\\Logger']));
