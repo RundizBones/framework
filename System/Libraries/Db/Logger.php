@@ -88,7 +88,12 @@ class Logger
         $values = $cloneParams;
         $valuesLimit = [];
 
-        $wordsRepeated = array_count_values(str_word_count($statement, 1, ':_'));
+        preg_match_all('/:([\w\d\-_]+)/', $statement, $matches);
+        if (isset($matches[0])) {
+            $wordsRepeated = array_count_values($matches[0]);
+        } else {
+            $wordsRepeated = [];
+        }
 
         if (is_array($cloneParams)) {
             foreach ($cloneParams as $key => $val) {
