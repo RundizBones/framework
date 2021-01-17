@@ -236,6 +236,11 @@ class Module extends BaseConsole
         // validate if module exists (not care enabled or not, it can be enabled at end).
         $validated = $this->Modules->exists($mname, false);
 
+        if ($this->Container->has('Logger')) {
+            /* @var $Logger \Rdb\System\Libraries\Logger */
+            $Logger = $this->Container->get('Logger');
+        }
+
         if ($validated !== true) {
             $Io->error('The module you entered is not exists.');
         } elseif ($validated === true) {
@@ -273,6 +278,11 @@ class Module extends BaseConsole
                     }
                 }
                 unset($Installer);
+            } elseif (!class_exists($InstallerClassName)) {
+                // if class does not exists.
+                if (isset($Logger)) {
+                    $Logger->write('system/core/console', 0, 'The class {class} does not exists.', ['class' => $InstallerClassName]);
+                }
             }
             unset($InstallerClassName);
 
@@ -288,9 +298,7 @@ class Module extends BaseConsole
                     );
                     unset($Fs);
 
-                    if ($this->Container->has('Logger')) {
-                        /* @var $Logger \Rdb\System\Libraries\Logger */
-                        $Logger = $this->Container->get('Logger');
+                    if (isset($Logger)) {
                         $Logger->write('system/core/console', 0, 'This module contain assets folder ({assetdir}).', ['assetdir' => MODULE_PATH . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets']);
                         $Logger->write('system/core/console', 0, 'Copied to destination ({dest}).', ['dest' => (PUBLIC_PATH . DIRECTORY_SEPARATOR . 'Modules' . DIRECTORY_SEPARATOR . $mname . DIRECTORY_SEPARATOR . 'assets')]);
                     }
