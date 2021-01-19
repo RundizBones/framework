@@ -41,11 +41,24 @@ class Config
 
 
     /**
+     * Magic get.
+     * 
+     * @param string $name
+     */
+    public function __get(string $name)
+    {
+        if (property_exists($this, $name)) {
+            return $this->{$name};
+        }
+    }// __get
+
+
+    /**
      * Get the config value from specified name.
      * 
      * This is depend on `setModule()` method that telling it will get from main app or modules.
      * 
-     * @param string $configKey The config name. this can set to ALL to get all the config values.
+     * @param string $configKey The config name. this can set to `ALL` to get all the config values.
      * @param string $file Config file name that were loaded. this is without extension.
      * @param mixed $default Default value if config name is not found.
      * @return mixed Return config values.
