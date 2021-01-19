@@ -11,6 +11,7 @@ namespace Rdb\System;
  * Router class.
  * 
  * @since 0.1
+ * @method mixed filterMethod(mixed $method) Filter method to replace `any` method to all available methods and upper case for method array.
  */
 class Router
 {
