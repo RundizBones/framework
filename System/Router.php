@@ -158,8 +158,8 @@ class Router
                         require_once $configFile;
                     }
                     unset($configFile);
-                    $Config->setModule('');// always reset `setModule()` to get config from main app.
                 }// endforeach;
+                $Config->setModule('');// always reset `setModule()` to get config from main app.
                 unset($module);
             }
             unset($enabledModules);
