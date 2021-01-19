@@ -36,12 +36,15 @@ class ConfigTest extends \Rdb\Tests\BaseTestCase
         $result1 = $Config->get('profiler', 'app', 'none');
         $result2 = $Config->get('config-key-never-exists-' . mt_rand(), 'app', 'notexist2');
         $result3 = $Config->get('config-key-never-exists-' . mt_rand(), 'config-file-never-exists-' . mt_rand(), 'notexist3');
-        unset($Config);
 
         $this->assertTrue($result1);
         $this->assertEquals('notexist2', $result2);
         $this->assertEquals('notexist3', $result3);
-        unset($result1, $result2, $result3);
+        $this->assertGreaterThanOrEqual(1, count($Config->traceLoadedFiles));
+        $this->assertArrayHasKey('system\\core', $Config->loadedFiles);
+        $this->assertArrayHasKey('app', $Config->loadedFiles['system\\core']);
+        $this->assertArrayHasKey('profiler', $Config->loadedFiles['system\\core']['app']);
+        unset($Config, $result1, $result2, $result3);
     }// testGet
 
 

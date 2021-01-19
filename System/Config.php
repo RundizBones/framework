@@ -23,15 +23,26 @@ class Config
 
 
     /**
-     * @var array Contain loaded files and config keys, values as array.
+     * @var array Contain loaded files with config name and values. The array format will be as follow.<pre>
+     * array(
+     *     'system\\core' => array(
+     *         'config_file_without_extension' => 'its values', // (this is mixed type. maybe string, array, etc.)
+     *         'other_file' => array(),
+     *         // ...
+     *     ),
+     *     'ModuleSystemName' => array(
+     *         // ...
+     *     ),
+     * )
+     * </pre>
      */
-    protected $loadedFile = [];
+    protected $loadedFiles = [];
 
 
     /**
      * @var string Module system name (folder name) that this class will get config.
      */
-    protected $moduleSystemName;
+    protected $moduleSystemName = 'system\\core';
 
 
     /**
@@ -68,11 +79,19 @@ class Config
     {
         $this->isLoaded($file);
 
-        if (is_array($this->loadedFile) && array_key_exists($file, $this->loadedFile)) {
-            if ($configKey != 'ALL' && is_array($this->loadedFile[$file]) && array_key_exists($configKey, $this->loadedFile[$file])) {
-                return $this->loadedFile[$file][$configKey];
+        if (
+            is_array($this->loadedFiles) && 
+            array_key_exists($this->moduleSystemName, $this->loadedFiles) &&
+            array_key_exists($file, $this->loadedFiles[$this->moduleSystemName])
+        ) {
+            if (
+                $configKey != 'ALL' && 
+                is_array($this->loadedFiles[$this->moduleSystemName][$file]) && 
+                array_key_exists($configKey, $this->loadedFiles[$this->moduleSystemName][$file])
+            ) {
+                return $this->loadedFiles[$this->moduleSystemName][$file][$configKey];
             } elseif ($configKey == 'ALL') {
-                return $this->loadedFile[$file];
+                return $this->loadedFiles[$this->moduleSystemName][$file];
             } else {
                 // config key not found.
             }
@@ -100,7 +119,7 @@ class Config
             $configEnvDir = 'development';
         }
 
-        if (empty($this->moduleSystemName)) {
+        if (empty($this->moduleSystemName) || $this->moduleSystemName === 'system\\core') {
             $configBaseDir = ROOT_PATH;
         } else {
             $configBaseDir = MODULE_PATH . DIRECTORY_SEPARATOR . $this->moduleSystemName;
@@ -176,7 +195,16 @@ class Config
      */
     private function isLoaded(string $file): bool
     {
-        if (!is_array($this->loadedFile) || (is_array($this->loadedFile) && !array_key_exists($file, $this->loadedFile))) {
+        if (
+            !is_array($this->loadedFiles) || 
+            (
+                is_array($this->loadedFiles) && 
+                (
+                    !array_key_exists($this->moduleSystemName, $this->loadedFiles) ||
+                    !array_key_exists($file, $this->loadedFiles[$this->moduleSystemName])
+                )
+            )
+        ) {
             // config file did not load yet. load it.
             return $this->load($file);
         }
@@ -195,13 +223,17 @@ class Config
      */
     public function load(string $file): bool
     {
-        if (is_array($this->loadedFile) && array_key_exists($file, $this->loadedFile)) {
+        if (
+            is_array($this->loadedFiles) && 
+            array_key_exists($this->moduleSystemName, $this->loadedFiles) &&
+            array_key_exists($file, $this->loadedFiles[$this->moduleSystemName])
+        ) {
             return true;
         }
 
         $configFullPath = $this->getFile($file);
         if (!empty($configFullPath)) {
-            $this->loadedFile[$file] = require $configFullPath;
+            $this->loadedFiles[$this->moduleSystemName][$file] = require $configFullPath;
             $this->traceLoadedFiles[] = $configFullPath;
             unset($configFullPath);
             return true;
@@ -225,9 +257,13 @@ class Config
     {
         $this->isLoaded($file);
 
-        if (is_array($this->loadedFile) && array_key_exists($file, $this->loadedFile)) {
-            if (is_array($this->loadedFile[$file])) {
-                $this->loadedFile[$file][$configKey] = $configValue;
+        if (
+            is_array($this->loadedFiles) && 
+            array_key_exists($this->moduleSystemName, $this->loadedFiles) &&
+            array_key_exists($file, $this->loadedFiles[$this->moduleSystemName])
+        ) {
+            if (is_array($this->loadedFiles[$this->moduleSystemName][$file])) {
+                $this->loadedFiles[$this->moduleSystemName][$file][$configKey] = $configValue;
             //} else {
                 // config file that were loaded is not an array.
             }
@@ -245,7 +281,7 @@ class Config
     public function setModule(string $moduleSystemName)
     {
         if ($moduleSystemName === '') {
-            $moduleSystemName = null;
+            $moduleSystemName = 'system\\core';
         }
 
         $this->moduleSystemName = $moduleSystemName;
