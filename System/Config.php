@@ -43,6 +43,7 @@ class Config
     /**
      * Magic get.
      * 
+     * @since 1.1.1
      * @param string $name
      */
     public function __get(string $name)
