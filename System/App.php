@@ -93,26 +93,39 @@ class App
 
 
     /**
-     * Load [after] middleware from config to run after the application started.
+     * Get middleware configuration from main app and modules.
      * 
-     * @param string|null $response The output content from application controller.
+     * @since 1.1.1
+     * @param string $middlewareConfigPart Middleware configuration part. Accept 'beforeMiddleware', 'afterMiddleware'.
+     * @return array Return middlewares from selected part.
      */
-    protected function loadAfterMiddleware(string $response)
+    private function getMiddlewareConfig(string $middlewareConfigPart = 'beforeMiddleware'): array
     {
         $middlewareConfig = $this->Config->get('ALL', 'middleware', []);
+        if (!array_key_exists($middlewareConfigPart, $middlewareConfig)) {
+            $middlewareConfig[$middlewareConfigPart] = [];
+        }
 
         // merge config from other modules. ------------------------
         $Modules = $this->Container->get('Modules');
         /* @var $Modules \Rdb\System\Modules */
         $enabledModules = $Modules->getModules();
         unset($Modules);
+
         if (is_array($enabledModules)) {
             foreach ($enabledModules as $module) {
                 $this->Config->setModule($module);// set module to get config from the specific module.
                 $configValues = $this->Config->getWithoutCache('ALL', 'middleware', []);
+
                 if (is_array($configValues) && !empty($configValues)) {
-                    $middlewareConfig = array_merge_recursive($middlewareConfig, $configValues);
+                    if (array_key_exists($middlewareConfigPart, $configValues)) {
+                        $middlewareConfig[$middlewareConfigPart] = Libraries\ArrayUtil::staticArrayCustomMerge(
+                            $middlewareConfig[$middlewareConfigPart], 
+                            $configValues[$middlewareConfigPart]
+                        );
+                    }
                 }
+
                 unset($configValues);
             }// endforeach;
             $this->Config->setModule('');// restore config module to default.
@@ -121,7 +134,25 @@ class App
         unset($enabledModules);
         // end merge config from other modules. --------------------
 
-        if (is_array($middlewareConfig) && array_key_exists('afterMiddleware', $middlewareConfig)) {
+        return $middlewareConfig;
+    }// getMiddlewareConfig
+
+
+    /**
+     * Load [after] middleware from config to run after the application started.
+     * 
+     * @param string|null $response The output content from application controller.
+     */
+    protected function loadAfterMiddleware(string $response)
+    {
+        $middlewareConfig = $this->getMiddlewareConfig('afterMiddleware');
+
+        if (
+            is_array($middlewareConfig) && 
+            array_key_exists('afterMiddleware', $middlewareConfig) &&
+            is_array($middlewareConfig['afterMiddleware'])
+        ) {
+            ksort($middlewareConfig['afterMiddleware']);
             foreach ($middlewareConfig['afterMiddleware'] as $middleware) {
                 if (is_string($middleware) && strpos($middleware, ':') !== false) {
                     list($middlewareClass, $middlewareMethod) = explode(':', $middleware);
@@ -159,31 +190,16 @@ class App
      */
     protected function loadBeforeMiddleware()
     {
-        $middlewareConfig = $this->Config->get('ALL', 'middleware', []);
-
-        // merge config from other modules. ------------------------
-        $Modules = $this->Container->get('Modules');
-        /* @var $Modules \Rdb\System\Modules */
-        $enabledModules = $Modules->getModules();
-        unset($Modules);
-        if (is_array($enabledModules)) {
-            foreach ($enabledModules as $module) {
-                $this->Config->setModule($module);// set module to get config from the specific module.
-                $configValues = $this->Config->getWithoutCache('ALL', 'middleware', []);
-                if (is_array($configValues) && !empty($configValues)) {
-                    $middlewareConfig = array_merge_recursive($middlewareConfig, $configValues);
-                }
-                unset($configValues);
-            }// endforeach;
-            $this->Config->setModule('');// restore config module to default.
-            unset($module);
-        }
-        unset($enabledModules);
-        // end merge config from other modules. --------------------
+        $middlewareConfig = $this->getMiddlewareConfig();
 
         $response = '';
 
-        if (is_array($middlewareConfig) && array_key_exists('beforeMiddleware', $middlewareConfig)) {
+        if (
+            is_array($middlewareConfig) && 
+            array_key_exists('beforeMiddleware', $middlewareConfig) && 
+            is_array($middlewareConfig['beforeMiddleware'])
+        ) {
+            ksort($middlewareConfig['beforeMiddleware']);
             foreach ($middlewareConfig['beforeMiddleware'] as $middleware) {
                 if (is_string($middleware) && strpos($middleware, ':') !== false) {
                     list($middlewareClass, $middlewareMethod) = explode(':', $middleware);
