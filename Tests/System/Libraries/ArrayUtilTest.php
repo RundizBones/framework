@@ -11,6 +11,40 @@ class ArrayUtilTest extends \Rdb\Tests\BaseTestCase
 {
 
 
+    public function testArrayCustomMerge()
+    {
+        $array1 = [
+            'cat',
+            'bear',
+            'fruitred' => 'apple',
+            3.1 => 'dog',
+            null => 'null',
+        ];
+        $array2 = [
+            1 => 'polar bear',
+            20 => 'monkey',
+            'fruitred' => 'strawberry',
+            'fruityellow' => 'banana',
+            null => 'another null',
+        ];
+        $assert = [
+            'cat', 
+            1 => 'bear', // exists in first, keep it
+            'fruitred' => 'strawberry', // duplicate string key, overwrite with second
+            3 => 'dog', 
+            null => 'another null', // duplicate string key, overwrite with second
+            4 => 'polar bear', // new key but value from second
+            20 => 'monkey', 
+            'fruityellow' => 'banana',
+        ];
+
+        $ArrayUtil = new \Rdb\System\Libraries\ArrayUtil();
+
+        $this->assertSame($assert, $ArrayUtil->arrayCustomMerge($array1, $array2));
+        $this->assertSame($assert, \Rdb\System\Libraries\ArrayUtil::staticArrayCustomMerge($array1, $array2));
+    }// testArrayCustomMerge
+
+
     public function testInArrayI()
     {
         $ArrayUtil = new \Rdb\System\Libraries\ArrayUtil();

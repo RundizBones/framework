@@ -33,6 +33,58 @@ class ArrayUtil
 
 
     /**
+     * Array custom merge. Preserve indexed array key (numbers) but overwrite string key (same as PHP's `array_merge()` function).
+     * 
+     * If the another array key is string, it will be overwrite the first array.<br>
+     * If the another array key is integer, it will be add to first array depend on duplicated key or not. 
+     * If it is not duplicate key with the first, the key will be preserve and add to the first array.
+     * If it is duplicated then it will be re-index the number append to the first array.
+     *
+     * @since 1.1.1
+     * @param array $array1 The first array is main array.
+     * @param array ...$arrays The another arrays to merge with the first.
+     * @return array Return merged array.
+     */
+    public function arrayCustomMerge(array $array1, array ...$arrays): array
+    {
+        foreach ($arrays as $additionalArray) {
+            foreach ($additionalArray as $key => $item) {
+                if (is_string($key)) {
+                    // if associative array.
+                    // item on the right will always overwrite on the left.
+                    $array1[$key] = $item;
+                } elseif (is_int($key) && !array_key_exists($key, $array1)) {
+                    // if key is number. this should be indexed array.
+                    // and if array 1 is not already has this key.
+                    // add this array with the preserved key to array 1.
+                    $array1[$key] = $item;
+                } else {
+                    // if anything else...
+                    // get all keys from array 1 (numbers only).
+                    $array1Keys = array_filter(array_keys($array1), 'is_int');
+                    // next key index = get max array key number + 1.
+                    $nextKeyIndex = (intval(max($array1Keys)) + 1);
+                    unset($array1Keys);
+                    // check again that next key in first array is not exists.
+                    if (array_key_exists($nextKeyIndex, $array1)) {
+                        // if still found exists on array1.
+                        // use random things.
+                        $nextKeyIndex = uniqid('arrayCustomMerge');
+                    }
+                    // set array with the next key index.
+                    $array1[$nextKeyIndex] = $item;
+                    unset($nextKeyIndex);
+                }
+            }// endforeach; $additionalArray
+            unset($item, $key);
+        }// endforeach;
+        unset($additionalArray);
+
+        return $array1;
+    }// arrayCustomMerge
+
+
+    /**
      * Checks if a value exists in an array (case insensitive).
      * 
      * @link https://stackoverflow.com/questions/2166512/php-case-insensitive-in-array-function code reference.
@@ -93,13 +145,16 @@ class ArrayUtil
     /**
      * Static version of `recursiveKsort()`.
      * 
+     * The method `recursiveKsort()` can't call using magic call static because it is required to call itself using `$this`.<br>
+     * This static version will initialize the class with `new self()`.
+     * 
      * @see \Rdb\System\Libraries\ArrayUtil:recursiveKsort()
      */
     public static function staticRecursiveKsort(array &$array, $sortFlags = SORT_REGULAR)
     {
         $thisClass = new self();
         $thisClass->recursiveKsort($array, $sortFlags);
-    }// staticRecursiveKsort
+    }// staticRecursiveKsort*/
 
 
 }
