@@ -351,7 +351,6 @@ class App
 
         if (strtolower(PHP_SAPI) !== 'cli') {
             // if it is not running via CLI.
-
             // process route (including 404, 405 error).
             $routeInfo = $this->processRoute();
             $args = [];
