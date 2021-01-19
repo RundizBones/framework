@@ -101,6 +101,25 @@ class App
     {
         $middlewareConfig = $this->Config->get('ALL', 'middleware', []);
 
+        // merge config from other modules. ------------------------
+        $Modules = $this->Container->get('Modules');
+        $enabledModules = $Modules->getModules();
+        unset($Modules);
+        if (is_array($enabledModules)) {
+            foreach ($enabledModules as $module) {
+                $this->Config->setModule($module);// set module to get config from the specific module.
+                $configValues = $this->Config->getWithoutCache('ALL', 'middleware', []);
+                if (is_array($configValues) && !empty($configValues)) {
+                    $middlewareConfig = array_merge_recursive($middlewareConfig, $configValues);
+                }
+                unset($configValues);
+            }// endforeach;
+            $this->Config->setModule('');// restore config module to default.
+            unset($module);
+        }
+        unset($enabledModules);
+        // end merge config from other modules. --------------------
+
         if (is_array($middlewareConfig) && array_key_exists('afterMiddleware', $middlewareConfig)) {
             foreach ($middlewareConfig['afterMiddleware'] as $middleware) {
                 if (is_string($middleware) && strpos($middleware, ':') !== false) {
@@ -108,7 +127,7 @@ class App
                     $this->Logger->write(
                         'system/app', 
                         0, 
-                        'Calling after middleware {class}->{method}()', 
+                        'Calling [after] middleware {class}->{method}()', 
                         ['class' => $middlewareClass, 'method' => $middlewareMethod],
                         ['dontLogProfiler' => true]
                     );
@@ -140,6 +159,26 @@ class App
     protected function loadBeforeMiddleware()
     {
         $middlewareConfig = $this->Config->get('ALL', 'middleware', []);
+
+        // merge config from other modules. ------------------------
+        $Modules = $this->Container->get('Modules');
+        $enabledModules = $Modules->getModules();
+        unset($Modules);
+        if (is_array($enabledModules)) {
+            foreach ($enabledModules as $module) {
+                $this->Config->setModule($module);// set module to get config from the specific module.
+                $configValues = $this->Config->getWithoutCache('ALL', 'middleware', []);
+                if (is_array($configValues) && !empty($configValues)) {
+                    $middlewareConfig = array_merge_recursive($middlewareConfig, $configValues);
+                }
+                unset($configValues);
+            }// endforeach;
+            $this->Config->setModule('');// restore config module to default.
+            unset($module);
+        }
+        unset($enabledModules);
+        // end merge config from other modules. --------------------
+
         $response = '';
 
         if (is_array($middlewareConfig) && array_key_exists('beforeMiddleware', $middlewareConfig)) {
@@ -149,7 +188,7 @@ class App
                     $this->Logger->write(
                         'system/app', 
                         0, 
-                        'Calling before middleware {class}->{method}()', 
+                        'Calling [before] middleware {class}->{method}()', 
                         ['class' => $middlewareClass, 'method' => $middlewareMethod],
                         ['dontLogProfiler' => true]
                     );
@@ -361,7 +400,7 @@ class App
             $this->Logger->write(
                 'system/app',
                 0,
-                'Application after processed route, starting to processing controller.',
+                'Application run after processed route, starting to processing controller.',
                 ['status' => $routeInfo['status'], 'handler' => $routeInfo['handler'], 'args' => $args],
                 ['dontLogProfiler' => true]
             );
@@ -390,6 +429,14 @@ class App
         $response = $this->loadAfterMiddleware($response);
         // process headers.
         $this->processHeaders($response);
+
+        $this->Logger->write(
+            'system/app',
+            0,
+            'Application run response. Finish all process, displaying the result.',
+            [],
+            ['dontLogProfiler' => true]
+        );
 
         echo $response;
     }// run

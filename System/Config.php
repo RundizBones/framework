@@ -217,6 +217,7 @@ class Config
 
         if (is_file($configFullPath)) {
             $configValues = require $configFullPath;
+            unset($configFullPath);
 
             if ($configKey != 'ALL') {
                 if (
