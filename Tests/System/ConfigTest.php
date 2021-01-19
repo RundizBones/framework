@@ -62,6 +62,30 @@ class ConfigTest extends \Rdb\Tests\BaseTestCase
     }// testGetDefaultLanguage
 
 
+    public function testGetWithoutCache()
+    {
+        $Config = new \Rdb\System\Config();
+        $result1 = $Config->getWithoutCache('profiler', 'app', 'none');
+        $result2 = $Config->getWithoutCache('config-key-never-exists-' . mt_rand(), 'app', 'notexist2');
+        $result3 = $Config->getWithoutCache('config-key-never-exists-' . mt_rand(), 'config-file-never-exists-' . mt_rand(), 'notexist3');
+
+        $this->assertTrue($result1);
+        $this->assertEquals('notexist2', $result2);
+        $this->assertEquals('notexist3', $result3);
+        $this->assertEquals(0, count($Config->traceLoadedFiles));// couldn't found any loaded because it was get without cache.
+        $this->assertArrayNotHasKey('system\\core', $Config->loadedFiles);
+        unset($result1, $result2, $result3);
+
+        $result1 = $Config->get('profiler', 'app', 'none');// using normal get which will be cached.
+        $this->assertTrue($result1);
+        $this->assertGreaterThanOrEqual(1, count($Config->traceLoadedFiles));// now it can count to 1 or more.
+        $this->assertArrayHasKey('system\\core', $Config->loadedFiles);
+        $this->assertArrayHasKey('app', $Config->loadedFiles['system\\core']);
+        $this->assertArrayHasKey('profiler', $Config->loadedFiles['system\\core']['app']);
+        unset($Config);
+    }// testGetWithoutCache
+
+
     public function testSet()
     {
         $Config = new \Rdb\System\Config();

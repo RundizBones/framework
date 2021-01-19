@@ -68,6 +68,9 @@ class Config
     /**
      * Get the config value from specified name.
      * 
+     * This method will get configuration that was temporary cached into property `loadedFiles`.<br>
+     * The property `loadedFiles` will be set while it is trying to load the config file via `load()` method.
+     * 
      * This is depend on `setModule()` method that telling it will get from main app or modules.
      * 
      * @param string $configKey The config name. this can set to `ALL` to get all the config values.
@@ -84,12 +87,19 @@ class Config
             array_key_exists($this->moduleSystemName, $this->loadedFiles) &&
             array_key_exists($file, $this->loadedFiles[$this->moduleSystemName])
         ) {
-            if (
-                $configKey != 'ALL' && 
-                is_array($this->loadedFiles[$this->moduleSystemName][$file]) && 
-                array_key_exists($configKey, $this->loadedFiles[$this->moduleSystemName][$file])
-            ) {
-                return $this->loadedFiles[$this->moduleSystemName][$file][$configKey];
+            if ($configKey != 'ALL') {
+                if (
+                    is_array($this->loadedFiles[$this->moduleSystemName][$file]) && 
+                    array_key_exists($configKey, $this->loadedFiles[$this->moduleSystemName][$file])
+                ) {
+                    return $this->loadedFiles[$this->moduleSystemName][$file][$configKey];
+                } elseif (
+                    is_object($this->loadedFiles[$this->moduleSystemName][$file]) &&
+                    property_exists($this->loadedFiles[$this->moduleSystemName][$file], $configKey)
+                ) {
+                    return $this->loadedFiles[$this->moduleSystemName][$file]->{$configKey};
+                }
+                // config key not found.
             } elseif ($configKey == 'ALL') {
                 return $this->loadedFiles[$this->moduleSystemName][$file];
             } else {
@@ -185,6 +195,51 @@ class Config
         // if really found nothing.
         return 'en-US';
     }// getDefaultLanguage
+
+
+    /**
+     * Get the config value from specified name.
+     * 
+     * This method will get configuration directly from file in selected module or main app.<br>
+     * Unlike `get()` method which will try to get config that was temporary cached into property `loadedFiles`.
+     * 
+     * This is depend on `setModule()` method that telling it will get from main app or modules.
+     * 
+     * @since 1.1.1
+     * @param string $configKey The config name. this can set to `ALL` to get all the config values.
+     * @param string $file Config file name that were loaded. this is without extension.
+     * @param mixed $default Default value if config name is not found.
+     * @return mixed Return config values.
+     */
+    public function getWithoutCache(string $configKey, string $file, $default = '')
+    {
+        $configFullPath = $this->getFile($file);
+
+        if (is_file($configFullPath)) {
+            $configValues = require $configFullPath;
+
+            if ($configKey != 'ALL') {
+                if (
+                    is_array($configValues) && 
+                    array_key_exists($configKey, $configValues)
+                ) {
+                    return $configValues[$configKey];
+                } elseif (
+                    is_object($configValues) &&
+                    property_exists($configValues, $configKey)
+                ) {
+                    return $configValues->{$configKey};
+                }
+                // config key not found.
+            } elseif ($configKey == 'ALL') {
+                return $configValues;
+            } else {
+                // config key not found.
+            }
+        }
+
+        return $default;
+    }// getWithoutCache
 
 
     /**
