@@ -32,6 +32,6 @@ return [
         'enable' => false,
         // Do not log when log level is UNDER selected. 0=debug (or log it *ALL*), 1=info, 2=notice, 3=warning, 4=error, 5=critical, 6=alert, 7=emergency
         // This config is depend on enable, if it is disabled then nothing will be write to log file.
-        'donot_log_level' => 1,
+        'donotLogLevel' => 1,
     ],
 ];
