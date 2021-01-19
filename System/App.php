@@ -105,6 +105,13 @@ class App
             foreach ($middlewareConfig['afterMiddleware'] as $middleware) {
                 if (is_string($middleware) && strpos($middleware, ':') !== false) {
                     list($middlewareClass, $middlewareMethod) = explode(':', $middleware);
+                    $this->Logger->write(
+                        'system/app', 
+                        0, 
+                        'Calling after middleware {class}->{method}()', 
+                        ['class' => $middlewareClass, 'method' => $middlewareMethod],
+                        ['dontLogProfiler' => true]
+                    );
 
                     // call middleware without conditional class exists.
                     // this is for throwing the error message for devs to notice it.
@@ -139,6 +146,13 @@ class App
             foreach ($middlewareConfig['beforeMiddleware'] as $middleware) {
                 if (is_string($middleware) && strpos($middleware, ':') !== false) {
                     list($middlewareClass, $middlewareMethod) = explode(':', $middleware);
+                    $this->Logger->write(
+                        'system/app', 
+                        0, 
+                        'Calling before middleware {class}->{method}()', 
+                        ['class' => $middlewareClass, 'method' => $middlewareMethod],
+                        ['dontLogProfiler' => true]
+                    );
 
                     // call middleware without conditional class exists.
                     // this is for throwing the error message for devs to notice it.
@@ -258,7 +272,10 @@ class App
      * 
      * Also process 404, 405 error.
      * 
-     * @return array Return array with `status`, `handler` in keys and other keys are depend on status.
+     * @return array Return array these keys:<br>
+     *                      `status` (string) The status of the route. Example: found, notfound, methodnotallowed.<br>
+     *                      `handler` (string) The handler for this route. It is controller:method.<br>
+     *                      `args` (array, optional) The route arguments. Maybe available if route was found.
      */
     protected function processRoute(): array
     {
@@ -321,19 +338,34 @@ class App
         // add dependency injection container.
         $this->addDependencyInjection();
 
+        $this->Logger->write(
+            'system/app',
+            0,
+            'Application run. This is most beginning part of the application after add dependency injection container.',
+            [],
+            ['dontLogProfiler' => true]
+        );
+
         // load [before] middleware from config to run before the application start.
         $response = $this->loadBeforeMiddleware();
 
-        $this->Logger->write('', 0, 'Application started.');
-
         if (strtolower(PHP_SAPI) !== 'cli') {
             // if it is not running via CLI.
+
             // process route (including 404, 405 error).
             $routeInfo = $this->processRoute();
             $args = [];
             if (isset($routeInfo['args'])) {
                 $args = $routeInfo['args'];
             }
+
+            $this->Logger->write(
+                'system/app',
+                0,
+                'Application after processed route, starting to processing controller.',
+                ['status' => $routeInfo['status'], 'handler' => $routeInfo['handler'], 'args' => $args],
+                ['dontLogProfiler' => true]
+            );
 
             // process the controller for certain route (including 404, 405 error).
             if (isset($routeInfo['handler'])) {
@@ -342,6 +374,14 @@ class App
             unset($args, $routeInfo);
         } else {
             // if running via CLI.
+            $this->Logger->write(
+                'system/app',
+                0,
+                'Application is starting to run CLI command.',
+                [],
+                ['dontLogProfiler' => true]
+            );
+
             $Cli = new Cli($this->Container);
             $Cli->run();
             unset($Cli);
