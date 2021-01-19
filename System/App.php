@@ -103,6 +103,7 @@ class App
 
         // merge config from other modules. ------------------------
         $Modules = $this->Container->get('Modules');
+        /* @var $Modules \Rdb\System\Modules */
         $enabledModules = $Modules->getModules();
         unset($Modules);
         if (is_array($enabledModules)) {
@@ -162,6 +163,7 @@ class App
 
         // merge config from other modules. ------------------------
         $Modules = $this->Container->get('Modules');
+        /* @var $Modules \Rdb\System\Modules */
         $enabledModules = $Modules->getModules();
         unset($Modules);
         if (is_array($enabledModules)) {
