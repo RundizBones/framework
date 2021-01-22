@@ -271,6 +271,96 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
     }// testGetCurrentUrl
 
 
+    public function testGetCurrentUrlRelatedFromPublic()
+    {
+        $this->Config->load('language');
+        $this->Config->set('language', 'languageMethod', 'url');
+        $this->Config->set('language', 'languageUrlDefaultVisible', false);
+        // set languages data for test.
+        $languages = [
+            'en-US' => [
+                'languageLocale' => ['en-US.UTF-8', 'en-US', 'en'],
+                'languageName' => 'English',
+                'languageDefault' => false,
+            ],
+            'th' => [
+                'languageLocale' => ['th-TH.UTF-8', 'th-TH', 'th'],
+                'languageName' => 'Thai',
+                'languageDefault' => true,
+            ],
+        ];
+        $this->Config->set('config', 'languages', $languages);
+        $defaultLanguage = $this->Config->getDefaultLanguage();
+        $this->assertSame('th', $defaultLanguage);
+
+        // tests with default language HIDDEN. -----------------------------------
+        // will not test with /myapp/[default-lang] because it will be redirect and `exit()`.
+
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/en-US/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/en-US');
+        $this->assertSame('', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $_SERVER['SCRIPT_NAME'] = '/myapp/index.php';// required
+        $this->runAppWithMiddleWare('get', '/myapp/en-US/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/myapp/en-US/admin?s=searchval&order=desc');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        // will not test with /myapp/index.php/[default-lang]/admin because it will be redirect and `exit()`.
+
+        $_SERVER['SCRIPT_NAME'] = '/myapp/index.php';// required
+        $this->runAppWithMiddleWare('get', '/myapp/index.php/en-US/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->Config->set('language', 'languageUrlDefaultVisible', true);
+        // tests with default language VISIBLE. -----------------------------------
+        // will not test with /myapp/admin or myapp/index.php/admin without language because it will be redirect and `exit()`.
+
+        $_SERVER['SCRIPT_NAME'] = '/index.php';// required
+        $this->runAppWithMiddleWare('get', '/' . $defaultLanguage . '/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/' . $defaultLanguage);
+        $this->assertSame('', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/en-US/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/en-US');
+        $this->assertSame('', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $_SERVER['SCRIPT_NAME'] = '/myapp/index.php';// required
+        $this->runAppWithMiddleWare('get', '/myapp/' . $defaultLanguage . '/admin');// this will not redirect.
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/myapp/' . $defaultLanguage . '/admin?s=searchval&order=desc');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+        
+        $this->runAppWithMiddleWare('get', '/myapp/en-US/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+        
+        $this->runAppWithMiddleWare('get', '/myapp/en-US/admin?s=searchval&order=desc');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $_SERVER['SCRIPT_NAME'] = '/myapp/index.php';// required
+        $this->runAppWithMiddleWare('get', '/myapp/index.php/' . $defaultLanguage . '/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+
+        $this->runAppWithMiddleWare('get', '/myapp/index.php/' . $defaultLanguage . '/admin?s=searchval&order=desc');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+        
+        $this->runAppWithMiddleWare('get', '/myapp/index.php/en-US/admin');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+        
+        $this->runAppWithMiddleWare('get', '/myapp/index.php/en-US/admin?s=searchval&order=desc');
+        $this->assertSame('/admin', $this->Url->getCurrentUrlRelatedFromPublic());
+    }// testGetCurrentUrlRelatedFromPublic
+
+
     public function testGetDomainProtocol()
     {
         $this->assertEquals('http://', $this->Url->getDomainProtocol());

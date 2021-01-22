@@ -165,10 +165,10 @@ class Url
      * Get current URL.
      * 
      * @param bool $raw Set to `true` if you want to get the current URL exactly the same as you see in the address bar.<br>
-     *                  Set to `false` to get only real url without language locale URL.<br>
+     *                  Set to `false` to get only real URL without language locale URL.<br>
      *                  For example: If the URL in address bar is '/installDir/en-US'.<br>
      *                  If the 'en-US' is default language and it is set to hide default language...<br>
-     *                  Set `$raw` to `true` will show url segments as see in address bar (maybe visible language locale URL or not depend on configuration), set to `false` will show just '/installDir'.<br>
+     *                  Set `$raw` to `true` will show URL segments as see in address bar (maybe visible language locale URL or not depend on configuration), set to `false` will show just '/installDir'.<br>
      *                  If the 'en-US' is default language and it is set to show default language...<br>
      *                  Set `$raw` to `true` will show language locale URL as see in address bar, set to `false` will show just '/installDir'.
      * @return string Return current URL without query string and without trailing slash. Example: /installDir/public/my-current-uri
@@ -196,6 +196,35 @@ class Url
             }
         }
     }// getCurrentUrl
+
+
+    /**
+     * Get current URL related from public URL.
+     * 
+     * If your full URL is /installDir/public/my-current-url, this is not like `getCurrentUrl()` that will return this full but it will be return /my-current-url.
+     * 
+     * @since 1.1.1
+     * @see \Rd\System\Libraries\Url:getCurrentUrl() method for more info.
+     * @return string Return current URL without query string and without trailing slash. Example: /my-current-uri
+     */
+    public function getCurrentUrlRelatedFromPublic(): string
+    {
+        $currentURL = $this->getCurrentUrl();
+        $scriptName = ($_SERVER['SCRIPT_NAME'] ?? null);
+        $publicURL = $this->getPublicUrl();
+
+        if (stripos($currentURL, $scriptName) === 0) {
+            // if found /installDir/public/index.php in current URL.
+            $publicURL = $scriptName;
+        }
+
+        if (!empty($publicURL)) {
+            $currentURL = preg_replace('#^' . preg_quote($publicURL) . '#u', '', $currentURL, 1);
+        }
+
+        unset($publicURL, $scriptName);
+        return $currentURL;
+    }// getCurrentUrlRelatedFromPublic
 
 
     /**
