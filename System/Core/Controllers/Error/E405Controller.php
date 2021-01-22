@@ -10,14 +10,17 @@ namespace Rdb\System\Core\Controllers\Error;
 /**
  * Error 405 controller.
  * 
- * The error messages from Slim PHP.
- * 
  * @since 0.1
  */
 class E405Controller extends \Rdb\System\Core\Controllers\BaseController
 {
 
 
+    /**
+     * Response method not allowed message by content type.
+     * 
+     * @return string Return error message.
+     */
     public function indexAction(): string
     {
         http_response_code(405);

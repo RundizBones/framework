@@ -10,8 +10,6 @@ namespace Rdb\System\Core\Controllers\Error;
 /**
  * Error 404 controller.
  * 
- * The error messages from Slim PHP.
- * 
  * @since 0.1
  */
 class E404Controller extends \Rdb\System\Core\Controllers\BaseController
