@@ -199,35 +199,6 @@ class Url
 
 
     /**
-     * Get current URL related from public URL.
-     * 
-     * If your full URL is /installDir/public/my-current-url, this is not like `getCurrentUrl()` that will return this full but it will be return /my-current-url.
-     * 
-     * @since 1.1.1
-     * @see \Rd\System\Libraries\Url:getCurrentUrl() method for more info.
-     * @return string Return current URL without query string and without trailing slash. Example: /my-current-uri
-     */
-    public function getCurrentUrlRelatedFromPublic(): string
-    {
-        $currentURL = $this->getCurrentUrl();
-        $scriptName = ($_SERVER['SCRIPT_NAME'] ?? null);
-        $publicURL = $this->getPublicUrl();
-
-        if (!is_null($scriptName) && mb_stripos($currentURL, $scriptName) === 0) {
-            // if found /installDir/public/index.php in current URL.
-            $publicURL = $scriptName;
-        }
-
-        if (!empty($publicURL)) {
-            $currentURL = preg_replace('#^' . preg_quote($publicURL) . '#u', '', $currentURL, 1);
-        }
-
-        unset($publicURL, $scriptName);
-        return $currentURL;
-    }// getCurrentUrlRelatedFromPublic
-
-
-    /**
      * Get domain with protocol. Example: https://mydomain.com
      * 
      * @return string
@@ -241,7 +212,7 @@ class Url
 
 
     /**
-     * Get path from current URL without any query string and no trailing slash.
+     * Get path of current URL but related from public URL without any query string and no trailing slash.
      * 
      * @return string Return the URL path. 
      *                          Example: URL is http://localhost/myapp/index.php/mycontroller/method will be /mycontroller/method.
