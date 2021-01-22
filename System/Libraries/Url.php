@@ -213,7 +213,7 @@ class Url
         $scriptName = ($_SERVER['SCRIPT_NAME'] ?? null);
         $publicURL = $this->getPublicUrl();
 
-        if (stripos($currentURL, $scriptName) === 0) {
+        if (!is_null($scriptName) && mb_stripos($currentURL, $scriptName) === 0) {
             // if found /installDir/public/index.php in current URL.
             $publicURL = $scriptName;
         }
