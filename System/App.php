@@ -139,6 +139,43 @@ class App
 
 
     /**
+     * Get routes for error handler from main app and maybe replaced by other modules.
+     * 
+     * @since 1.1.1
+     * @return array Return configuration of routes for error handler.
+     */
+    private function getRouteErrorConfig(): array
+    {
+        $errors = $this->Config->get('ALL', 'error', []);
+
+        // replace config from other modules. ------------------------
+        $Modules = $this->Container->get('Modules');
+        /* @var $Modules \Rdb\System\Modules */
+        $enabledModules = $Modules->getModules();
+        unset($Modules);
+
+        if (is_array($enabledModules)) {
+            foreach ($enabledModules as $module) {
+                $this->Config->setModule($module);// set module to get config from the specific module.
+                $configValues = $this->Config->getWithoutCache('ALL', 'error', []);
+
+                if (is_array($configValues) && !empty($configValues)) {
+                    $errors = array_replace($errors, $configValues);
+                }
+
+                unset($configValues);
+            }// endforeach;
+            $this->Config->setModule('');// restore config module to default.
+            unset($module);
+        }
+        unset($enabledModules);
+        // end replace config from other modules. --------------------
+
+        return $errors;
+    }// getRouteErrorConfig
+
+
+    /**
      * Load [after] middleware from config to run after the application started.
      * 
      * @param string|null $response The output content from application controller.
@@ -365,7 +402,7 @@ class App
         }
 
         if ($routeInfo[0] !== \FastRoute\Dispatcher::FOUND) {
-            $errors = $this->Config->get('ALL', 'error', []);
+            $errors = $this->getRouteErrorConfig();
 
             if ($output['status'] === 'notfound') {
                 http_response_code(404);
