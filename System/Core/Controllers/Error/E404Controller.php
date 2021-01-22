@@ -25,67 +25,22 @@ class E404Controller extends \Rdb\System\Core\Controllers\BaseController
      */
     public function indexAction(): string
     {
+        http_response_code(404);
         $httpAccept = ($_SERVER['HTTP_ACCEPT'] ?? '*/*');
 
-        if (stripos($httpAccept, 'application/json') !== false) {
-            $contentType = 'application/json';
-            $output = $this->renderJsonOutput();
-        } elseif (
-            (
-                stripos($httpAccept, 'application/xml') !== false || stripos($httpAccept, 'text/xml') !== false
-            ) &&
-            stripos($httpAccept, 'text/html') === false
+        if (
+            stripos($httpAccept, 'text/html') !== false ||
+            stripos($httpAccept, 'application/xhtml+xml') !== false
         ) {
-            $contentType = 'application/xml';
-            $output = $this->renderXmlOutput();
-        } elseif (stripos($httpAccept, 'text/html') !== false) {
-            $contentType = 'text/html';
-            $output = $this->Views->render('Error/E404/index_v');
+            // if html or xhtml.
+            return $this->Views->render('Error/E404/index_v');
         } else {
-            $contentType = 'text/plain';
-            $output = $this->renderTextOutput();
+            // if anything else.
+            $output = [];
+            $output['message'] = 'Not found';
+            return $this->responseAcceptType($output);
         }
-
-        unset($httpAccept);
-
-        if (!headers_sent()) {
-            header('Content-Type: ' . $contentType);
-        }
-        return $output;
     }// indexAction
-
-
-    /**
-     * Render JSON not found message.
-     * 
-     * @return string
-     */
-    protected function renderJsonOutput(): string
-    {
-        return '{"message":"Not found"}';
-    }// renderJsonOutput
-
-
-    /**
-     * Render not found message.
-     * 
-     * @return string
-     */
-    protected function renderTextOutput(): string
-    {
-        return 'Not found';
-    }// renderTextOutput
-
-
-    /**
-     * Render XML not found message.
-     * 
-     * @return string
-     */
-    protected function renderXmlOutput(): string
-    {
-        return '<root><message>Not found</message></root>';
-    }// renderXmlOutput
 
 
 }

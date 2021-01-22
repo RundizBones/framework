@@ -287,7 +287,6 @@ class App
 
         $Router = new Router($this->Container);
         list($controllerClass, $method) = $Router->getControllerMethodName($handler);
-        unset($Router);
 
         if (!class_exists($controllerClass)) {
             $pageNotFound = true;
@@ -314,11 +313,10 @@ class App
             }
 
             // force display 404 page.
-            http_response_code(404);
-            $controllerClass = '\\Rdb\\System\\Core\\Controllers\\Error\\E404Controller';
-            $method = 'indexAction';
+            $errors = $this->getRouteErrorConfig();
+            list($controllerClass, $method) = $Router->getControllerMethodName($errors['404']);
         }
-        unset($pageNotFound);
+        unset($pageNotFound, $Router);
 
         ob_start();
         $newObject = new $controllerClass($this->Container);
@@ -405,10 +403,8 @@ class App
             $errors = $this->getRouteErrorConfig();
 
             if ($output['status'] === 'notfound') {
-                http_response_code(404);
                 $output['handler'] = $errors['404'];
             } elseif ($output['status'] === 'methodnotallowed') {
-                http_response_code(405);
                 $output['handler'] = $errors['405'];
             }
             unset($errors);

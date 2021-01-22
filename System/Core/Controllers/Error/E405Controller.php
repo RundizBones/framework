@@ -20,74 +20,24 @@ class E405Controller extends \Rdb\System\Core\Controllers\BaseController
 
     public function indexAction(): string
     {
+        http_response_code(405);
         $methods = func_get_args();
         $httpAccept = ($_SERVER['HTTP_ACCEPT'] ?? '*/*');
 
-        if (stripos($httpAccept, 'application/json') !== false) {
-            $contentType = 'application/json';
-            $output = $this->renderJsonOutput($methods);
-        } elseif (
-            (
-                stripos($httpAccept, 'application/xml') !== false || stripos($httpAccept, 'text/xml') !== false
-            ) &&
-            stripos($httpAccept, 'text/html') === false
+        if (
+            stripos($httpAccept, 'text/html') !== false ||
+            stripos($httpAccept, 'application/xhtml+xml') !== false
         ) {
-            $contentType = 'application/xml';
-            $output = $this->renderXmlOutput($methods);
-        } elseif (stripos($httpAccept, 'text/html') !== false) {
-            $contentType = 'text/html';
-            $output = $this->Views->render('Error/E405/index_v', ['allowedString' => implode(', ', $methods), 'allowedArray' => $methods]);
+            // if html or xhtml.
+            return $this->Views->render('Error/E405/index_v', ['allowedString' => implode(', ', $methods), 'allowedArray' => $methods]);
         } else {
-            $contentType = 'text/plain';
-            $output = $this->renderTextOutput($methods);
+            // if anything else.
+            $output = [];
+            $allow = implode(', ', $methods);
+            $output['message'] = 'Method not allowed. Must be one of: ' . $allow . '';
+            return $this->responseAcceptType($output);
         }
-
-        unset($httpAccept, $methods);
-
-        if (!headers_sent()) {
-            header('Content-Type: ' . $contentType);
-        }
-        return $output;
     }// indexAction
-
-
-    /**
-     * Render JSON not found message.
-     * 
-     * @param array $methods The allowed methods.
-     * @return string
-     */
-    protected function renderJsonOutput(array $methods): string
-    {
-        $allow = implode(', ', $methods);
-        return '{"message":"Method not allowed. Must be one of: ' . $allow . '"}';
-    }// renderJsonOutput
-
-
-    /**
-     * Render not found message.
-     * 
-     * @param array $methods The allowed methods.
-     * @return string
-     */
-    protected function renderTextOutput(array $methods): string
-    {
-        $allow = implode(', ', $methods);
-        return 'Allowed methods: ' . $allow;
-    }// renderTextOutput
-
-
-    /**
-     * Render XML not found message.
-     * 
-     * @param array $methods The allowed methods.
-     * @return string
-     */
-    protected function renderXmlOutput(array $methods): string
-    {
-        $allow = implode(', ', $methods);
-        return '<root><message>Method not allowed. Must be one of: ' . $allow . '</message></root>';
-    }// renderXmlOutput
 
 
 }
