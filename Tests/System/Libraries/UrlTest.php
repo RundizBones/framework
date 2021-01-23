@@ -66,6 +66,18 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
         $url = 'http://my@email.tld:password@localhost.localhost:80/lang/ภาษาไทย/question/คำตอบ?question=คำตอบ&one=หนึ่ง&arr[]=1&arr[]=2&ques?tion=answer#anchor';
         $parsedUrl = parse_url($url);
         $this->assertSame($url, $this->Url->buildUrl($parsedUrl));
+
+        $url = '//user:pass@localhost.localhost/lang/ภาษาไทย?question=คำตอบ#anchor';
+        $parsedUrl = parse_url($url);
+        $this->assertSame($url, $this->Url->buildUrl($parsedUrl));
+
+        $url = '//user@localhost.localhost/lang/ภาษาไทย?question=คำตอบ#anchor';
+        $parsedUrl = parse_url($url);
+        $this->assertSame($url, $this->Url->buildUrl($parsedUrl));
+
+        $url = '/lang/ภาษาไทย?question=คำตอบ&arr[]=1&arr[]=2#anchor';
+        $parsedUrl = parse_url($url);
+        $this->assertSame($url, $this->Url->buildUrl($parsedUrl));
     }
 
 
