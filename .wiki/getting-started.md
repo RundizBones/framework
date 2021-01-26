@@ -8,6 +8,7 @@ This framework require at least PHP 7.1 to work.
 ### Quick install.
 * Extract files to your location.
 * Copy **composer.default.json** to **composer.json**.
+* Copy **rdb.default** to **rdb**.
 * Run `composer install` command.
 * Browse to your installed URL and follow with **/rundizbones**. Example: http://localhost.localhost/rundizbones
 * If your installed correctly, it will showing the welcome page.
@@ -27,6 +28,7 @@ LICENSE
 phinx.php
 phpunit.xml
 rdb
+rdb.default
 ```
 These are folders and files that is required to make it work. The other folders and files such as **.api-doc**, **.wiki**, etc can be deleted.
 
@@ -38,19 +40,21 @@ These are folders and files that is required to make it work. The other folders 
     This folder can be cleared by the **rdb** command, do not put anything important in this folder.
 * **System** folder contains the framework files.
 * **Tests** folder contains unit tests.<br>
-    ---*This folder is no need on production website.*---
+    ---*This folder is no need on production.*---
 * **composer.default.json** file contains required default packages that make this framework working properly.<br>
-    ---*This file maybe no need on production.*---
-* **composer.json** file contains required default packages from composer.default.json and another packages from the modules. 
-    This will be auto generate via **rdb** command, do not manually write anything here.<br>
+    ---*This file is no need on production.*---
+* **composer.json** file is the copied file from **composer.default.json** but contains another packages from the modules. 
+    This will be auto update via **rdb** command, do not manually write anything here.<br>
     ---*This file maybe no need on production.*---
 * **LICENSE** file contains license of this framework.
 * **phinx.php** file is the configuration file required by [Phinx] for DB migration.<br>
     ---*This file maybe no need on production.*---
 * **phpunit.xml** file is configuration file for unit tests.<br>
-    ---*This file is no need on production website.*---
-* **rdb** file is the framework command to run via console or command prompt on Windows.<br>
+    ---*This file is no need on production.*---
+* **rdb** file is the copied file from **rdb.default** file but it might be modified to matched your environment.<br>
     ---*This file maybe no need on production. WARNING! It contains commands that affect functions such as enabling or disabling modules. Use with care.*---
+* **rdb.default** file is the framework command to run via console or command prompt on Windows.<br>
+    ---*This file is no need on production.*
 
 Upload required folders and files as description above to your server. Everything inside **public** folder will be upload to your root web server path. 
 Other folders and files will be upload to the path that is outside root web server.<br>
@@ -71,17 +75,72 @@ storage/
 Or you may upload everything into the same root web server path but you have to modify **index.php** as describe below.
 
 #### public folder
-For any server that has the root web server in different name such as **public_html**, **www** please upload anything in **public** folder to your root web server and edit your **index.php** file as description below.<br>
-Or if you want to use the framework as sub directory please read the description below.
+The public folder or directory is where the web server will be serve to the public. The root of public folder will be called **root web**.<br>
+You can use different root web name and location. For example: **/public_html**, **/www**, **/public**, or even in sub folder such as **/public/sub1/sub2/sub3**.<br>
 
-For any root web server name such as **public**, **public_html**, **www**, etc will now call **rootweb**.
+The default location of framework's root web is located in **public** folder. Upload everything here to your desired location and then modify the files as explained below.
 
-If your **index.php** file is in **/rootweb** then do not modify anything.<br>
-If your **index.php** file is in **/rootweb** and all the framework folders and files are in the same **rootweb** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', __DIR__);`<br>
-If your **index.php** file is in **/rootweb/subdirectory1** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', dirname(dirname(__DIR__)));`<br>
-If your **index.php** file is in **/rootweb/subdirectory1/subdirectory2/subdirectory3** then modify `ROOT_PATH` in the **index.php** file to `define('ROOT_PATH', dirname(dirname(dirname(dirname(__DIR__)))));`
+##### use /public_html as root web
+```
+config/
+Modules/
+public_html/
+    .htaccess
+    index.php
+    ...
+storage/
+...
+```
 
-Also modify `PUBLIC_PATH` in the **rdb** file to correct path to the index.php file.
+1. Open **rdb** file and modify `define('PUBLIC_PATH', __DIR__ . DIRECTORY_SEPARATOR . 'public_html');`
+
+##### Use /www as root web
+```
+config/
+Modules/
+www/
+    .htaccess
+    index.php
+    ...
+storage/
+...
+```
+
+1. Open **rdb** file and modify `define('PUBLIC_PATH', __DIR__ . DIRECTORY_SEPARATOR . 'www');`
+
+##### Use /public/sub1/sub2/sub3 as root web
+```
+config/
+Modules/
+public/
+    sub1/
+        sub2/
+            sub3/
+                .htaccess
+                index.php
+    ...
+storage/
+...
+```
+
+1. Open **index.php** file in root web and modify `define('ROOT_PATH', dirname(__DIR__, 4));`
+2. Open **rdb** file and modify `define('PUBLIC_PATH', __DIR__ . '/public/sub1/sub2/sub3');`
+
+##### Use the root web at the same level as framework
+```
+config/
+Modules/
+storage/
+System/
+.htaccess
+index.php
+```
+
+1. Open **index.php** file in root web and modify `define('ROOT_PATH', __DIR__);`
+2. Open **rdb** file and modify `define('PUBLIC_PATH', __DIR__);`
+
+#### rdb
+Copy **rdb.default** to **rdb**.
 
 #### composer.json
 Copy **composer.default.json** to **composer.json** and then run the command `composer install`.
