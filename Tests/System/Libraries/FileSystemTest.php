@@ -196,6 +196,31 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// testListFilesSubFolders
 
 
+    public function testRename()
+    {
+        $this->FileSystem->createFile('example1.txt', 'Hello');
+        $this->assertTrue($this->FileSystem->isFile('example1.txt'));
+        $this->assertTrue($this->FileSystem->rename('example1.txt', 'example2.txt'));
+        $this->assertFalse($this->FileSystem->rename('example1.txt', 'example2.txt'));// rename not exists file.
+        $this->FileSystem->deleteFile('example2.txt');
+        
+        $this->FileSystem->createFile('example1.txt', 'Hello');
+        $this->FileSystem->createFile('example2.txt', 'Hi');
+
+
+        $this->assertFalse($this->FileSystem->rename('example1.txt', 'example2.txt', ['checkNewNameExists' => true]));// overwritten.
+        $this->assertTrue($this->FileSystem->rename('example1.txt', 'example2.txt', ['checkNewNameExists' => false]));// overwritten.
+        $this->assertTrue($this->FileSystem->isFile('example2.txt'));
+        $this->assertFalse($this->FileSystem->isFile('example1.txt'));
+
+        $this->assertTrue($this->FileSystem->rename('example2.txt', 'example3.txt'));
+        $this->assertTrue($this->FileSystem->isFile('example3.txt'));
+        $this->assertFalse($this->FileSystem->isFile('example1.txt'));
+        $this->assertFalse($this->FileSystem->isFile('example2.txt'));
+        $this->FileSystem->deleteFile('example3.txt');
+    }// testRename
+
+
     public function testSetWebSafeFileName()
     {
         $fileName = 'aA12--_/\ฟหกด$...dot.ext';

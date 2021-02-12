@@ -480,6 +480,40 @@ class FileSystem
 
 
     /**
+     * Rename a file or directory.
+     * 
+     * @since 1.1.2
+     * @see https://www.php.net/manual/en/function.rename.php PHP rename function behavior about overwritten and emit a warning.
+     * @param string $oldName The old name. Related from root specified in class constructor.
+     * @param string $newName The new name. Related from root specified in class constructor.
+     * @param array $options Available options:<br>
+     *                      `checkOldNameExists` (bool) Set to `false` for skip check file exists for old name before rename and it will be use PHP's `rename()` function behavior. 
+     *                          Set to `true` to check before. Default is `true`.<br>
+     *                      `checkNewNameExists` (bool) Set to `false` for skip check file exists for new name before rename and it will be use PHP's `rename()` function behavior. 
+     *                          Set to `true` to check before. Default is `true`.<br>
+     * @return bool Return `true` on success, `false` on failure.
+     */
+    public function rename(string $oldName, string $newName, array $options = []): bool
+    {
+        $oldName = $this->removeUpperPath($oldName);
+        $newName = $this->removeUpperPath($newName);
+
+        if (!isset($options['checkOldNameExists']) || $options['checkOldNameExists'] === true) {
+            if (!file_exists($this->root . DIRECTORY_SEPARATOR . $oldName)) {
+                return false;
+            }
+        }
+        if (!isset($options['checkNewNameExists']) || $options['checkNewNameExists'] === true) {
+            if (file_exists($this->root . DIRECTORY_SEPARATOR . $newName)) {
+                return false;
+            }
+        }
+
+        return rename($this->root . DIRECTORY_SEPARATOR . $oldName, $this->root . DIRECTORY_SEPARATOR . $newName);
+    }// rename
+
+
+    /**
      * Set web safe file name.
      * 
      * Allowed characters: 0-9, a-z, -, _, . (alpha-numeric, dash, underscore, dot).<br>
@@ -489,6 +523,7 @@ class FileSystem
      * Replace multiple dashes to one dash<br>
      * Replace multiple dots to one dot.
      * 
+     * @since 1.1.2
      * @param string $file The entered file name to rename.
      * @return string Return formatted for web safe file name.
      */
