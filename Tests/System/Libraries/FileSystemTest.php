@@ -192,6 +192,14 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// testListFilesSubFolders
 
 
+    public function testSetWebSafeFileName()
+    {
+        $fileName = 'aA12--_/\ฟหกด$...dot.ext';
+        $expect = 'aA12-_.dot.ext';
+        $this->assertSame($expect, $this->FileSystem->setWebSafeFileName($fileName));
+    }// testSetWebSafeFileName
+
+
     public function testTrackDeleted()
     {
         $this->FileSystem->createFolder('track-deleted-test1');

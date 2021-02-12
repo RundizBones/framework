@@ -480,6 +480,36 @@ class FileSystem
 
 
     /**
+     * Set web safe file name.
+     * 
+     * Allowed characters: 0-9, a-z, -, _, . (alpha-numeric, dash, underscore, dot).<br>
+     * Replace multiple spaces to one space<br>
+     * Replace space to dash<br>
+     * Replace not allowed characters to empty<br>
+     * Replace multiple dashes to one dash<br>
+     * Replace multiple dots to one dot.
+     * 
+     * @param string $file The entered file name to rename.
+     * @return string Return formatted for web safe file name.
+     */
+    public function setWebSafeFileName(string $file): string
+    {
+        // replace multiple spaces to one space.
+        $file = preg_replace('#\s+#iu', ' ', $file);
+        // replace space to dash.
+        $file = str_replace(' ', '-', $file);
+        // replace non alpha-numeric to nothing.
+        $file = preg_replace('#[^\da-z\-_\.]#iu', '', $file);
+        // replace multiple dashes to one dash.
+        $file = preg_replace('#-{2,}#', '-', $file);
+        // replace multiple dots to one dot.
+        $file = preg_replace('#\.{2,}#', '.', $file);
+
+        return $file;
+    }// setWebSafeFileName
+
+
+    /**
      * Write file. (Create a file).
      * 
      * @param string $path Path to the file to create and write that is not included with `$root` in the constructor.
