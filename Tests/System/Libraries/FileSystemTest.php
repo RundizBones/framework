@@ -99,11 +99,15 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
 
     public function testDeleteFile()
     {
-        $this->FileSystem->createFile('../example1.txt', 'hello.');
+        $this->FileSystem->createFile('../example1.txt', 'hello.');// upper path will be removed. (../)
         $this->FileSystem->createFile('example2.txt', 'hello.');
 
         $this->assertTrue($this->FileSystem->deleteFile('example1.txt'));
-        $this->assertTrue($this->FileSystem->deleteFile('../example2.txt'));
+        $this->assertFalse($this->FileSystem->isFile('example1.txt'));
+        $this->assertFalse($this->FileSystem->isFile('../example1.txt'));// not exists from the beginning.
+        $this->assertTrue($this->FileSystem->deleteFile('../example2.txt'));// upper path will be removed. (../)
+        $this->assertFalse($this->FileSystem->isFile('../example2.txt'));
+        $this->assertFalse($this->FileSystem->isFile('example2.txt'));
         $this->assertTrue($this->FileSystem->deleteFile('example2.txt'));// test deleted.
         $this->assertCount(2, $this->FileSystem->trackDeleted);
     }// testDeleteFile
