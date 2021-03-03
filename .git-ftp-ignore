@@ -1,5 +1,6 @@
 .gitattributes
 .git-ftp-ignore
+.git-ftp-include
 .gitignore
 */.gitignore      # ignore files in sub directories
 */.gitkeep
