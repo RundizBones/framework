@@ -201,11 +201,22 @@ class Url
     /**
      * Get domain with protocol. Example: https://mydomain.com
      * 
+     * @param bool|null $forceHttps Set to `true` to force use HTTPS, `false` to force use HTTP. Default is `null` to auto detect current protocol. (since 1.1.2)
      * @return string
      */
-    public function getDomainProtocol(): string
+    public function getDomainProtocol($forceHttps = null): string
     {
-        $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://';
+        if (!is_bool($forceHttps)) {
+            $forceHttps = null;
+        }
+
+        if ($forceHttps === true) {
+            $url = 'https://';
+        } elseif ($forceHttps === false) {
+            $url = 'http://';
+        } else {
+            $url = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? 'https' : 'http') . '://';
+        }
         $url .= ($_SERVER['HTTP_HOST'] ?? '');
         return $url;
     }// getDomainProtocol
