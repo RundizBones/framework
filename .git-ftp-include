@@ -1,3 +1,2 @@
 composer.json
-System/vendor
-System/vendor/*
+System/vendor/:composer.lock
