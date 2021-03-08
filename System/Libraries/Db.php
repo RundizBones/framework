@@ -645,6 +645,11 @@ class Db
         unset($columnName, $value);
 
         $sql = 'INSERT INTO `' . $tableName . '` (' . implode(', ', $columns) . ') VALUES (' . implode(', ', $placeholders) . ')';
+
+        $Logger = new Db\Logger($this->Container);
+        $Logger->queryLog($sql, $values);
+        unset($Logger);
+
         $this->Sth = $this->PDO($this->currentConnectionKey)->prepare($sql);
         unset($columns, $placeholders, $sql);
 
