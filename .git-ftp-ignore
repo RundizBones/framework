@@ -32,7 +32,6 @@ storage
 storage/*
 Tests
 Tests/*
-composer.lock
 mkdocs.yml
 package.json
 package-lock.json
