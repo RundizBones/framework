@@ -1,3 +1,0 @@
-# Do not keep anything here because developers/programmers must run `composer install` or `composer update` once download the package.
-*
-!.gitignore

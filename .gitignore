@@ -11,6 +11,7 @@ public/.user.ini
 public/favicon.ico
 public/rdbadmin-public
 rdb
+System/vendor
 
 #eclipse project files.
 .buildpath
