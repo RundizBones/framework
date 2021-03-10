@@ -32,7 +32,7 @@ function packDist(cb) {
     }
 
     let isProduction = true;
-    if (argv.development) {
+    if (argv.development || argv.dev) {
         isProduction = false;
     }
 
