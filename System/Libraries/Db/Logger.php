@@ -39,10 +39,13 @@ class Logger
      * 
      * @param string $statement The DB statement.
      * @param mixed $inputParams The input parameters from `bindXXX()`, `execute()`. This value can be `null`.
+     * @param mixed $inputDataTypes The input data type from `bindXXX()`. This value can be `null`.
      * @return void|null Return nothing (`void`) or maybe return `null` if config was set to do not write log and profiler is disabled.
      */
-    public function queryLog(string $statement, $inputParams = null)
+    public function queryLog(string $statement, $inputParams = null, $inputDataTypes = null)
     {
+        $originalStatement = $statement;
+
         if ($this->Container->has('Config')) {
             /* @var $Config \Rdb\System\Config */
             $Config = $this->Container->get('Config');
@@ -108,7 +111,15 @@ class Logger
                 }
 
                 if (is_string($val)) {
-                    $values[$key] = '\'' . $val . '\'';
+                    if (
+                        is_array($inputDataTypes) &&
+                        array_key_exists($key, $inputDataTypes) && 
+                        $inputDataTypes[$key] === \PDO::PARAM_INT
+                    ) {
+                        $values[$key] = $val;
+                    } else {
+                        $values[$key] = '\'' . $val . '\'';
+                    }
                 }
                 if (is_array($val)) {
                     $values[$key] = "'" . implode("','", $val) . "'";
@@ -153,10 +164,12 @@ class Logger
             if ($this->Container->has('Logger')) {
                 /* @var $Logger \Rdb\System\Libraries\Logger */
                 $Logger = $this->Container['Logger'];
-                $Logger->write('system/libraries/db/logger', 0, $statement, ($cloneParams !== null ? $cloneParams : []), ['dontLogProfiler' => true]);
+                $Logger->write('system/libraries/db/logger', 0, 'Original SQL statement: {originalStatement}', ['originalStatement' => $originalStatement], ['dontLogProfiler' => true]);
+                $Logger->write('system/libraries/db/logger', 0, $statement, ($cloneParams !== null ? ['params' => $cloneParams, 'dataType' => $inputDataTypes] : []), ['dontLogProfiler' => true]);
                 unset($Logger);
             }
         }
+        unset($originalStatement);
     }// queryLog
 
 

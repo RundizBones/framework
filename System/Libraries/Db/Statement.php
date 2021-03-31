@@ -24,6 +24,13 @@ class Statement extends \PDOStatement
 
 
     /**
+     * @since 1.1.2
+     * @var mixed The input data type from `bindXXX()`.
+     */
+    protected $inputDataTypes;
+
+
+    /**
      * @var mixed The input parameters from `bindXXX()`, `execute()`.
      */
     protected $inputParams;
@@ -52,12 +59,16 @@ class Statement extends \PDOStatement
         if (!is_array($this->inputParams) && is_null($this->inputParams)) {
             $this->inputParams = [];
         }
+        if (!is_array($this->inputDataTypes) && is_null($this->inputDataTypes)) {
+            $this->inputDataTypes = [];
+        }
 
         if (is_null($data_type)) {
             $data_type = \PDO::PARAM_STR;
         }
 
         $this->inputParams[$parameter] = &$variable;
+        $this->inputDataTypes[$parameter] = $data_type;
 
         return parent::bindParam($parameter, $variable, $data_type, $length, $driverdata);
     }// bindParam
@@ -71,12 +82,16 @@ class Statement extends \PDOStatement
         if (!is_array($this->inputParams) && is_null($this->inputParams)) {
             $this->inputParams = [];
         }
+        if (!is_array($this->inputDataTypes) && is_null($this->inputDataTypes)) {
+            $this->inputDataTypes = [];
+        }
 
         if (is_null($data_type)) {
             $data_type = \PDO::PARAM_STR;
         }
 
         $this->inputParams[$parameter] = $value;
+        $this->inputDataTypes[$parameter] = $data_type;
 
         parent::bindValue($parameter, $value, $data_type);
     }// bindValue
@@ -101,7 +116,7 @@ class Statement extends \PDOStatement
         if (strspn(strtolower($this->queryString), 'explain ') === 0) {
             // if not found `EXPLAIN ` statement query.
             $Logger = new Logger($this->Container);
-            $Logger->queryLog($this->queryString, $this->inputParams);
+            $Logger->queryLog($this->queryString, $this->inputParams, $this->inputDataTypes);
             unset($Logger);
         }
 
