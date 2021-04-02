@@ -16,7 +16,7 @@
         "nikic/fast-route": "^1.0",
         "monolog/monolog": "^1.0",
         "pimple/pimple": "^3.0",
-        "symfony/console": "^3.3.6",
+        "symfony/console": "^4",
         "robmorgan/phinx": "^0.11"
     },
     "require-dev": {
