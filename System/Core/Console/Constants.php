@@ -229,23 +229,13 @@ class Constants extends BaseConsole
         $Io = new SymfonyStyle($Input, $Output);
         $Io->title('Display selected constant');
 
-        $allConstants = get_defined_constants();
-
-        $found = false;
-        foreach ($allConstants as $constantName => $constantValue) {
-            if ($constantName === $optionName) {
-                $constantValue = $this->convertConstantValueString($constantValue);
-                $Io->writeln($constantName . ' = ' . $constantValue);
-                $found = true;
-                break;
-            }
-        }// endforeach; $allConstants
-        unset($allConstants, $constantName, $constantValue);
-
-        if (false === $found) {
+        if (defined($optionName)) {
+            $constantValue = $this->convertConstantValueString(constant($optionName));
+            $Io->writeln($optionName . ' = ' . $constantValue);
+            unset($constantValue);
+        } else {
             $Io->error('Undefined constant (' . $optionName . ')');
         }// endif;
-        unset($found);
 
         unset($Io);
     }// executeSpecificConstantName
