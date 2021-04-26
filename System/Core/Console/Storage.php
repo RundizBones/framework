@@ -7,6 +7,8 @@
 namespace Rdb\System\Core\Console;
 
 
+use \Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
@@ -74,7 +76,7 @@ class Storage extends BaseConsole
                 '      This will be clear everything inside storage folder.' . "\n\n"
             )
             ->addArgument('act', InputArgument::REQUIRED, 'Action to do (list, delete, clear). The delete action must follow with --subfolder option.')
-            ->addOption('subfolder', null, InputOption::VALUE_OPTIONAL, 'Delete sub folder name (not include the storage folder path). Can use glob pattern but not two dots.');
+            ->addOption('subfolder', null, InputOption::VALUE_OPTIONAL, 'List, delete sub folder name (not include the storage folder path). Can use glob pattern but not two dots.');
     }// configure
 
 
@@ -152,8 +154,10 @@ class Storage extends BaseConsole
                 $this->FileSystem->writeFile('.gitignore', '*'."\n".'!.gitignore');
 
                 // display success and list deleted files and folders.
-                $Io->success('All files and folders are cleared.');                    
-                $Io->table(['Deleted list'], $deletedList);
+                $Io->success('All files and folders are cleared.');            
+                if (isset($deletedList)) {
+                    $this->renderTableFiles($Output, 'Deleted list', $deletedList);
+                }
                 unset($deletedList);
             } else {
                 $Io->warning('Unable to clear the cache. It may not have any files or folders to delete.');
@@ -206,7 +210,9 @@ class Storage extends BaseConsole
                     // display success or error message.
                     if ($count == count($filesArray)) {
                         $Io->success('The selected folder and file pattern has been deleted.');
-                        $Io->table(['Deleted list'], $deletedList);
+                        if (isset($deletedList)) {
+                            $this->renderTableFiles($Output, 'Deleted list', $deletedList);
+                        }
                     } else {
                         $Io->error('Unable to delete selected folder and file pattern.');
                     }
@@ -226,7 +232,9 @@ class Storage extends BaseConsole
 
                     // display success and list deleted files and folders.
                     $Io->success('The selected folder has been deleted.');
-                    $Io->table(['Deleted list'], $deletedList);
+                    if (isset($deletedList)) {
+                        $this->renderTableFiles($Output, 'Deleted list', $deletedList);
+                    }
                     unset($deletedList);
                 } else {
                     $Io->warning('Unable to delete selected folder. It might not exists.');
@@ -256,6 +264,7 @@ class Storage extends BaseConsole
             $Io->caution('No subfolder option specified.');
         } else {
             if (strpos($Input->getOption('subfolder'), '/') !== false) {
+                // if using glob path pattern (contain / as directory separator NOT \).
                 $subfolder = str_replace(['../', '..\\', '..'], '', $Input->getOption('subfolder'));
                 $filesArray = glob(STORAGE_PATH.DIRECTORY_SEPARATOR.$subfolder, GLOB_NOSORT);
 
@@ -267,9 +276,6 @@ class Storage extends BaseConsole
                         $listFiles[][] = $file;
                     }// endforeach;
                     unset($file);
-
-                    $Io->table(['List of files and folders'], $listFiles);
-                    unset($listFiles);
                 } else {
                     $Io->warning('The selected folder and file pattern returns no data.');
                 }
@@ -284,14 +290,48 @@ class Storage extends BaseConsole
                     unset($eachFile);
                 }
                 unset($listResult);
-
-                $Io->table(['List of files and folders'], $listFiles);
-                unset($listFiles);
             }
+
+            if (isset($listFiles)) {
+                $this->renderTableFiles($Output, 'List of files and folders', $listFiles);
+            }
+
+            unset($listFiles);
         }// endif check option.
 
         unset($Io);
     }// executeList
+
+
+    /**
+     * Render files to table.
+     * 
+     * @param OutputInterface $Output
+     * @param array $listFiles
+     * @return type
+     */
+    private function renderTableFiles(OutputInterface $Output, string $tableHead, array $listFiles)
+    {
+        $Table = new Table($Output);
+        $Table->setColumnMaxWidth(0, 50);
+
+        if (isset($listFiles) && is_array($listFiles)) {
+            $Table->setHeaders([$tableHead]);
+            $arrayKeys = array_keys($listFiles);
+            $lastArrayKey = array_pop($arrayKeys);
+            unset($arrayKeys);
+            foreach ($listFiles as $key => $eachFile) {
+                $Table->addRow($eachFile);
+                if ($key !== $lastArrayKey) {
+                    $Table->addRow(new TableSeparator());
+                }
+            }// endforeach;
+            unset($eachFile, $key, $lastArrayKey);
+            $Table->render();
+        }
+
+        unset($Table);
+    }// renderTableFiles
 
 
 }
