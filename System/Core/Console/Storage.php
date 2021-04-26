@@ -306,8 +306,9 @@ class Storage extends BaseConsole
     /**
      * Render files to table.
      * 
-     * @param OutputInterface $Output
-     * @param array $listFiles
+     * @param OutputInterface $Output Symfony OutputInterface class.
+     * @param string $tableHead Table header text.
+     * @param array $listFiles The files list as array.
      */
     private function renderTableFiles(OutputInterface $Output, string $tableHead, array $listFiles)
     {
