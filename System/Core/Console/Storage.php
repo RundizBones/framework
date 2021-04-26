@@ -308,7 +308,6 @@ class Storage extends BaseConsole
      * 
      * @param OutputInterface $Output
      * @param array $listFiles
-     * @return type
      */
     private function renderTableFiles(OutputInterface $Output, string $tableHead, array $listFiles)
     {
