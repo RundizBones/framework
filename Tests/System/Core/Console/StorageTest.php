@@ -80,10 +80,12 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertStringContainsString('logs', $output);
-        $this->assertStringContainsString('logs2', $output);
-        $this->assertStringContainsString('test-01.log', $output);
+        // the result has changed, they can be line wrap. So, use regexp to test.
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        //$this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);// previous test.
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\h]*)2/', $output);// logs2
+        $this->assertRegExp('/t([a-zA-Z\|\s]{2,})t([ \|\h]*)\-([ \|\h]*)0([ \|\h]*)1([a-zA-Z\.\|\s]{2,})g/', $output);// test-01.log
 
         unset($command, $commandTester, $output);
     }// testExecuteClear
@@ -107,8 +109,8 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertStringContainsString('logs', $output);
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
 
         // test delete using normal folder name.
         $commandTester->execute([
@@ -120,9 +122,9 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertStringContainsString('logs', $output);
-        $this->assertStringContainsString('logs2', $output);
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\h]*)2/', $output);// logs2
 
         unset($command, $commandTester, $output);
     }// testExecuteDelete
@@ -146,8 +148,8 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertStringContainsString('logs', $output);
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
 
         // test list using normal subfolder name.
         $commandTester->execute([
@@ -159,9 +161,9 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);
-        $this->assertStringContainsString('logs', $output);
-        $this->assertStringContainsString('logs2', $output);
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\h]*)2/', $output);// logs2
 
         unset($command, $commandTester, $output);
     }// testExecuteList
