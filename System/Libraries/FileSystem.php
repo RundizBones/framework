@@ -261,6 +261,50 @@ class FileSystem
 
 
     /**
+     * Get file extension only.
+     * 
+     * @param string $path File name (with or without extension) or any path to get only file name.
+     * @return string Return only file extension without dot.
+     */
+    public function getFileExtensionOnly(string $path): string
+    {
+        $path = str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $path);
+        $expPath = explode('/', $path);
+        $fileName = $expPath[count($expPath) - 1];
+        unset($expPath);
+
+        $expFile = explode('.', $fileName);
+        return $expFile[count($expFile) - 1];
+    }// getFileExtensionOnly
+
+
+    /**
+     * Get file name only.
+     * 
+     * @param string $path File name (with or without extension) or any path to get only file name.
+     * @return string Return only file name without extension.
+     */
+    public function getFileNameOnly(string $path): string
+    {
+        $path = str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $path);
+        $expPath = explode('/', $path);
+        $fileName = $expPath[count($expPath) - 1];
+        unset($expPath);
+
+        $expFile = explode('.', $fileName);
+        if (count($expFile) > 1) {
+            // if there is at least one dot. example file.ext, file.name.ext
+            // remove file extension.
+            unset($expFile[count($expFile) - 1]);
+        }
+        $fileName = implode('.', $expFile);
+        unset($expFile);
+
+        return $fileName;
+    }// getFileNameOnly
+
+
+    /**
      * Get total folder size.
      * 
      * @link https://stackoverflow.com/a/21409562/128761 Original source code.

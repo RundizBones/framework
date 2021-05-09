@@ -136,6 +136,66 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// testDeleteFolder
 
 
+    public function testGetFileExtensionOnly()
+    {
+        $path = '/path/to/file';
+        $assert = 'file';
+        $this->assertSame($assert, $this->FileSystem->getFileExtensionOnly($path));
+
+        $path = '/path/to/.htaccess';
+        $assert = 'htaccess';
+        $this->assertSame($assert, $this->FileSystem->getFileExtensionOnly($path));
+
+        $path = '/path/to/file.ext';
+        $assert = 'ext';
+        $this->assertSame($assert, $this->FileSystem->getFileExtensionOnly($path));
+
+        $path = '/path/to/file.txt';
+        $assert = 'txt';
+        $this->assertSame($assert, $this->FileSystem->getFileExtensionOnly($path));
+
+        $path = '/path/to/file.name.ext';
+        $assert = 'ext';
+        $this->assertSame($assert, $this->FileSystem->getFileExtensionOnly($path));
+
+        $path = '\\path\\to\\file.name.ext';
+        $assert = 'ext';
+        $this->assertSame($assert, $this->FileSystem->getFileExtensionOnly($path));
+    }// testGetFileExtensionOnly
+
+
+    public function testGetFileNameOnly()
+    {
+        $path = '/path/to/file';
+        $assert = 'file';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+
+        $path = '/path/to/.htaccess';
+        $assert = '';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+
+        $path = '.htaccess';
+        $assert = '';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+
+        $path = '/path/to/file.ext';
+        $assert = 'file';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+
+        $path = '/path/to/file.name.ext';
+        $assert = 'file.name';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+
+        $path = 'file.name.ext';
+        $assert = 'file.name';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+
+        $path = '\\path\\to\\file.name.ext';
+        $assert = 'file.name';
+        $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
+    }// testGetFileNameOnly
+
+
     public function testGetTimestamp()
     {
         $this->FileSystem->createFile('test-timestamp.txt', 'hello world.');
