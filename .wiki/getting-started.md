@@ -36,8 +36,7 @@ These are folders and files that is required to make it work. The other folders 
 * **Modules** folder contains the working module. Your code work as module.
 * **public** folder is the folder that will be serve via HTTP. 
     If your root web server is the other name such as **public_html**, or **www** you have to modify index.php file. (Please read more description below.)
-* **storage** folder contains temporary folders and files such as cache, logs. 
-    This folder can be cleared by the **rdb** command, do not put anything important in this folder.
+* **storage** folder contains server side storage folders and files such as cache, logs. Some modules may put the server side files here to prevent access from public.
 * **System** folder contains the framework files.
 * **Tests** folder contains unit tests.<br>
     ---*This folder is no need on production.*---
