@@ -115,7 +115,7 @@ class Storage extends BaseConsole
     private function executeClear(InputInterface $Input, OutputInterface $Output)
     {
         $Io = new SymfonyStyle($Input, $Output);
-        $Io->title('Clear storage folder');
+        $Io->title('Clear storage folder (cache, logs)');
         $Helper = $this->getHelper('question');
         $Question = new ConfirmationQuestion('Continue with this action? (y, n)', false);
 
@@ -131,7 +131,7 @@ class Storage extends BaseConsole
                 $this->FileSystem->writeFile('.gitignore', '*'."\n".'!.gitignore');
 
                 // display success and list deleted files and folders.
-                $Io->success('All files and folders are cleared.');            
+                $Io->success('The target files and folders are cleared.');            
                 if (isset($deletedList)) {
                     $this->renderTableFiles($Output, 'Deleted list', $deletedList);
                 }
@@ -146,8 +146,18 @@ class Storage extends BaseConsole
     }// executeClear
 
 
+    /**
+     * Do clear target folder.
+     * 
+     * @param string $targetFolder Target folder to clear.
+     * @return array Return deleted files and folders list.
+     */
     private function executeClearDelete($targetFolder = 'cache'): array
     {
+        if (empty($targetFolder)) {
+            return [];
+        }
+
         $clearResult = $this->FileSystem->deleteFolder($targetFolder);
         $listFiles = $this->FileSystem->listFilesSubFolders($targetFolder);
         $deletedList = [];
