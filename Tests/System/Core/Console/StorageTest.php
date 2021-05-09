@@ -66,6 +66,13 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
 
     public function testExecuteClear()
     {
+        // create folders and files for test `clear` command that is limited to cache, logs folders.
+        $FileSystem = new \Rdb\System\Libraries\FileSystem();
+        $FileSystem->createFolder('cache/_testConsole');
+        $FileSystem->createFile('cache/_testConsole/test.txt', 'hello world');
+        $FileSystem->createFolder('logs/logs2');
+        $FileSystem->createFile('logs/logs2/test-01.log', 'Hello.');
+
         $application = new Application();
         $application->add(new \Rdb\System\Core\Console\Storage());
         $command = $application->find('system:storage');
@@ -81,13 +88,14 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         // the output of the command in the console
         $output = $commandTester->getDisplay();
         // the result has changed, they can be line wrap. So, use regexp to test.
-        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\s]*)_([a-zA-Z\|\s]{2,})e/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
         //$this->assertStringContainsString(DIRECTORY_SEPARATOR . '_testConsole', $output);// previous test.
         $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
-        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\h]*)2/', $output);// logs2
-        $this->assertRegExp('/t([a-zA-Z\|\s]{2,})t([ \|\h]*)\-([ \|\h]*)0([ \|\h]*)1([a-zA-Z\.\|\s]{2,})g/', $output);// test-01.log
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\s]*)2/', $output);// logs2
+        $this->assertRegExp('/t([a-zA-Z\|\s]{2,})t([ \|\s]*)\-([ \|\s]*)0([ \|\s]*)1([a-zA-Z\.\|\s]{2,})g/', $output);// test-01.log
+        $this->assertTrue($FileSystem->isDir('tests'));// tests folder must not deleted.
 
-        unset($command, $commandTester, $output);
+        unset($command, $commandTester, $FileSystem, $output);
     }// testExecuteClear
 
 
@@ -109,7 +117,7 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\s]*)_([a-zA-Z\|\s]{2,})e/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
         $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
 
         // test delete using normal folder name.
@@ -122,9 +130,9 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\s]*)_([a-zA-Z\|\s]{2,})e/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
         $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
-        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\h]*)2/', $output);// logs2
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\s]*)2/', $output);// logs2
 
         unset($command, $commandTester, $output);
     }// testExecuteDelete
@@ -148,7 +156,7 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\s]*)_([a-zA-Z\|\s]{2,})e/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
         $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
 
         // test list using normal subfolder name.
@@ -161,9 +169,9 @@ class StorageTest extends \Rdb\Tests\BaseTestCase
         ]);
         // the output of the command in the console
         $output = $commandTester->getDisplay();
-        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\h]*)_([a-zA-Z\|\s]{2,})/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
+        $this->assertRegExp('/' . preg_quote(DIRECTORY_SEPARATOR) . '([ \|\s]*)_([a-zA-Z\|\s]{2,})e/', $output);// assert \(any space, |)_(a-z, |, any space more than 2 chars)e == \_testConsole
         $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s/', $output);// logs
-        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\h]*)2/', $output);// logs2
+        $this->assertRegExp('/l([a-zA-Z\|\s]{2,})s([ \|\s]*)2/', $output);// logs2
 
         unset($command, $commandTester, $output);
     }// testExecuteList

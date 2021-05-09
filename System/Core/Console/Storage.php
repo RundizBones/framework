@@ -67,15 +67,14 @@ class Storage extends BaseConsole
                 '      This will be delete all files that begins with "routes" in the "cache" folder.' . "\n\n" .
                 "\n" .
                 '[Clear storage folder]' . "\n" .
-                '  This will be clear everything inside storage folder. It is not recommend to do this until you can make sure that those files and folders can be deleted.' . "\n" .
-                '  Some files and folders maybe important because storage folder can be use for some process not just cache and log.' . "\n" .
-                '  This is WARNED!' . "\n" .
-                '  To clear, use clear argument.' . "\n\n" .
+                '  This will be clear cache, logs folders. It is not recommend to do this until you can make sure that those files and folders can be deleted.' . "\n" .
+                '  The clear command will be limited to delete these folders due to the storage folder canbe use to store important server side files such as administrator uploaded files.' . "\n" .
+                '  To delete another folders than cache and logs, please use delete argument.' . "\n\n" .
                 '  Example: ' . "\n" .
                 '    system:storage clear' . "\n" .
-                '      This will be clear everything inside storage folder.' . "\n\n"
+                '      This will be clear cache, logs folders.' . "\n\n"
             )
-            ->addArgument('act', InputArgument::REQUIRED, 'Action to do (list, delete, clear). The delete action must follow with --subfolder option.')
+            ->addArgument('act', InputArgument::REQUIRED, 'Action to do (list, delete, clear). The delete and list actions must follow with --subfolder option.')
             ->addOption('subfolder', null, InputOption::VALUE_OPTIONAL, 'List, delete sub folder name (not include the storage folder path). Can use glob pattern but not two dots.');
     }// configure
 
@@ -107,7 +106,7 @@ class Storage extends BaseConsole
 
 
     /**
-     * Clear storage folder. (DELETE EVERYTHING!)
+     * Clear storage folder. (delete cache, logs folders.)
      * 
      * @param InputInterface $Input
      * @param OutputInterface $Output
@@ -123,33 +122,11 @@ class Storage extends BaseConsole
         if (!$Helper->ask($Input, $Output, $Question)) {
             return;
         } else {
-            $clearResult = $this->FileSystem->deleteFolder('');
-            $listFiles = $this->FileSystem->listFilesSubFolders('');
+            $deletedList = [];
+            $deletedList = array_merge($deletedList, $this->executeClearDelete());
+            $deletedList = array_merge($deletedList, $this->executeClearDelete('logs'));
 
-            if ($clearResult === true) {
-                $deletedList = [];
-                foreach ($this->FileSystem->trackDeleted as $row) {
-                    $deletedList[][] = $row;
-                }
-
-                // make very sure that there are no folders or files left.
-                if (is_array($listFiles)) {
-                    $this->FileSystem->trackDeleted = [];
-
-                    foreach ($listFiles as $eachFile) {
-                        if (is_file(STORAGE_PATH . DIRECTORY_SEPARATOR . $eachFile)) {
-                            $this->FileSystem->deleteFile($eachFile);
-                        } else {
-                            $this->FileSystem->deleteFolder($eachFile, true);
-                        }
-                    }// endforeach;
-                    unset($eachFile);
-
-                    foreach ($this->FileSystem->trackDeleted as $row) {
-                        $deletedList[][] = $row;
-                    }
-                }
-
+            if (isset($deletedList) && !empty($deletedList)) {
                 // create .gitignore
                 $this->FileSystem->writeFile('.gitignore', '*'."\n".'!.gitignore');
 
@@ -160,14 +137,50 @@ class Storage extends BaseConsole
                 }
                 unset($deletedList);
             } else {
-                $Io->warning('Unable to clear the cache. It may not have any files or folders to delete.');
+                $Io->warning('Unable to clear the storage. It may not have any files or folders to delete.');
             }
             $this->FileSystem->trackDeleted = [];
-            unset($clearResult, $listFiles);
         }// endif ask confirm
 
         unset($Helper, $Io, $Question);
     }// executeClear
+
+
+    private function executeClearDelete($targetFolder = 'cache'): array
+    {
+        $clearResult = $this->FileSystem->deleteFolder($targetFolder);
+        $listFiles = $this->FileSystem->listFilesSubFolders($targetFolder);
+        $deletedList = [];
+
+        if (isset($clearResult) && $clearResult === true) {
+            foreach ($this->FileSystem->trackDeleted as $row) {
+                $deletedList[][] = $row;
+            }// endforeach;
+            unset($row);
+
+            // make very sure that there are no folders or files left.
+            if (is_array($listFiles)) {
+                $this->FileSystem->trackDeleted = [];
+
+                foreach ($listFiles as $eachFile) {
+                    if (is_file(STORAGE_PATH . DIRECTORY_SEPARATOR . $eachFile)) {
+                        $this->FileSystem->deleteFile($eachFile);
+                    } else {
+                        $this->FileSystem->deleteFolder($eachFile, true);
+                    }
+                }// endforeach;
+                unset($eachFile);
+
+                foreach ($this->FileSystem->trackDeleted as $row) {
+                    $deletedList[][] = $row;
+                }// endforeach;
+                unset($row);
+            }
+        }
+
+        unset($clearResult, $listFiles);
+        return $deletedList;
+    }// executeClearDelete
 
 
     /**
