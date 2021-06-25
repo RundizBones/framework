@@ -31,11 +31,11 @@ ModuleName/
     moduleComposer.json
 ```
 
-### Disable or enable
+## Disable or enable
 If there is a file named **.disabled** in the module folder (same location as **Installer.php**) then the module will be disable and not working.<br>
 To make module enable or work again, just delete **.disabled** file.
 
-### Namespace
+## Namespace
 Any classes including controllers in the module should have namespace begins with `Rdb\Modules\ModuleName` where **ModuleName** is the real folder name of your module.<br>
 Example:
 ```
@@ -52,12 +52,12 @@ class MyPageController extends \Rdb\System\Core\Controllers\BaseController
 
 ---
 
-### assets folder
+## assets folder
 The **assets** is optional. It is only need if you have some public assets file to use.<br>
 The **assets** folder will be copied to **public/Modules/ModuleName/assets**.<br>
 To use public assets, you have to run `php rdb system:module install --mname="ModuleName"` command where **ModuleName** is the real folder name of your module.
 
-### config folder
+## config folder
 The module should contain at least **routes.php** and its controller.<br>
 Example:
 ```
@@ -74,7 +74,7 @@ $Rc->addRoute('GET', '/modulename', '\\Rdb\\Modules\\ModuleName\\Controllers\\My
 
 The config folder is the same as main app's config. It is based on environment setting in the **public/index.php** file.
 
-### Console folder
+## Console folder
 The **Console** folder is for the code that will be run via CLI. It is optional and only need if you have some CLI app here.<br>
 Example:
 ```
@@ -116,7 +116,7 @@ class MyIncludeExternalConsole
 }
 ```
 
-### Controllers folder
+## Controllers folder
 
 The **Controller** folder is for the code that will be run via HTTP request. It is optional and only need if you have some HTTP app here.<br>
 Controllers will be resolve from routes in config folder. The controller must extends `\Rdb\System\Core\Controllers\BaseController` class.<br>
@@ -139,12 +139,12 @@ class MyPageController extends \Rdb\System\Core\Controllers\BaseController
 }
 ```
 
-### phinxdb folder
+## phinxdb folder
 This folder is contain the DB migration using [Phinx](http://docs.phinx.org). There are 2 more sub folders in here 1. is **migrations**, 2. is **seeds**.<br>
 The **phinxdb** folder is optional and only need if you have DB migration to work.<br>
 To run Phinx on Windows, use this command `.\System\vendor\bin\phinx`
 
-### Tests folder
+## Tests folder
 The **Tests** folder is for unit test, and is optional. It is only need if you have some unit testing.<br>
 Example:
 ```
@@ -163,7 +163,7 @@ class MyUnitTest extends \Tests\Rdb\BaseTestCase
 
 ```
 
-### Views folder
+## Views folder
 The **Views** folder is optional. It is only need if your controller use views.<br>
 Example:
 ```
@@ -182,44 +182,9 @@ Example:
 </html>
 ```
 
-### Installer.php
-The **Installer.php** is optional. It is only need if you use install, update, uninstall feature.<br>
-Example:
-```
-<?php
-// Modules/ModuleName/Installer.php file.
+## [Installer.php](module-folder/module-installer.md)
+The description of **Installer.php** has been moved to [Module Installer](module-folder/module-installer.md) page.
 
-namespace Rdb\Modules\ModuleName;
-
-class Installer implements \Rdb\System\Interfaces\ModuleInstaller
-{
-    /**
-     * @var \Rdb\System\Container
-     */
-    protected $Container;
-
-    public function __construct(\Rdb\System\Container $Container)
-    {
-        $this->Container = $Container;
-    }
-    
-    public function install()
-    {
-        // install code here.
-    }
-
-    public function uninstall()
-    {
-        // uninstall code here.
-    }
-
-    public function update()
-    {
-        // update code here.
-    }
-}
-```
-
-### moduleComposer.json
+## moduleComposer.json
 The **moduleComposer.json** is optional. It is only need if you want composer dependency list to use.<br>
 To use module's composer, run the command `php rdb system:module --help` to see all available commands about module.
