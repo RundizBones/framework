@@ -24,6 +24,7 @@ The header must be case sensitive and maybe follow with colon (**:**) or just us
 * **Description:** A short description of your module.
 * **@version** The current version number of your module.
 * **Requires PHP:** The minimum requirement for PHP version.
+* **Requires Modules:** The other module folder names that your module is required. Use comma as separator. Example: `Requires Modules: Languages, RdbAdmin`.
 * **Author:** The module's author name. Multiple authors use comma as seperator.
 * **@license** The license URL and license name. Example: `@license http://opensource.org/licenses/MIT MIT`.
 
