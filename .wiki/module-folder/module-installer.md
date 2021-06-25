@@ -28,6 +28,22 @@ The header must be case sensitive and maybe follow with colon (**:**) or just us
 * **Author:** The module's author name. Multiple authors use comma as seperator.
 * **@license** The license URL and license name. Example: `@license http://opensource.org/licenses/MIT MIT`.
 
+### Example
+
+```php
+<?php
+/**
+ * Module Name: My module
+ * Description: Additional functional to the admin page.
+ * Requires PHP: 7.1.0
+ * Requires Modules: RdbAdmin
+ * Author: John Doe, Jane Doe
+ *
+ * @version 1.0.1
+ * @license http://opensource.org/licenses/MIT MIT
+ */
+```
+
 ## Installer class
 The `Installer` class is optional. It is only need if you use install, update, uninstall feature.
 
