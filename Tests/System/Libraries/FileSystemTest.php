@@ -136,6 +136,17 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// testDeleteFolder
 
 
+    public function testGetBase64File()
+    {
+        $rootPath = ROOT_PATH . DIRECTORY_SEPARATOR . 'Tests';
+        $FileSystem = new \Rdb\System\Libraries\FileSystem($rootPath);
+        $this->assertStringContainsString(';base64,', $FileSystem->getBase64File('phpunit.php'));
+        $this->assertStringContainsString(';base64,', $FileSystem->getBase64File('../phpunit.php'));
+        $this->assertSame('', $FileSystem->getBase64File('phpunit-not-exists.php'));
+        unset($FileSystem);
+    }// testGetBase64File
+
+
     public function testGetFileExtensionOnly()
     {
         $path = '/path/to/file';
@@ -194,6 +205,19 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
         $assert = 'file.name';
         $this->assertSame($assert, $this->FileSystem->getFileNameOnly($path));
     }// testGetFileNameOnly
+
+
+    public function testGetFullPathWithRoot()
+    {
+        $rootPath = ROOT_PATH . DIRECTORY_SEPARATOR . 'Tests';
+        $FileSystem = new \Rdb\System\Libraries\FileSystem($rootPath);
+        $this->assertSame($rootPath . DIRECTORY_SEPARATOR . 'abc.txt', $FileSystem->getFullPathWithRoot('abc.txt'));
+        $this->assertSame($rootPath . DIRECTORY_SEPARATOR . 'abc.txt', $FileSystem->getFullPathWithRoot('../abc.txt'));
+        $this->assertSame($rootPath . DIRECTORY_SEPARATOR . 'abc.txt', $FileSystem->getFullPathWithRoot('./../../abc.txt'));
+        $this->assertSame($rootPath . DIRECTORY_SEPARATOR . 'abc.txt', $FileSystem->getFullPathWithRoot('/abc.txt'));
+        $this->assertSame($rootPath . DIRECTORY_SEPARATOR . 'abc.txt', $FileSystem->getFullPathWithRoot('\abc.txt'));
+        unset($FileSystem, $rootPath);
+    }// testGetFullPathWithRoot
 
 
     public function testGetTimestamp()

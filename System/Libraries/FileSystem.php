@@ -261,6 +261,33 @@ class FileSystem
 
 
     /**
+     * Get base 64 string from file name.
+     * 
+     * Warning: it can be trigger memory limit exceeded error if file size is too large.
+     * 
+     * @link https://stackoverflow.com/a/13758760/128761 Original source code.
+     * @since 1.1.4
+     * @param string $filename The file name to get contents. This will be connect with root in constructor.
+     * @return string Return base 64 file content or empty string if not found.
+     */
+    public function getBase64File(string $filename): string
+    {
+        $filename = $this->removeUpperPath($filename);
+
+        if (is_file($this->root . DIRECTORY_SEPARATOR . $filename)) {
+            $filePath = $this->root . DIRECTORY_SEPARATOR . $filename;
+            $Finfo = new \finfo();
+            $mimetype = $Finfo->file($filePath, FILEINFO_MIME_TYPE);
+            unset($Finfo);
+            $data = file_get_contents($filePath);
+            return 'data:' . $mimetype . ';base64,' . base64_encode($data);
+        }
+
+        return '';
+    }// getBase64File
+
+
+    /**
      * Get file extension only.
      * 
      * @since 1.1.3
@@ -326,6 +353,30 @@ class FileSystem
 
         return (int) $bytesTotal;
     }// getFolderSize
+
+
+    /**
+     * Connect the specify path with root on constructor and get its full path.
+     * 
+     * Example: root path on constructor is /var/www/myproject and path argument on this method is images/vangogh.jpg<br>
+     * The result will be /var/www/myproject/images/vangogh.jpg
+     * 
+     * @since 1.1.4
+     * @param string $path The path to get full path with root.
+     * @return string Return full path that was connected with root.
+     */
+    public function getFullPathWithRoot(string $path): string
+    {
+        $path = $this->removeUpperPath($path);
+        if (substr($path, 0, strlen('./')) == './') {
+            // if found "./" in the beginning
+            // remove it.
+            $path = substr($path, strlen('./'));
+        }
+        // remove slash, back slash from the left.
+        $path = ltrim($path, '\\/' . DIRECTORY_SEPARATOR);
+        return $this->root . DIRECTORY_SEPARATOR . $path;
+    }// getFullPathWithRoot
 
 
     /**
