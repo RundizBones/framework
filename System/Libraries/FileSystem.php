@@ -291,7 +291,7 @@ class FileSystem
      * Get file extension only.
      * 
      * @since 1.1.3
-     * @param string $path File name (with or without extension) or any path to get only file name.
+     * @param string $path File name (full path or related path) to get only file extension.
      * @return string Return only file extension without dot.
      */
     public function getFileExtensionOnly(string $path): string
@@ -310,7 +310,7 @@ class FileSystem
      * Get file name only.
      * 
      * @since 1.1.3
-     * @param string $path File name (with or without extension) or any path to get only file name.
+     * @param string $path File name (full path or related path) to get only file name.
      * @return string Return only file name without extension.
      */
     public function getFileNameOnly(string $path): string
