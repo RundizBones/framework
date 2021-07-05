@@ -175,6 +175,31 @@ class FileSystemTest extends \Rdb\Tests\BaseTestCase
     }// testGetFileExtensionOnly
 
 
+    public function testGetFileNameExtension()
+    {
+        $path = '/path/to/file';
+        $assert = 'file';
+        $this->assertSame($assert, $this->FileSystem->getFileNameExtension($path));
+
+        $path = '/path/to/.htaccess';
+        $assert = '.htaccess';
+        $this->assertSame($assert, $this->FileSystem->getFileNameExtension($path));
+
+        $path = '.htaccess';
+        $assert = '.htaccess';
+        $this->assertSame($assert, $this->FileSystem->getFileNameExtension($path));
+
+        $path = '/path/to/file.ext';
+        $assert = 'file.ext';
+        $this->assertSame($assert, $this->FileSystem->getFileNameExtension($path));
+        $this->assertSame($assert, $this->FileSystem->getFileNameExtension($path));
+
+        $path = '/path/to/file.mid.ext';
+        $assert = 'file.mid.ext';
+        $this->assertSame($assert, $this->FileSystem->getFileNameExtension($path));
+    }// testGetFileNameExtension
+
+
     public function testGetFileNameOnly()
     {
         $path = '/path/to/file';

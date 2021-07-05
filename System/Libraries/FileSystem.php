@@ -296,14 +296,28 @@ class FileSystem
      */
     public function getFileExtensionOnly(string $path): string
     {
-        $path = str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $path);
-        $expPath = explode('/', $path);
-        $fileName = $expPath[count($expPath) - 1];
-        unset($expPath);
+        $fileName = $this->getFileNameExtension($path);
 
         $expFile = explode('.', $fileName);
         return $expFile[count($expFile) - 1];
     }// getFileExtensionOnly
+
+
+    /**
+     * Get file name with extension. No path included.
+     * 
+     * Not check for file exists.
+     * 
+     * @since 1.1.4
+     * @param string $path Full path to file.
+     * @return string Return only file.ext from /path/to/file.ext
+     */
+    public function getFileNameExtension(string $path): string
+    {
+        $path = str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $path);
+        $expPath = explode('/', $path);
+        return $expPath[count($expPath) - 1];
+    }// getFileNameExtension
 
 
     /**
@@ -315,10 +329,7 @@ class FileSystem
      */
     public function getFileNameOnly(string $path): string
     {
-        $path = str_replace(['\\', '/', DIRECTORY_SEPARATOR], '/', $path);
-        $expPath = explode('/', $path);
-        $fileName = $expPath[count($expPath) - 1];
-        unset($expPath);
+        $fileName = $this->getFileNameExtension($path);
 
         $expFile = explode('.', $fileName);
         if (count($expFile) > 1) {
