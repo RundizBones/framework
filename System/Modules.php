@@ -295,7 +295,9 @@ class Modules
             $modules = [];
 
             foreach ($It as $FileInfo) {
-                $modules[] = $FileInfo->getFilename();
+                if ($FileInfo->isDir()) {
+                    $modules[] = $FileInfo->getFilename();
+                }
             }// endforeach;
 
             unset($FileInfo, $It);
