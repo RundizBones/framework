@@ -226,7 +226,7 @@ class Module extends BaseConsole
             if (defined('Command::INVALID')) {
                 return Command::INVALID;
             } else {
-                return 1;
+                return 2;
             }
         } elseif ($validated === true) {
             // if validated the module.
@@ -273,7 +273,7 @@ class Module extends BaseConsole
             if (defined('Command::INVALID')) {
                 return Command::INVALID;
             } else {
-                return 1;
+                return 2;
             }
         } elseif ($validated === true) {
             // if validated the module.
@@ -415,7 +415,7 @@ class Module extends BaseConsole
                 if (defined('Command::INVALID')) {
                     return Command::INVALID;
                 } else {
-                    return 1;
+                    return 2;
                 }
             } elseif ($validated === true) {
                 // if validated the module.
@@ -555,7 +555,7 @@ class Module extends BaseConsole
             if (defined('Command::INVALID')) {
                 return Command::INVALID;
             } else {
-                return 1;
+                return 2;
             }
         } elseif ($validated === true) {
             // if validated the module.

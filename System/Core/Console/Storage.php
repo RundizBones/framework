@@ -219,7 +219,7 @@ class Storage extends BaseConsole
             if (defined('Command::INVALID')) {
                 return Command::INVALID;
             } else {
-                return 1;
+                return 2;
             }
         } else {
             if (strpos($Input->getOption('subfolder'), '/') !== false) {
@@ -310,7 +310,7 @@ class Storage extends BaseConsole
             if (defined('Command::INVALID')) {
                 return Command::INVALID;
             } else {
-                return 1;
+                return 2;
             }
         } else {
             if (strpos($Input->getOption('subfolder'), '/') !== false) {
