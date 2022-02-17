@@ -7,6 +7,7 @@
 namespace Rdb\System\Core\Console;
 
 
+use \Symfony\Component\Console\Command\Command;
 use \Symfony\Component\Console\Formatter\OutputFormatterStyle;
 use \Symfony\Component\Console\Input\ArrayInput;
 use \Symfony\Component\Console\Input\InputArgument;
