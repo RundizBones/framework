@@ -139,7 +139,8 @@ return
     ],
     'environments' => [
         'default_migration_table' => 'phinxlog',
-        'default_database' => $appEnv,
+        'default_database' => $appEnv,// for phinx 0.11.x renamed to `default_environment` since 0.12.0
+        'default_environment' => $appEnv,// since phinx 0.12.0
         'production' => [
             'adapter' => ($prodDriver ?? ($defaultDriver ?? 'mysql')),
             'host' => ($prodDbHost ?? ($defaultDbHost ?? 'localhost')),
