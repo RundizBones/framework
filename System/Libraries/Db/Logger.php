@@ -145,7 +145,9 @@ class Logger
             }
             unset($key, $val);
         } else {
-            $statement = preg_replace($keys, $values, $statement, 1, $count);
+            if (is_string($values) || is_array($values)) {
+                $statement = preg_replace($keys, $values, $statement, 1, $count);
+            }
         }
         unset($ArrayUtil, $keys, $values, $valuesLimit, $wordsRepeated);
 

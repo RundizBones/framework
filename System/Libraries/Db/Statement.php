@@ -54,7 +54,7 @@ class Statement extends \PDOStatement
     /**
      * {@inheritDoc}
      */
-    public function bindParam($parameter, &$variable, $data_type = null, $length = null, $driverdata = null)
+    public function bindParam($parameter, &$variable, $data_type = null, $length = null, $driverdata = null): bool
     {
         if (!is_array($this->inputParams) && is_null($this->inputParams)) {
             $this->inputParams = [];
@@ -77,7 +77,7 @@ class Statement extends \PDOStatement
     /**
      * {@inheritDoc}
      */
-    public function bindValue($parameter, $value, $data_type = null)
+    public function bindValue($parameter, $value, $data_type = null): bool
     {
         if (!is_array($this->inputParams) && is_null($this->inputParams)) {
             $this->inputParams = [];
@@ -93,14 +93,14 @@ class Statement extends \PDOStatement
         $this->inputParams[$parameter] = $value;
         $this->inputDataTypes[$parameter] = $data_type;
 
-        parent::bindValue($parameter, $value, $data_type);
+        return parent::bindValue($parameter, $value, $data_type);
     }// bindValue
 
 
     /**
      * {@inheritDoc}
      */
-    public function execute($input_parameters = null)
+    public function execute($input_parameters = null): bool
     {
         // input params can be `array(':name1' => 'value1', ':name2' => 'value2')`, or `array('value1', 'value2')`, or `null`
         if (
