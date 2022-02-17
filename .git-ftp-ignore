@@ -30,6 +30,7 @@ public
 public/*
 storage
 storage/*
+System/vendor/*
 Tests
 Tests/*
 mkdocs.yml
