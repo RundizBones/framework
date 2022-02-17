@@ -114,6 +114,12 @@ class Constants extends BaseConsole
         }// endif; action.
 
         unset($Io, $optionGroup, $optionName);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// execute
 
 

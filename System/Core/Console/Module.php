@@ -143,20 +143,23 @@ class Module extends BaseConsole
         }
 
         if ($Input->getArgument('act') === 'disable') {
-            $this->executeDisable($Input, $Output);
+            return $this->executeDisable($Input, $Output);
         } elseif ($Input->getArgument('act') === 'enable') {
-            $this->executeEnable($Input, $Output);
+            return $this->executeEnable($Input, $Output);
         } elseif ($Input->getArgument('act') === 'install') {
-            $this->executeInstall($Input, $Output);
+            return $this->executeInstall($Input, $Output);
         } elseif ($Input->getArgument('act') === 'uninstall') {
-            $this->executeUninstall($Input, $Output);
+            return $this->executeUninstall($Input, $Output);
         } elseif ($Input->getArgument('act') === 'update') {
-            $this->executeUpdate($Input, $Output);
+            return $this->executeUpdate($Input, $Output);
         } else {
             $Io->caution('Unknow action');
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 2;
+            }
         }// endif; action.
-
-        unset($Io);
     }// execute
 
 
@@ -177,6 +180,11 @@ class Module extends BaseConsole
 
         if ($validated !== true) {
             $Io->error('The module you entered is not exists.');
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 2;
+            }
         } elseif ($validated === true) {
             // if validated the module.
             $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
@@ -188,6 +196,12 @@ class Module extends BaseConsole
         }
 
         unset($Io, $mname);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeDisable
 
 
@@ -208,6 +222,12 @@ class Module extends BaseConsole
 
         if ($validated !== true) {
             $Io->error('The module you entered is not exists.');
+
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 1;
+            }
         } elseif ($validated === true) {
             // if validated the module.
             $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
@@ -216,6 +236,12 @@ class Module extends BaseConsole
         }
 
         unset($Io, $mname);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeEnable
 
 
@@ -243,6 +269,12 @@ class Module extends BaseConsole
 
         if ($validated !== true) {
             $Io->error('The module you entered is not exists.');
+
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 1;
+            }
         } elseif ($validated === true) {
             // if validated the module.
 
@@ -335,6 +367,12 @@ class Module extends BaseConsole
         }
 
         unset($Io, $mname, $validated);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeInstall
 
 
@@ -365,7 +403,7 @@ class Module extends BaseConsole
         unset($questionMsg);
 
         if (!$Helper->ask($Input, $Output, $Question)) {
-            return;
+            return 0;
         } else {
             $mname = $Input->getOption('mname');
             // validate if module exists (not care enabled or not, it can be enabled at end).
@@ -373,6 +411,12 @@ class Module extends BaseConsole
 
             if ($validated !== true) {
                 $Io->error('The module you entered is not exists.');
+
+                if (defined('Command::INVALID')) {
+                    return Command::INVALID;
+                } else {
+                    return 1;
+                }
             } elseif ($validated === true) {
                 // if validated the module.
                 $uninstalled = true;
@@ -479,6 +523,12 @@ class Module extends BaseConsole
         }// endif; ask for confirm.
 
         unset($Helper, $Io, $mname, $nodeleteOption, $Question, $validated);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeUninstall
 
 
@@ -501,6 +551,12 @@ class Module extends BaseConsole
 
         if ($validated !== true) {
             $Io->error('The module you entered is not exists or not enabled.');
+
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 1;
+            }
         } elseif ($validated === true) {
             // if validated the module.
             $updated = true;
@@ -595,6 +651,12 @@ class Module extends BaseConsole
         }
 
         unset($Io, $mname, $validated);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeUpdate
 
 

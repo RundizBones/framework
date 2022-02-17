@@ -7,8 +7,9 @@
 namespace Rdb\System\Core\Console;
 
 
+use \Symfony\Component\Console\Command\Command;
 use \Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
+use \Symfony\Component\Console\Helper\TableSeparator;
 use \Symfony\Component\Console\Input\InputArgument;
 use \Symfony\Component\Console\Input\InputInterface;
 use \Symfony\Component\Console\Input\InputOption;
@@ -89,19 +90,21 @@ class Storage extends BaseConsole
 
         if ($Input->getArgument('act') === 'list') {
             // if action is list.
-            $this->executeList($Input, $Output);
+            return $this->executeList($Input, $Output);
         } elseif ($Input->getArgument('act') === 'delete') {
             // if action is delete.
-            $this->executeDelete($Input, $Output);
+            return $this->executeDelete($Input, $Output);
         } elseif ($Input->getArgument('act') == 'clear') {
             // if action is clear.
-            $this->executeClear($Input, $Output);
+            return $this->executeClear($Input, $Output);
         } else {
             $Io->caution('Unknow action');
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 2;
+            }
         }// endif action.
-
-        $this->FileSystem = null;
-        unset($Io);
     }// execute
 
 
@@ -120,7 +123,7 @@ class Storage extends BaseConsole
         $Question = new ConfirmationQuestion('Continue with this action? (y, n)', false);
 
         if (!$Helper->ask($Input, $Output, $Question)) {
-            return;
+            return 0;
         } else {
             $deletedList = [];
             $deletedList = array_merge($deletedList, $this->executeClearDelete());
@@ -143,6 +146,12 @@ class Storage extends BaseConsole
         }// endif ask confirm
 
         unset($Helper, $Io, $Question);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeClear
 
 
@@ -206,6 +215,12 @@ class Storage extends BaseConsole
 
         if ($Input->getOption('subfolder') == null) {
             $Io->caution('No subfolder option specified.');
+
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 1;
+            }
         } else {
             if (strpos($Input->getOption('subfolder'), '/') !== false) {
                 $subfolder = str_replace(['../', '..\\', '..'], '', $Input->getOption('subfolder'));
@@ -269,6 +284,12 @@ class Storage extends BaseConsole
         }// endif check option.
 
         unset($Io);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeDelete
 
 
@@ -285,6 +306,12 @@ class Storage extends BaseConsole
 
         if ($Input->getOption('subfolder') == null) {
             $Io->caution('No subfolder option specified.');
+
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 1;
+            }
         } else {
             if (strpos($Input->getOption('subfolder'), '/') !== false) {
                 // if using glob path pattern (contain / as directory separator NOT \).
@@ -323,6 +350,12 @@ class Storage extends BaseConsole
         }// endif check option.
 
         unset($Io);
+
+        if (defined('Command::SUCCESS')) {
+            return Command::SUCCESS;
+        } else {
+            return 0;
+        }
     }// executeList
 
 
