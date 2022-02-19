@@ -3,6 +3,7 @@
 .phpunit.result.cache
 .vs
 build
+composer.mydefault.json
 composer.json
 composer.lock
 node_modules

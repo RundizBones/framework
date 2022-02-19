@@ -144,6 +144,10 @@ Copy **rdb.default** to **rdb**.
 #### composer.json
 Copy **composer.default.json** to **composer.json** and then run the command `composer install`.
 
+You may copy **composer.default.json** to **composer.mydefault.json** to override its default with your modification such as make change to packages version that is required.<br>
+The **composer.mydefault.json** will be use when update module with the command `update` or `install` with `rdb` such as `php rdb system:module update --mname="YourModule"`.<br>
+You have to run the command `composer install` or `composer update` again to update the packages.
+
 #### Verify your installation
 Browse the web page to http://yourdomain/installdir**/rundizbones** such as http://localhost.localhost/rundizbones.<br>
 If you see welcome message then installation is finished successfully.
