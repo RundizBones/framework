@@ -639,6 +639,7 @@ class Module extends BaseConsole
                     }
                     unset($copiedResult);
                 }
+                unset($composerDefault);
 
                 // display success. ---------------------------------------------------------------------------
                 $additionalMessages = [];
