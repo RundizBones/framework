@@ -28,6 +28,7 @@ return [
             \PDO::ATTR_ERRMODE => \PDO::ERRMODE_SILENT,// use `\PDO::ERRMODE_SILENT` for production, `\PDO::ERRMODE_EXCEPTION` for development. (use warning cannot work with try..catch).
             \PDO::ATTR_DEFAULT_FETCH_MODE => \PDO::FETCH_OBJ,
             \PDO::ATTR_STATEMENT_CLASS => ['\\Rdb\\System\\Libraries\\Db\\Statement', [$Container]],
+            \PDO::ATTR_STRINGIFY_FETCHES => true,
         ],
         // Table prefix.
         'tablePrefix' => '',
