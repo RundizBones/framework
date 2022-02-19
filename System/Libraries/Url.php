@@ -329,7 +329,7 @@ class Url
         if (isset($_SERVER['QUERY_STRING']) && !empty($_SERVER['QUERY_STRING'])) {
             $output .= '?';
             parse_str($_SERVER['QUERY_STRING'], $vars);
-            $query = http_build_query($vars, null, ini_get('arg_separator.output'), PHP_QUERY_RFC3986);
+            $query = http_build_query($vars, '', ini_get('arg_separator.output'), PHP_QUERY_RFC3986);
             $output .= $query;
             unset($query, $vars);
         }
