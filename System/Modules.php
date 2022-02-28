@@ -61,16 +61,10 @@ class Modules
 
         // begins add require and require-dev (if available) to application composer.json.
         if (isset($ModuleComposerObject->require) && is_object($ModuleComposerObject->require)) {
-            foreach ($ModuleComposerObject->require as $name => $version) {
-                $RootComposerObject->require->{$name} = $version;
-            }// endforeach;
-            unset($name, $version);
+            $RootComposerObject = $this->copyComposerPackageIfNewer($RootComposerObject, $ModuleComposerObject);
         }
         if (isset($ModuleComposerObject->{'require-dev'}) && is_object($ModuleComposerObject->{'require-dev'})) {
-            foreach ($ModuleComposerObject->{'require-dev'} as $name => $version) {
-                $RootComposerObject->{'require-dev'}->{$name} = $version;
-            }// endforeach;
-            unset($name, $version);
+            $RootComposerObject = $this->copyComposerPackageIfNewer($RootComposerObject, $ModuleComposerObject, 'require-dev');
         }
 
         // finished add, write to json string with pretty print and then write into file.
@@ -87,6 +81,55 @@ class Modules
             return false;
         }
     }// copyComposer
+
+
+    /**
+     * Copy composer package from module to root if module is using newer version range.
+     * 
+     * This method was called from `copyComposer()`.
+     * 
+     * @since 1.1.4
+     * @param object $RootComposerObject
+     * @param object $ModuleComposerObject
+     * @param string $copyProperty The property on moduleComposer.json that will be copy. Accept 'require', 'require-dev'.
+     * @return object Return modified root composer object.
+     */
+    private function copyComposerPackageIfNewer($RootComposerObject, $ModuleComposerObject, string $copyProperty = 'require')
+    {
+        if (!is_object($RootComposerObject) || !is_object($ModuleComposerObject)) {
+            return $RootComposerObject;
+        }
+        if (!in_array($copyProperty, ['require', 'require-dev'])) {
+            return $RootComposerObject;
+        }
+
+        if (isset($ModuleComposerObject->{$copyProperty}) && is_object($ModuleComposerObject->{$copyProperty})) {
+            // if found module's composer object and its target copy property.
+            foreach ($ModuleComposerObject->{$copyProperty} as $name => $versionRange) {
+                $allowedMerge = true;
+                if (isset($RootComposerObject->{$copyProperty}->{$name})) {
+                    // if this composer package is already in root composer.json.
+                    $VersionP = new \Composer\Semver\VersionParser();
+                    $RootCPVersionRange = $VersionP->parseConstraints($RootComposerObject->{$copyProperty}->{$name});// root's composer package version range.
+                    $ModuleCPVersionRange = $VersionP->parseConstraints($versionRange);// module's composer package version range.
+                    if ($RootCPVersionRange->getUpperBound()->compareTo($ModuleCPVersionRange->getUpperBound(), '>')) {
+                        // if root's composer package version range is using newer than module's one.
+                        // don't allowed.
+                        $allowedMerge = false;
+                    }
+                    unset($ModuleCPVersionRange, $RootCPVersionRange, $VersionP);
+                }
+
+                if (true === $allowedMerge) {
+                    $RootComposerObject->{$copyProperty}->{$name} = $versionRange;
+                }
+                unset($allowedMerge);
+            }// endforeach;
+            unset($name, $versionRange);
+        }
+
+        return $RootComposerObject;
+    }// copyComposerPackageIfNewer
 
 
     /**
