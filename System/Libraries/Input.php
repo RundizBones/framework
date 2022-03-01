@@ -97,8 +97,8 @@ class Input
                 // if found quality values (;q=xxx) for example application/xml;q=0.9
                 // remove quality values.
                 $expQualityValues = explode(';', $httpAccept);
-                $httpAccept = $expHttpAccept[0];
-                unset($expHttpAccept);
+                $httpAccept = $expQualityValues[0];
+                unset($expQualityValues);
             }
             $httpAccept = trim($httpAccept);
             $this->httpAcceptContentTypes = [$httpAccept => floatval(1.0)];
