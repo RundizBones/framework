@@ -4,8 +4,14 @@
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [QSA,L]
+</IfModule>
 
-    # Change directory index file by .html come first.
+<IfModule mod_dir.c>
+	# Change directory index file by .html come first.
     # This can combine between PHP and any front-end framework which is HTML and JS.
     DirectoryIndex index.html index.php
+</IfModule>
+
+<IfModule mod_setenvif.c>
+	SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 </IfModule>
