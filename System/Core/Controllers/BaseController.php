@@ -169,7 +169,7 @@ abstract class BaseController
             header('Content-Type: application/xml');
         }
 
-        $SimpleXml = new \SimpleXMLElement('<?xml version="1.0"?><data></data>');
+        $SimpleXml = new \SimpleXMLElement('<?xml version="1.0" encoding="utf-8"?><data></data>');
         $Xml = new \Rdb\System\Libraries\Xml();
         $Xml->fromArray($output, $SimpleXml);
         $content = $SimpleXml->asXML();
