@@ -18,7 +18,6 @@
 *.json text eol=lf
 *.map text eol=lf
 *.md text eol=lf
-*.mo text eol=lf
 *.php text eol=lf
 *.po text eol=lf
 *.pot text eol=lf
