@@ -8,5 +8,5 @@ API doc is no need to generate every commit, just when there are changes on rele
 
 ## Release
 * Update version name in System/App.php
-* Run command `npm run pack && npm run pack -- --development` to pack the files into zip files.
+* Run external pack command `rdbdev pack --module framework --packDev --packProd` to pack files and folders into a zip file.
 * Then commit to GitHub.
