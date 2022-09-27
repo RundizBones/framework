@@ -152,6 +152,7 @@ class Views
         unset($debugTrace);
 
         extract($data);
+        $Container = $this->Container;
         ob_start();
         include $viewsFullPath;// this can trigger error to notice devs if the file was not found.
         $viewsContent = ob_get_contents();
