@@ -181,6 +181,36 @@ class Modules
 
 
     /**
+     * Set module to be disabled or enabled depend on `$enable` argument.
+     * 
+     * @since 1.1.6
+     * @param bool $enable Set to `true` (default) to enable the module, set to `false` to disable it.
+     * @return bool Return `true` on success, `false` on failure.
+     */
+    public function enable(string $moduleSystemName, bool $enable = true): bool
+    {
+        $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $moduleSystemName);
+        if (true === $enable) {
+            // if command to enable
+            $deleteResult = $FileSystem->deleteFile('.disabled');
+            $fileExists = $FileSystem->isFile('.disabled', false);
+            return ($deleteResult === true && $fileExists === false);
+        } elseif (false === $enable) {
+            // if command to disable
+            if (!$FileSystem->isFile('.disabled', false)) {
+                $createResult = $FileSystem->createFile('.disabled', '');
+            } else {
+                $createResult = true;
+            }
+            $fileExists = $FileSystem->isFile('.disabled', false);
+            return ($createResult !== false && $fileExists === true);
+        }
+
+        return false;
+    }// enable
+
+
+    /**
      * Execute a module controller/method.
      * 
      * This is useful for widgetize, modular process.

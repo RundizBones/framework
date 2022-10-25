@@ -188,11 +188,7 @@ class Module extends BaseConsole
             }
         } elseif ($validated === true) {
             // if validated the module.
-            $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
-            if (!$FileSystem->isFile('.disabled', false)) {
-                // if .disabled file is not exists.
-                $FileSystem->createFile('.disabled', '');
-            }
+            $this->Modules->enable($mname, false);
             $Io->success('Success, your module has been disabled.');
         }
 
@@ -231,8 +227,7 @@ class Module extends BaseConsole
             }
         } elseif ($validated === true) {
             // if validated the module.
-            $FileSystem = new \Rdb\System\Libraries\FileSystem(MODULE_PATH . DIRECTORY_SEPARATOR . $mname);
-            $FileSystem->deleteFile('.disabled');
+            $this->Modules->enable($mname);
             $Io->success('Success, your module has been enabled.');
         }
 

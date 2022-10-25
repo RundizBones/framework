@@ -126,6 +126,15 @@ class ModulesTest extends \Rdb\Tests\BaseTestCase
     }// testCopyComposerAllModules
 
 
+    public function testEnable()
+    {
+        $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
+
+        $this->assertTrue($Modules->enable($this->newModule));// enable it.
+        $this->assertTrue($Modules->enable($this->newModule, false));// disable it.
+    }// testEnable
+
+
     public function testExecute()
     {
         $Modules = new \Rdb\System\Modules(new \Rdb\System\Container());
