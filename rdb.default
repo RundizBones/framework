@@ -61,8 +61,8 @@ if (!defined('PUBLIC_PATH')) {
 
 
 // Check required PHP version. Do not change this because the source code inside is based on this version.
-if (version_compare(phpversion(), '7.0', '<')) {
-    throw new \RuntimeException('Required at least PHP 7.0');
+if (version_compare(phpversion(), '7.1', '<')) {
+    throw new \RuntimeException('Required at least PHP 7.1');
 }
 
 
