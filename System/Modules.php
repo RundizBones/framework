@@ -184,6 +184,7 @@ class Modules
      * Set module to be disabled or enabled depend on `$enable` argument.
      * 
      * @since 1.1.6
+     * @param string $moduleSystemName The module system name (folder name) to enable or disable.
      * @param bool $enable Set to `true` (default) to enable the module, set to `false` to disable it.
      * @return bool Return `true` on success, `false` on failure.
      */
