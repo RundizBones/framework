@@ -71,6 +71,10 @@ class Input
         if (count($expHttpAccept) > 1) {
             $arrayHttpAccepts = [];
             foreach ($expHttpAccept as $eachHttpAccept) {
+                if (!is_scalar($eachHttpAccept)) {
+                    continue;
+                }
+
                 $expQualityValues = explode(';', $eachHttpAccept);
 
                 if (!array_key_exists(1, $expQualityValues)) {
@@ -93,7 +97,7 @@ class Input
         unset($expHttpAccept);
 
         if (stripos($httpAccept, 'text/') !== false || stripos($httpAccept, 'application/') !== false) {
-            if (stripos($httpAccept, ';') !== false) {
+            if (is_scalar($httpAccept) && stripos($httpAccept, ';') !== false) {
                 // if found quality values (;q=xxx) for example application/xml;q=0.9
                 // remove quality values.
                 $expQualityValues = explode(';', $httpAccept);

@@ -68,6 +68,7 @@ class Views
             $debugBacktrace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 5);
             if (
                 isset($debugBacktrace[2]['class']) && 
+                is_scalar($debugBacktrace[2]['class']) &&
                 stripos($debugBacktrace[2]['class'], 'Rdb\\Modules\\') !== false
             ) {
                 // if found modules in trace.

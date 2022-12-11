@@ -404,7 +404,7 @@ class Url
             $parsedUrl['pass'] = rawurlencode($parsedUrl['pass']);
         }
 
-        if (array_key_exists('path', $parsedUrl)) {
+        if (array_key_exists('path', $parsedUrl) && is_scalar($parsedUrl['path'])) {
             $expPath = explode('/', $parsedUrl['path']);
             foreach ($expPath as $index => $segment) {
                 $expPath[$index] = rawurlencode($segment);
@@ -540,7 +540,7 @@ class Url
         $parsedUrl = parse_url($url);
 
         // encode each segment of path.
-        if (array_key_exists('path', $parsedUrl)) {
+        if (array_key_exists('path', $parsedUrl) && is_scalar($parsedUrl['path'])) {
             $expPath = explode('/', $parsedUrl['path']);
             foreach ($expPath as $index => $segment) {
                 $expPath[$index] = rawurlencode($segment);

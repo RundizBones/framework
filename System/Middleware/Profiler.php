@@ -99,7 +99,7 @@ class Profiler
             }
         }
 
-        if (strpos($dataValues['data'], ';') !== false) {
+        if (is_scalar($dataValues['data']) && strpos($dataValues['data'], ';') !== false) {
             // prevent sql injection! example: SELECT * FROM table where username = 'john'; DROP TABLE table;' this can execute 2 queries. explode them and just get the first!
             $expData = explode(';', str_replace('; ', ';', $dataValues['data']));
             $dataValues['data'] = $expData[0];

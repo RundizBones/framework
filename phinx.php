@@ -98,10 +98,10 @@ function rdbGetDataFromDSN(string $dsn, string $name, string $default = '')
     $dsnExp = explode(':', $dsn);
     if (count($dsnExp) == 2) {
         list($driver, $dsnValues) = $dsnExp;
-        $dsnValuesExp = explode(';', $dsnValues);
+        $dsnValuesExp = explode(';', (is_scalar($dsnValues) ? $dsnValues : ''));
         if (is_array($dsnValuesExp)) {
             foreach ($dsnValuesExp as $dsnItem) {
-                if (stripos($dsnItem, $name) !== false) {
+                if (is_scalar($dsnItem) && stripos($dsnItem, $name) !== false) {
                     $dsnItemExp = explode('=', $dsnItem);
                     return (isset($dsnItemExp[1]) ? trim($dsnItemExp[1]) : $default);
                 }

@@ -147,7 +147,7 @@ class Db
 
         foreach ($data as $field => $value) {
             // make sure that field does not contain table.field. if it is contain table.field then set backtick correctly.
-            if (stripos($field, '.') !== false) {
+            if (is_scalar($field) && stripos($field, '.') !== false) {
                 // if contain table.field.
                 list($table, $fieldName) = explode('.', $field);
                 if ($placeholderType === 'positional') {
@@ -314,7 +314,12 @@ class Db
             $result = $Sth->fetchObject();
             unset($Sth);
 
-            if (is_object($result) && !empty($result) && isset($result->Collation)) {
+            if (
+                is_object($result) && 
+                !empty($result) && 
+                isset($result->Collation) && 
+                is_scalar($result->Collation)
+            ) {
                 list($currentCharset) = explode('_', $result->Collation);
                 $currentCharset = strtolower($currentCharset);
                 if ($currentCharset === strtolower($convertFrom) || $currentCharset === strtolower($tableCharset)) {
@@ -418,7 +423,10 @@ class Db
                         if (
                             isset($columns[$row->Field]) && 
                             isset($columns[$row->Field]['convertFrom']) && 
-                            isset($columns[$row->Field]['collate'])
+                            isset($columns[$row->Field]['collate']) && 
+                            is_scalar($columns[$row->Field]['collate']) &&
+                            isset($row->Collation) &&
+                            is_scalar($row->Collation)
                         ) {
                             list($currentCharset) = explode('_', $row->Collation);
                             $currentCharset = strtolower($currentCharset);
