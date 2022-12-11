@@ -12,6 +12,7 @@ namespace Rdb\System\Core\Controllers;
  * 
  * @since 0.1
  */
+#[AllowDynamicProperties]
 abstract class BaseController
 {
 

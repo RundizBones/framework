@@ -12,6 +12,7 @@ namespace Rdb\System\Core\Models;
  * 
  * @since 0.1
  */
+#[AllowDynamicProperties]
 abstract class BaseModel
 {
 

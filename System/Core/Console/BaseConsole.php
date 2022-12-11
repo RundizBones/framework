@@ -15,6 +15,7 @@ use Symfony\Component\Console\Command\Command;
  * 
  * @since 0.1
  */
+#[AllowDynamicProperties]
 class BaseConsole extends Command
 {
 
