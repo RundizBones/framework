@@ -275,7 +275,7 @@ class Url
 
         if (mb_substr($appBase, 0, mb_strlen($_SERVER['SCRIPT_NAME'])) === $scriptName) {
             // if found /install-dir/index.php (install dir with file name).
-            $appBase = preg_replace('#^' . preg_quote($scriptName) . '#u', $scriptNameUpper, $appBase, 1);
+            $appBase = preg_replace('#^' . preg_quote($scriptName, '#') . '#u', $scriptNameUpper, $appBase, 1);
         }
         unset($scriptName, $scriptNameUpper);
 
