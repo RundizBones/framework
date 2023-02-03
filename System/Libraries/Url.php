@@ -279,7 +279,7 @@ class Url
         }
         unset($scriptName, $scriptNameUpper);
 
-        return $appBase;
+        return rtrim($appBase, '/');
     }// getPublicUrl
 
 

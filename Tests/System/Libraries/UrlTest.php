@@ -327,6 +327,10 @@ class UrlTest extends \Rdb\Tests\BaseTestCase
         $_SERVER['SCRIPT_NAME'] = '/index.php';// required
         $this->runAppWithMiddleWare('get', '/en-US');
         $this->assertSame('', $this->Url->getPublicUrl());
+
+        // testing with /index.php/ URL.
+        $this->runAppWithMiddleWare('get', '/index.php/en-US');// required
+        $this->assertSame('', $this->Url->getPublicUrl());
         
         $_SERVER['SCRIPT_NAME'] = '/myapp/index.php';// required
         $this->runAppWithMiddleWare('get', '/myapp/en-US');
