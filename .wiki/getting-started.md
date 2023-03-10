@@ -168,6 +168,7 @@ Example:
 if (!defined('RDB_NOCONFIG_USEDEFAULT')) {
     define('RDB_NOCONFIG_USEDEFAULT', true);
 }
+```
 
 ---
 
