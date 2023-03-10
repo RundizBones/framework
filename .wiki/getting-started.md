@@ -159,6 +159,16 @@ For example: if you set `APP_ENV` to `development` then copy config file to **co
 
 Read the description on each configuration file. Modify configuration to your need and save changed. Maybe upload to your server if you modify it on local but run on server.
 
+You may define additional constant named `RDB_NOCONFIG_USEDEFAULT` and set its value to `true` (boolean) in the framework's **index.php** and **rdb** files 
+to always use default config if it was not found in `APP_ENV` folder, 
+otherwise the framework will look into 'production', 'development', 'default' by order.
+
+Example:
+```
+if (!defined('RDB_NOCONFIG_USEDEFAULT')) {
+    define('RDB_NOCONFIG_USEDEFAULT', true);
+}
+
 ---
 
 To start write your module, please continue reading on [Module folder structure][mdfs].

@@ -54,6 +54,8 @@ if (!defined('PUBLIC_PATH')) {
      */
     define('PUBLIC_PATH', __DIR__);
 }
+
+// Additional constants can be define here, below this line but before "Do not change.." line.
 // End define constants ---------------------------------------------------------------------
 // Do not change anything below this line.
 

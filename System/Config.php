@@ -139,7 +139,14 @@ class Config
             // if found config file from /config/ENV/.
             return $configBaseDir.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$configEnvDir.DIRECTORY_SEPARATOR.$file.'.php';
         } else {
-            $envs = ['production', 'development', 'default'];
+            // if not found config file from `APP_ENV`.
+            if (defined('RDB_NOCONFIG_USEDEFAULT') && RDB_NOCONFIG_USEDEFAULT === true) {
+                // if defined `RDB_NOCONFIG_USEDEFAULT` constant and was set to `true` means always use default if config from `APP_ENV` is not found.
+                $envs = ['default'];
+            } else {
+                $envs = ['production', 'development', 'default'];
+            }
+
             foreach ($envs as $configEnvDir) {
                 if (is_file($configBaseDir.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$configEnvDir.DIRECTORY_SEPARATOR.$file.'.php')) {
                     // if found config file from /config/ENV (by order in $envs)/.
