@@ -47,4 +47,7 @@ Tests export-ignore
 .dev-notes export-ignore
 .gitattributes export-ignore
 .gitignore export-ignore
+node_tasks export-ignore
+phpdoc.xml export-ignore
+phpdoc3.xml export-ignore
 phpunit.xml export-ignore
