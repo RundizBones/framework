@@ -9,7 +9,7 @@
 </IfModule>
 
 <IfModule mod_dir.c>
-	# Change directory index file by .html come first.
+    # Change directory index file by .html come first.
     # This can combine between PHP and any front-end framework which is HTML and JS.
     DirectoryIndex index.html index.php
 </IfModule>
