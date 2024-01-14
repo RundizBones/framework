@@ -9,6 +9,7 @@ This framework require at least PHP 7.1 to work.
 * Extract files to your location.
 * Copy **composer.default.json** to **composer.json**.
 * Copy **rdb.default** to **rdb**.
+* Copy **public/default.htaccess** to **public/.htaccess**.
 * Run `composer install` command.
 * Browse to your installed URL and follow with **/rundizbones**. Example: http://localhost.localhost/rundizbones
 * If your installed correctly, it will showing the welcome page.
@@ -19,6 +20,8 @@ Extract framework files to your location. The folder structure for the framework
 config/
 Modules/
 public/
+    default.htaccess
+    .htaccess
 storage/
 System/
 Tests/
@@ -36,6 +39,9 @@ These are folders and files that is required to make it work. The other folders 
 * **Modules** folder contains the working module. Your code work as module.
 * **public** folder is the folder that will be serve via HTTP. 
     If your root web server is the other name such as **public_html**, or **www** you have to modify **index.php**, **rdb** files. (Please read more description below.)
+    * **public/default.htaccess** file contains default configuration for use with web server.<br>
+        ---*This file is no need on production.*---
+    * **public/.htaccess** file is copied from **public/default.htaccess** and maybe modified the configurations.
 * **storage** folder contains server side storage folders and files such as cache, logs. Some modules may put the server side files here to prevent access from public.
 * **System** folder contains the framework files.
 * **Tests** folder contains unit tests.<br>
@@ -124,6 +130,7 @@ storage/
 
 1. Open **index.php** file in root web and modify `define('ROOT_PATH', dirname(__DIR__, 4));`
 2. Open **rdb** file and modify `define('PUBLIC_PATH', __DIR__ . '/public/sub1/sub2/sub3');`
+3. You may need to open **public/sub1/sub2/sub3/.htaccess** to modify `RewriteBase` if the result is 404 error.
 
 ##### Use the root web at the same level as framework
 ```
@@ -147,6 +154,10 @@ Copy **composer.default.json** to **composer.json** and then run the command `co
 You may copy **composer.default.json** to **composer.mydefault.json** to override its default with your modification such as make change to packages version that is required.<br>
 The **composer.mydefault.json** will be use when update module with the command `update` or `install` with `rdb` such as `php rdb system:module update --mname="YourModule"`.<br>
 You have to run the command `composer install` or `composer update` again to update the packages.
+
+#### public/.htaccess
+Copy **public/default.htaccess** to **public/.htaccess**. (The **public** folder maybe some where else your public directory named such as **public_html**.)  
+You may need to modify the line `RewriteBase` if the current config cause your site showing 404 error on existing URL.
 
 #### Verify your installation
 Browse the web page to http://yourdomain/installdir**/rundizbones** such as http://localhost.localhost/rundizbones.<br>

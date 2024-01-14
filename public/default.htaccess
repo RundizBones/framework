@@ -1,6 +1,8 @@
 <IfModule mod_rewrite.c>
     Options -MultiViews
     RewriteEngine On
+    # In some case such as your web server use `Alias`, you will need to set `RewriteBase` value.
+    # RewriteBase /
     RewriteCond %{REQUEST_FILENAME} !-f
     RewriteCond %{REQUEST_FILENAME} !-d
     RewriteRule ^ index.php [QSA,L]

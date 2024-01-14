@@ -9,7 +9,7 @@
         "Modules/*.*",
         "phinx.php",
         "phpunit.xml",
-        "public/.htaccess",
+        "public/default.htaccess",
         "public/index.php",
         "public/readme.txt",
         "rdb.default",
