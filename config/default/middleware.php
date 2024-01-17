@@ -22,9 +22,10 @@
 $beforeMiddleware = [];
 
 // The framework's middleware, please keep it first if you don't have anything to run before it.
-$beforeMiddleware[0] = '\Rdb\System\Middleware\Profiler:init';// needs close at afterMiddleware.
-$beforeMiddleware[1] = '\Rdb\System\Middleware\RemoveTrailingSlash:run';
-$beforeMiddleware[2] = '\Rdb\System\Middleware\I18n:init';
+$beforeMiddleware[0] = '\Rdb\System\Middleware\Profiler:init';// needs to be close the process at afterMiddleware.
+$beforeMiddleware[1] = '\Rdb\System\Middleware\ErrorHandler:init';
+$beforeMiddleware[2] = '\Rdb\System\Middleware\RemoveTrailingSlash:run';
+$beforeMiddleware[3] = '\Rdb\System\Middleware\I18n:init';
 // add middleware below.
 
 

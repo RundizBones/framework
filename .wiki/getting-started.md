@@ -42,7 +42,7 @@ These are folders and files that is required to make it work. The other folders 
     * **public/default.htaccess** file contains default configuration for use with web server.<br>
         ---*This file is no need on production.*---
     * **public/.htaccess** file is copied from **public/default.htaccess** and maybe modified the configurations.
-* **storage** folder contains server side storage folders and files such as cache, logs. Some modules may put the server side files here to prevent access from public.
+* **storage** folder contains server side storage folders and files such as cache, logs. Some modules may put the server side files here to prevent access from public. The reserved folder in this **storage** folder is **logs**.
 * **System** folder contains the framework files.
 * **Tests** folder contains unit tests.<br>
     ---*This folder is no need on production.*---
