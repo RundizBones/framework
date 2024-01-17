@@ -1,5 +1,13 @@
+
+
+# BEGIN RundizBones
 <IfModule mod_rewrite.c>
-    Options -MultiViews
+    <IfModule mod_negotiation.c>
+        # `-MultiViews` is for prevent calling **configuration.php** but server found and use **configuration/** folder.
+        # ( https://stackoverflow.com/a/25423722/128761 , https://httpd.apache.org/docs/2.4/content-negotiation.html#multiviews )
+        Options -MultiViews
+    </IfModule>
+
     RewriteEngine On
     # In some case such as your web server use `Alias`, you will need to set `RewriteBase` value.
     # RewriteBase /
@@ -17,3 +25,5 @@
 <IfModule mod_setenvif.c>
 	SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 </IfModule>
+# END RundizBones
+
