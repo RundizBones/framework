@@ -23,7 +23,7 @@
 </IfModule>
 
 <IfModule mod_setenvif.c>
-	SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
+    SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1
 </IfModule>
 # END RundizBones
 
