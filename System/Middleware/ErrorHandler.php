@@ -107,7 +107,6 @@ class ErrorHandler
                     $logErrors = true;
                 }
                 break;
-            
         }
 
         if (isset($logErrors) && true === $logErrors) {
