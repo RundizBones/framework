@@ -60,7 +60,7 @@ class ErrorHandler
 
 
     /**
-     * Change `log_error` in the php.ini depend on `log.donotLogLevel` in config/[environment]/app.php file.
+     * Change `log_errors` in the php.ini depend on `log.donotLogLevel` in config/[environment]/app.php file.
      * 
      * @link https://www.php.net/manual/en/function.set-error-handler.php Document.
      * @param int $errno The first parameter, `errno`, will be passed the level of the error raised, as an integer.
@@ -69,7 +69,7 @@ class ErrorHandler
      * @param int|null $errline If the callback accepts a fourth parameter, `errline`, it will be passed the line number where the error was raised, as an integer.
      * @return bool If the function returns `false` then the normal error handler continues.
      */
-    public function changeLogErrorIniSetting(int $errno, string $errstr, ?string $errfile, ?int$errline)
+    public function changeLogErrorsIniSetting(int $errno, string $errstr, ?string $errfile, ?int$errline)
     {
         switch ($errno) {
             case E_STRICT:
@@ -118,7 +118,7 @@ class ErrorHandler
 
         unset($logErrors);
         return false;
-    }// changeLogErrorIniSetting
+    }// changeLogErrorsIniSetting
 
 
     /**
@@ -143,7 +143,7 @@ class ErrorHandler
         if (isset($configLog['donotLogLevel']) && is_numeric($configLog['donotLogLevel'])) {
             // if there is config about do not log level.
             $this->donotLogLevel = intval($configLog['donotLogLevel']);
-            set_error_handler([$this, 'changeLogErrorIniSetting']);
+            set_error_handler([$this, 'changeLogErrorsIniSetting']);
         }
 
         unset($configLog);
