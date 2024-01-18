@@ -71,51 +71,44 @@ class ErrorHandler
      */
     public function changeLogErrorsIniSetting(int $errno, string $errstr, ?string $errfile, ?int$errline)
     {
+        /* @var $eqFwDonotLogLevel int Equivalent framework's do not log. */
+        $eqFwDonotLogLevel = 0;
+
         switch ($errno) {
             case E_STRICT:
             case E_DEPRECATED:
             case E_USER_DEPRECATED:
-                if ($this->donotLogLevel >= 1) {
-                    $logErrors = true;
-                }
+                $eqFwDonotLogLevel = 1;
                 break;
             case E_NOTICE:
             case E_USER_NOTICE:
-                if ($this->donotLogLevel >= 2) {
-                    $logErrors = true;
-                }
+                $eqFwDonotLogLevel = 2;
                 break;
             case E_WARNING:
             case E_CORE_WARNING:
             case E_COMPILE_WARNING:
             case E_USER_WARNING:
-                if ($this->donotLogLevel >= 3) {
-                    $logErrors = true;
-                }
+                $eqFwDonotLogLevel = 3;
                 break;
             case E_ERROR:
             case E_CORE_ERROR:
             case E_COMPILE_ERROR:
             case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
-                if ($this->donotLogLevel >= 4) {
-                    $logErrors = true;
-                }
+                $eqFwDonotLogLevel = 4;
                 break;
             case E_PARSE:
-                if ($this->donotLogLevel >= 5) {
-                    $logErrors = true;
-                }
+                $eqFwDonotLogLevel = 5;
                 break;
         }
 
-        if (isset($logErrors) && true === $logErrors) {
+        if (isset($eqFwDonotLogLevel) && $this->donotLogLevel <= $eqFwDonotLogLevel) {
             ini_set('log_errors', true);
         } else {
             ini_set('log_errors', false);
         }
 
-        unset($logErrors);
+        unset($eqFwDonotLogLevel);
         return false;
     }// changeLogErrorsIniSetting
 
