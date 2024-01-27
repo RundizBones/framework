@@ -106,14 +106,23 @@ class ArrayUtil
     /**
      * Check if associative array or indexed array?
      * 
-     * @link https://stackoverflow.com/questions/173400/how-to-check-if-php-array-is-associative-or-sequential Original source code.
-     * @param array $array The array to check.
+     * @link https://www.php.net/manual/en/function.array-is-list.php#127044 Original source code.
+     * @link https://stackoverflow.com/questions/173400/how-to-check-if-php-array-is-associative-or-sequential Original source code of previous version and more code by the community.
+     * @link https://www.php.net/manual/en/function.array-is-list.php PHP document about `array_is_list()`.
+     * @link https://3v4l.org/paaK1 Benchmark result.
+     * @param array $array The array being evaluated.
      * @return bool Return `true` if it is associative array, `false` for otherwise.
      */
     public function isAssoc(array $array): bool
     {
-        foreach ($array as $key => $value) {
-            if (is_string($key)) {
+        if (function_exists('array_is_list')) {
+            return !array_is_list($array);
+        }
+
+        $i = -1;
+        foreach ($array as $k => $v) {
+            ++$i;
+            if ($k !== $i) {
                 return true;
             }
         }

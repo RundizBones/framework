@@ -70,16 +70,18 @@ class ArrayUtilTest extends \Rdb\Tests\BaseTestCase
         $this->assertTrue($ArrayUtil->isAssoc(['car' => 'Honda', 'bike' => 'Yamaha']));
         $this->assertFalse($ArrayUtil->isAssoc(['one', 'two', 'three']));
         $this->assertFalse($ArrayUtil->isAssoc([0 => 'one', 1 => 'two', 2 => 'three']));
-        $this->assertFalse($ArrayUtil->isAssoc([1 => 'one', 0 => 'two', 2 => 'three']));
-        $this->assertFalse($ArrayUtil->isAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
+        // the arrays below are un-ordered index array number. so, it is associative array.
+        $this->assertTrue($ArrayUtil->isAssoc([1 => 'one', 0 => 'two', 2 => 'three']));
+        $this->assertTrue($ArrayUtil->isAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
 
         // test for static
         $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc(['one', 'two', 'three' => 3, 4 => 'four']));
         $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc(['car' => 'Honda', 'bike' => 'Yamaha']));
         $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc(['one', 'two', 'three']));
         $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([0 => 'one', 1 => 'two', 2 => 'three']));
-        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 0 => 'two', 2 => 'three']));
-        $this->assertFalse(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
+        // the arrays below are un-ordered index array number. so, it is associative array.
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 0 => 'two', 2 => 'three']));
+        $this->assertTrue(\Rdb\System\Libraries\ArrayUtil::staticIsAssoc([1 => 'one', 4 => 'two', 3 => 'three']));
     }// testIsAssoc
 
 

@@ -10,7 +10,7 @@ namespace Rdb\System\Libraries;
 /**
  * Log class that is working on monolog.
  *
- * @author mr.v
+ * @since 0.1
  */
 class Logger
 {
@@ -54,7 +54,9 @@ class Logger
 
 
     /**
-     * Class constructor.
+     * Logger class constructor.
+     * 
+     * You can load this class via framework's `Container` object named `Logger`. Example: `$Logger = $Container->get('Logger');`.
      * 
      * @param \Rdb\System\Container $Container The DI container class.
      * @param array $options The options that will be override config file. 

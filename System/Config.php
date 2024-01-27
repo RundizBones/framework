@@ -52,6 +52,16 @@ class Config
 
 
     /**
+     * Config class constructor.
+     * 
+     * You can load this class via framework's `Container` object named `Config`. Example: `$Config = $Container->get('Config');`.
+     */
+    public function __construct()
+    {
+    }// __construct
+
+
+    /**
      * Magic get.
      * 
      * @since 1.1.1

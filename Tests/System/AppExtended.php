@@ -8,9 +8,7 @@ namespace Rdb\Tests\System;
 
 
 /**
- * Description of AppExtended
- *
- * @author mr.v
+ * Extended the framework's App class to allow access protected method.
  */
 class AppExtended extends \Rdb\System\App
 {

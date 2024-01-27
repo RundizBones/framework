@@ -66,7 +66,9 @@ class Db
 
 
     /**
-     * Class constructor.
+     * DB class constructor.
+     * 
+     * You can load this class via framework's `Container` object named `Db`. Example: `$Db = $Container->get('Db');`.
      * 
      * @param \Rdb\System\Container $Container The DI container class.
      */

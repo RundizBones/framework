@@ -35,7 +35,9 @@ class Modules
 
 
     /**
-     * The class constructor.
+     * Modules class constructor.
+     * 
+     * You can load this class via framework's `Container` object named `Modules`. Example: `$Modules = $Container->get('Modules');`.
      * 
      * @param \Rdb\System\Container $Container The DI container class.
      */
