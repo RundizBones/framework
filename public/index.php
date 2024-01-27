@@ -73,4 +73,3 @@ require ROOT_PATH . DIRECTORY_SEPARATOR . 'System' . DIRECTORY_SEPARATOR . 'vend
 $App = new \Rdb\System\App();
 $App->run();
 unset($App);
-exit();// this is required to make `__destruct()` method that was not call properly to be working and Xdebug can log the profiler correctly.
