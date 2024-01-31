@@ -112,7 +112,7 @@ class Url
             unset($getPath);
             // the return value can be empty string or app based path without trailing slash.
             // if the URL contain index.php then it will be return app based path with index.php but no trailing slash.
-            $output = rtrim($parsed['path'], '/');
+            $output = rtrim(($parsed['path'] ?? ''), '/');
         } else {
             $scriptNameUpper = str_replace('\\', '/', dirname($_SERVER['SCRIPT_NAME']));
             if (mb_substr($_SERVER['REQUEST_URI'], 0, mb_strlen($_SERVER['SCRIPT_NAME'])) === $_SERVER['SCRIPT_NAME']) {
