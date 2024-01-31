@@ -44,35 +44,137 @@ class Profiler
     /**
      * Append profiler to html body.
      * 
+     * This method was called from `end()`.
+     * 
+     * @param string|false $responseContentType The response content type.
      * @param string|null $response
      * @return string|null
      */
-    protected function appendProfiler($response = '')
+    protected function appendProfiler($responseContentType, $response = '')
     {
         /* @var $Profiler \Rdb\System\Libraries\Profiler */
-        $Profiler = $this->Container['Profiler'];
-        $displayResult = $Profiler->display($this->Container['Db'], [$this, 'displayDb']);
+        $Profiler = $this->Container->get('Profiler');
 
-        if (stripos($response, '</body>') !== false) {
-            $response = str_replace('</body>', "\n\n<!-- profiler begins -->" . $displayResult . "<!-- profiler end -->\n\n\n" . '    </body>', $response);
+        if (strtolower($responseContentType) === 'application/json') {
+            // if response content type is json.
+            $json = json_decode($response);
+            if (json_last_error() === JSON_ERROR_NONE) {
+                if (is_object($json)) {
+                    $json->{'rundiz-profiler'} = new \stdClass();
+                    $json->{'rundiz-profiler'}->logSections = $Profiler->getLogSectionsForResponse();
+                } elseif (is_array($json)) {
+                    $json['rundiz-profiler']['logSections'] = $Profiler->getLogSectionsForResponse();
+                }
+                $response = json_encode($json);
+            }
+            unset($json);
         } else {
-            $response .= "\n\n<!-- profiler begins -->" . $displayResult . "<!-- profiler end -->\n\n";
-        }
+            // if response content type is html.
+            $displayResult = $Profiler->display($this->Container['Db'], [$this, 'displayDb']);
+            $profilerAppendHTML = "\n\n<!-- profiler begins -->" . $displayResult . "<!-- profiler end -->\n\n";
+            if (stripos($response, '</body>') !== false) {
+                $response = str_replace('</body>', $profilerAppendHTML . "\n" . '    </body>', $response);
+            } else {
+                $response .= $profilerAppendHTML;
+            }
+            unset($displayResult, $profilerAppendHTML);
 
-        $profileTimeLoad = $Profiler->getReadableTime(
-            ($Profiler->getMicrotime() - $Profiler->getMicrotime(true))*1000
-        );
-        $response .= "\n\n" . '<!-- Time from begins until profiler generated is ' . $profileTimeLoad . '-->' . "\n";
-        $response .= '<script>console.log(\'Time from begins until profiler generated is ' . $profileTimeLoad . '\');</script>'."\n\n";
+            $profileTimeLoad = $Profiler->getReadableTime(
+                ($Profiler->getMicrotime() - $Profiler->getMicrotime(true))*1000
+            );
+            $response .= "\n\n" . '<!-- Time from begins until profiler generated is ' . $profileTimeLoad . ' -->' . "\n";
+            $response .= '<script>console.log(\'Time from begins until profiler generated is ' . $profileTimeLoad . '\');</script>'."\n\n";
+        }// endif; response content type.
 
-        unset($displayResult);
+        unset($Profiler);
 
         return $response;
     }// appendProfiler
 
 
     /**
-     * Display Profiler DB.<br>
+     * Check that does it should be display the profiler.
+     * 
+     * This method was called from `end()`.
+     * 
+     * @since 1.1.7
+     * @param mixed $responseContentType The response content type to be altered while checking.
+     * @return bool Return `true` if it should be displayed but have to set display content type with the parameter `$responseContentType`.  
+     *              Return `false` if it should not displayed.
+     */
+    protected function checkDisplayProfiler(&$responseContentType): bool
+    {
+        $donotDisplayProfiler = false;// false = display it!
+
+        $httpAccept = ($_SERVER['HTTP_ACCEPT'] ?? '*/*');
+        if (stripos($httpAccept, 'text/html') === false && stripos($httpAccept, '/json') === false) {
+            // if request header did not accept text/html and not accept json then do not display profiler.
+            $donotDisplayProfiler = true;
+        }
+        if (stripos($httpAccept, '/json') !== false) {
+            $responseContentType = 'application/json';
+        } elseif (stripos($httpAccept, 'text/html') !== false) {
+            $responseContentType = 'text/html';
+        }
+        unset($httpAccept);
+
+        $responseHeaders = headers_list();
+        if (is_array($responseHeaders)) {
+            foreach ($responseHeaders as $header) {
+                if (stripos($header, 'content-type:') !== false) {
+                    // if found response content-type header.
+                    if (stripos($header, '/json') !== false) {
+                        $responseContentType = 'application/json';
+                    } elseif (stripos($header, 'text/html') !== false) {
+                        $responseContentType = 'text/html';
+                    }
+
+                    if (
+                        stripos($header, 'text/html') === false &&
+                        stripos($header, '/json') === false 
+                    ) {
+                        // if response content-type is not text/html and not json then do not display profiler.
+                        $donotDisplayProfiler = true;
+                    }
+                }// endif; found content-type.
+            }// endforeach;
+            unset($header);
+        }
+        unset($responseHeaders);
+
+        $requestHeaders = apache_request_headers();
+        if (is_array($requestHeaders)) {
+            $requestHeaders = array_change_key_case($requestHeaders);
+            if (
+                array_key_exists('rundizbones-no-profiler', $requestHeaders) && 
+                $requestHeaders['rundizbones-no-profiler'] === 'true'
+            ) {
+                // if there is request header named 'rundizbones-no-profiler' then do not display profiler.
+                $donotDisplayProfiler = true;
+            }
+        }
+        unset($requestHeaders);
+
+        if (
+            isset($_SERVER['RUNDIZBONES_SUBREQUEST']) && 
+            $_SERVER['RUNDIZBONES_SUBREQUEST'] === true
+        ) {
+            // if it is rundizbones sub request then do not display profiler.
+            $donotDisplayProfiler = true;
+        }
+
+        if (isset($_REQUEST['rundizbones-no-profiler']) && $_REQUEST['rundizbones-no-profiler'] === 'true') {
+            // if there is GET or POST parameter named 'rundizbones-no-profiler' then do not display profiler.
+            $donotDisplayProfiler = true;
+        }
+
+        return $donotDisplayProfiler;
+    }// checkDisplayProfiler
+
+
+    /**
+     * Display Profiler DB.
+     * 
      * This part is not accessible by any URL. it can be used via `$Profiler->display()` only. So, it must be public scope.
      */
     public function displayDb()
@@ -169,6 +271,8 @@ class Profiler
     /**
      * End profiler.
      * 
+     * This method is **After** middleware, it will be called after processed controllers.
+     * 
      * @param string|null $response
      * @return string|null
      */
@@ -176,52 +280,8 @@ class Profiler
     {
         if ($this->Container->has('Profiler')) {
             // check that the profiler should be display or not?
-            $donotDisplayProfiler = false;// false = display it!
-
-            $httpAccept = ($_SERVER['HTTP_ACCEPT'] ?? '*/*');
-            if (stripos($httpAccept, 'text/html') === false) {
-                // if request header did not accept text/html then do not display profiler.
-                $donotDisplayProfiler = true;
-            }
-            unset($httpAccept);
-            
-            $responseHeaders = headers_list();
-            if (is_array($responseHeaders)) {
-                foreach ($responseHeaders as $header) {
-                    if (stripos($header, 'content-type:') !== false && stripos($header, 'text/html') === false) {
-                        // if found content-type but it is not text/html then do not display profiler.
-                        $donotDisplayProfiler = true;
-                    }
-                }// endforeach;
-                unset($header);
-            }
-            unset($responseHeaders);
-
-            $requestHeaders = apache_request_headers();
-            if (is_array($requestHeaders)) {
-                $requestHeaders = array_change_key_case($requestHeaders);
-                if (
-                    array_key_exists('rundizbones-no-profiler', $requestHeaders) && 
-                    $requestHeaders['rundizbones-no-profiler'] === 'true'
-                ) {
-                    // if there is request header named 'rundizbones-no-profiler' then do not display profiler.
-                    $donotDisplayProfiler = true;
-                }
-            }
-            unset($requestHeaders);
-
-            if (
-                isset($_SERVER['RUNDIZBONES_SUBREQUEST']) && 
-                $_SERVER['RUNDIZBONES_SUBREQUEST'] === true
-            ) {
-                // if it is rundizbones sub request then do not display profiler.
-                $donotDisplayProfiler = true;
-            }
-
-            if (isset($_REQUEST['rundizbones-no-profiler']) && $_REQUEST['rundizbones-no-profiler'] === 'true') {
-                // if there is GET or POST parameter named 'rundizbones-no-profiler' then do not display profiler.
-                $donotDisplayProfiler = true;
-            }
+            $responseContentType = false;// for determine how to display it.
+            $donotDisplayProfiler = $this->checkDisplayProfiler($responseContentType);
 
             /* @var $Profiler \Rdb\System\Libraries\Profiler */
             $Profiler = $this->Container->get('Profiler');
@@ -230,8 +290,9 @@ class Profiler
 
             if (isset($donotDisplayProfiler) && $donotDisplayProfiler === false) {
                 // if allowed to display profiler.
-                $response = $this->appendProfiler($response);
+                $response = $this->appendProfiler($responseContentType, $response);
             }
+            unset($donotDisplayProfiler, $responseContentType);
         }
 
         return $response;
