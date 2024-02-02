@@ -91,7 +91,7 @@ class Logger
         $values = $cloneParams;
         $valuesLimit = [];
 
-        preg_match_all('/:([\w\d\-_]+)/', $statement, $matches);
+        preg_match_all('/:\b([\w\d\-_]+)\b/', $statement, $matches);
         if (isset($matches[0])) {
             $wordsRepeated = array_count_values($matches[0]);
         } else {
@@ -137,9 +137,9 @@ class Logger
             foreach ($values as $key => $val) {
                 if (is_scalar($key) && is_scalar($val)) {
                     if (isset($valuesLimit[$key])) {
-                        $statement = preg_replace(['/'.$key.'/'], [$val], $statement, $valuesLimit[$key], $count);
+                        $statement = preg_replace(['/'. str_replace(':', ':\b', $key) .'\b/'], [$val], $statement, $valuesLimit[$key], $count);
                     } else {
-                        $statement = preg_replace(['/'.$key.'/'], [$val], $statement, 1, $count);
+                        $statement = preg_replace(['/'. str_replace(':', ':\b', $key) .'\b/'], [$val], $statement, 1, $count);
                     }
                 }
             }
