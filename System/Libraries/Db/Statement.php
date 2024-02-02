@@ -113,7 +113,7 @@ class Statement extends \PDOStatement
             $this->inputParams = $input_parameters;
         }// endif;
 
-        if (strspn(strtolower($this->queryString), 'explain ') === 0) {
+        if (stripos(trim($this->queryString), 'explain') !== 0) {
             // if not found `EXPLAIN ` statement query.
             $Logger = new Logger($this->Container);
             $Logger->queryLog($this->queryString, $this->inputParams, $this->inputDataTypes);
