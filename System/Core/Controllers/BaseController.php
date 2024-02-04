@@ -81,6 +81,8 @@ abstract class BaseController
      */
     protected function determineAcceptContentType(): string
     {
+        trigger_error('This method has been deprecated.', E_USER_DEPRECATED);
+
         $Input = new \Rdb\System\Libraries\Input($this->Container);
         $httpAccept = $Input->determineAcceptContentType();
         $this->httpAcceptContentTypes = $Input->httpAcceptContentTypes;
