@@ -116,6 +116,8 @@ class Db
      */
     public function alterStructure(string $query)
     {
+        include_once dirname(__DIR__) . '/Helpers/php-string.php';
+
         // normalize new line.
         $query = str_replace(["\r\n", "\r", PHP_EOL], "\n", $query);
 
@@ -132,8 +134,9 @@ class Db
         $blob_fields = array('tinyblob', 'blob', 'mediumblob', 'longblob');
         $int_fields = array('tinyint', 'smallint', 'mediumint', 'int', 'integer', 'bigint');
 
+        // `PDO()->getAttribute(\PDO::ATTR_SERVER_VERSION)` result in "n.n.n-MariaDB".
         $db_version = $this->PDO()->getAttribute(\PDO::ATTR_SERVER_VERSION);
-        $db_server_info = $this->PDO()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $db_server_info = $db_version;
 
         foreach ($cqueries as $table => $originalQuery) {
             $originalAttribute = $this->PDO()->getAttribute(\PDO::ATTR_ERRMODE);
