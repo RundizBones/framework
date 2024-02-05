@@ -275,28 +275,31 @@ class Db
      * Convert character set and collation for table and columns.
      * 
      * @link https://developer.wordpress.org/reference/functions/maybe_convert_table_to_utf8mb4/ Source code copied from here.
+     * @link https://mariadb.com/kb/en/unicode/ From MariaDB 10.6, utf8 is by default an alias for utf8mb3.
+     * @link https://dev.mysql.com/doc/refman/8.0/en/charset-unicode-utf8mb3.html Historically, MySQL has used utf8 as an alias for utf8mb3; beginning with MySQL 8.0.28, utf8mb3 is used exclusively.
      * @param string $table The table name to work with.
      * @param mixed $connectionKey The DB config array key (connection key). Leave it to `0` to use default, set to `null` to use current connection key.
-     * @param string $convertFrom Current character set to convert from this to new one. Default is 'utf8'.<br>
-     *                              This will lookup character set based on this and convert to the new one.
+     * @param string|array $convertFrom Current character set(s) to convert from this to new one. Default is `['utf8', 'utf8mb3'].<br>
+     *              This will lookup character set based on this and convert to the new one.<br>
+     *              If its value is array, it will be looking that if current charset found matched one of them.
      * @param string $tableCharset The MySQL table `CHARSET` to be convert to. Default is "utf8mb4".<br>
-     *                              Do not change this as it might affect with the whole application.
+     *              Do not change this as it might affect with the whole application.
      * @param string $tableCollate The MySQL table `COLLATE` to be convert to. Default is "utf8mb4_unicode_ci".<br>
-     *                              Do not change this as it might affect with the whole application.
+     *              Do not change this as it might affect with the whole application.
      * @param array $columns The associative array of table columns to convert. Default is empty array.<br>
-     *                              If this is empty array then it will use the same character set and collation from the table.<br>
-     *                              The example of array structure: `array(
-     *                                      'columnName' => array('convertFrom' => 'utf8', 'collate' => utf8mb4_unicode_ci'), 
-     *                                      'anotherColumn' => ...
-     *                                  );`<br>
-     *                              The `convertFrom` sub array key is match first string in column collation.<br>
-     *                              For example: collation is latin1_general_ci and `convertFrom` is `latin1` then it is matched.
+     *              If this is empty array then it will use the same character set and collation from the table.<br>
+     *              The example of array structure: `array(
+     *                      'columnName' => array('convertFrom' => 'utf8', 'collate' => utf8mb4_unicode_ci'), 
+     *                      'anotherColumn' => ...
+     *                  );`<br>
+     *              The `convertFrom` sub array key is match first string in column collation.<br>
+     *              For example: collation is latin1_general_ci and `convertFrom` is `latin1` then it is matched.
      * @return bool Return `true` if converted, `false` if there is nothing to convert.
      */
     public function convertCharsetAndCollation(
         string $table,
         $connectionKey = 0, 
-        string $convertFrom = 'utf8',
+        $convertFrom = ['utf8', 'utf8mb3'],
         string $tableCharset = 'utf8mb4', 
         string $tableCollate = 'utf8mb4_unicode_ci', 
         array $columns = []
@@ -324,7 +327,19 @@ class Db
             ) {
                 list($currentCharset) = explode('_', $result->Collation);
                 $currentCharset = strtolower($currentCharset);
-                if ($currentCharset === strtolower($convertFrom) || $currentCharset === strtolower($tableCharset)) {
+                if (
+                    (
+                        (
+                            is_string($convertFrom) &&
+                            $currentCharset === strtolower($convertFrom)
+                        ) ||
+                        (
+                            is_array($convertFrom) &&
+                            in_array($currentCharset, array_map('strtolower', $convertFrom))
+                        )
+                    ) || 
+                    $currentCharset === strtolower($tableCharset)
+                ) {
                     if ($currentCharset === strtolower($tableCharset) && $tableCollate === $result->Collation) {
                         // if already converted for table.
                         $output = true;
