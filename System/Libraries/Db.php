@@ -1131,6 +1131,31 @@ class Db
 
 
     /**
+     * Remove any comments from statement.
+     * 
+     * @link https://stackoverflow.com/a/31949494/128761 Original source code.
+     * @link https://regex101.com/r/GXb0a5/2 Updated source code.
+     * @since 1.1.7
+     * @param string $statement The SQL statement. Can be multiple that separate with `;`. Example `SELECT 1; SELECT 2;`.
+     * @return string Return removed comments from SQL statement.
+     */
+    public function removeSQLComments(string $statement): string
+    {
+        $pattern = '/["\'`][^"\'`]*(?!\\\\)["\'`](*SKIP)(*F)       # Make sure we\'re not matching inside of quotes, double quotes or backticks
+            |(?m-s:\s*(?:\-{2}|\#)[^\n]*$) # Single line comment
+            |(?:
+              \/\*.*?\*\/                  # Multi-line comment
+              (?(?=(?m-s:[\t ]+$))         # Get trailing whitespace if any exists and only if it\'s the rest of the line
+                [\t ]+
+              )
+            )/iusx';
+        $statement = preg_replace($pattern, '', $statement);
+        unset($pattern);
+        return $statement;
+    }// removeSQLComments
+
+
+    /**
      * Set current connection key to the new key.
      * 
      * This will not connect to specific key but change the current connection to specific key.<br>
