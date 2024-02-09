@@ -5,7 +5,7 @@
     <target>.phpdoc/cache</target>
   </parser>
   <transformer>
-    <target>.wiki/apidoc</target>
+    <target>.apidoc</target>
   </transformer>
   <files>
     <directory>.</directory>

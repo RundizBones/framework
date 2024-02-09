@@ -1,7 +1,9 @@
+.apidoc
 .dist
 .phpdoc
 .phpunit.result.cache
 .vs
+.wiki
 build
 composer.mydefault.json
 composer.json

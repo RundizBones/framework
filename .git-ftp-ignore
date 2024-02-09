@@ -5,6 +5,8 @@
 */.gitignore      # ignore files in sub directories
 */.gitkeep
 
+.apidoc
+.apidoc/*
 .backup
 .backup/*
 .dev-notes
