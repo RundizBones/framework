@@ -60,6 +60,7 @@ class Storage extends BaseConsole
                 '  To delete a file or some files in target folder, use --subfolder with folder/file pattern where file pattern is the glob pattern and subfolder option must contain slash (/).' . "\n" .
                 '  See more about glob pattern at http://php.net/manual/en/function.glob.php' . "\n" .
                 '  The target folder must be inside ' . STORAGE_PATH . "\n" .
+                '  The permanent folder cannot be deleted using this command.' . "\n" .
                 '  The two dots (.. or ../) is not allowed and will be removed from --subfolder option.' . "\n\n" .
                 '  Example: ' . "\n" .
                 '    system:storage delete --subfolder="logs"' . "\n" .
@@ -216,6 +217,15 @@ class Storage extends BaseConsole
         if ($Input->getOption('subfolder') == null) {
             $Io->caution('No subfolder option specified.');
 
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 2;
+            }
+        } elseif (
+            rtrim($this->FileSystem->getFullPathWithRoot($Input->getOption('subfolder')), " \n\r\t\v\x00\\/" . PHP_EOL) === rtrim($this->FileSystem->getFullPathWithRoot('permanent'), " \n\r\t\v\x00\\/" . PHP_EOL)
+        ) {
+            $Io->caution('The permanent folder cannot be deleted using this command.');
             if (defined('Command::INVALID')) {
                 return Command::INVALID;
             } else {
