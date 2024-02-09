@@ -143,6 +143,15 @@ class Module extends BaseConsole
             throw new \OutOfBoundsException('Unable to get the Modules class. This application may load incorrectly.');
         }
 
+        if (empty($Input->getOption('mname'))) {
+            $Io->caution('Unknown module system name');
+            if (defined('Command::INVALID')) {
+                return Command::INVALID;
+            } else {
+                return 2;
+            }
+        }
+
         if ($Input->getArgument('act') === 'disable') {
             return $this->executeDisable($Input, $Output);
         } elseif ($Input->getArgument('act') === 'enable') {
@@ -176,6 +185,9 @@ class Module extends BaseConsole
         $Io->title('Disable a module');
 
         $mname = $Input->getOption('mname');
+        if (!isset($mname)) {
+            $mname = '';
+        }
         // validate if module exists (not care enabled or not, it can be enabled at end).
         $validated = $this->Modules->exists($mname, false);
 
@@ -214,6 +226,9 @@ class Module extends BaseConsole
         $Io->title('Enable a module');
 
         $mname = $Input->getOption('mname');
+        if (!isset($mname)) {
+            $mname = '';
+        }
         // validate if module exists (not care enabled or not, it can be enabled at end).
         $validated = $this->Modules->exists($mname, false);
 
@@ -255,6 +270,9 @@ class Module extends BaseConsole
         $Io->title('Install a module');
 
         $mname = $Input->getOption('mname');
+        if (!isset($mname)) {
+            $mname = '';
+        }
         // validate if module exists (not care enabled or not, it can be enabled at end).
         $validated = $this->Modules->exists($mname, false);
 
@@ -402,6 +420,9 @@ class Module extends BaseConsole
             return 0;
         } else {
             $mname = $Input->getOption('mname');
+            if (!isset($mname)) {
+                $mname = '';
+            }
             // validate if module exists (not care enabled or not, it can be enabled at end).
             $validated = $this->Modules->exists($mname, false);
 
@@ -544,6 +565,9 @@ class Module extends BaseConsole
         $Io->title('Update a module');
 
         $mname = $Input->getOption('mname');
+        if (!isset($mname)) {
+            $mname = '';
+        }
         // validate if module exists (enabled only).
         $validated = $this->Modules->exists($mname);
 
