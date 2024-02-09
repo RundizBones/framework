@@ -24,11 +24,13 @@
     "pack": {
         "developmentPatterns": [
             "**",
+            "!.apidoc/**",
             "!.backup/**",
             "!.dist/**",
             "!.git/**",
             "!.phpdoc/**",
             "!.phpunit*",
+            "!.wiki/**",
             "!config/development/**",
             "config/development/*.*",
             "!config/production/**",
