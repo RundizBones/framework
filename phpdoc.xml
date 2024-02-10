@@ -10,9 +10,9 @@
   <files>
     <directory>.</directory>
     <ignore>.*/*</ignore>
-    <ignore>gulpfile.js/*</ignore>
     <ignore>Modules/*</ignore>
     <ignore>node_modules/*</ignore>
+    <ignore>node_tasks/*</ignore>
     <ignore>storage/*</ignore>
     <ignore>System/vendor/*</ignore>
     <ignore>Tests/*</ignore>
