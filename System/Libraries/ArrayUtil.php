@@ -157,7 +157,7 @@ class ArrayUtil
      * The method `recursiveKsort()` can't call using magic call static because it is required to call itself using `$this`.<br>
      * This static version will initialize the class with `new self()`.
      * 
-     * @see \Rdb\System\Libraries\ArrayUtil:recursiveKsort()
+     * @see \Rdb\System\Libraries\ArrayUtil::recursiveKsort() This is an alias method of `recursiveKsort()`.
      */
     public static function staticRecursiveKsort(array &$array, $sortFlags = SORT_REGULAR)
     {
