@@ -62,12 +62,6 @@ if (!defined('PUBLIC_PATH')) {
 // Do not change anything below this line.
 
 
-// Check required PHP version. Do not change this because the source code inside is based on this version.
-if (version_compare(phpversion(), '7.1', '<')) {
-    throw new \RuntimeException('Required at least PHP 7.1');
-}
-
-
 // Require Composer autoload.
 require ROOT_PATH . DIRECTORY_SEPARATOR . 'System' . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 

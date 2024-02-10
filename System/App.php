@@ -43,6 +43,8 @@ class App
      */
     public function __construct()
     {
+        $this->checkRequirements();
+
         $this->Container = new Container();
         $this->Container['Config'] = function ($c) {
             return new \Rdb\System\Config();
@@ -75,6 +77,38 @@ class App
         };
         $this->Logger = $this->Container['Logger'];
     }// addDependencyInjection
+
+
+    /**
+     * Check requirements such as constants, PHP version.
+     * 
+     * The constants and maybe set them or throw the exception if not defined.<br>
+     * This method was called from `__construct()`.
+     * 
+     * @since 1.1.7
+     * @throws \Exception Throw the exception if required constants are not defined.
+     * @throws \RuntimeException Throw \RuntimeException if PHP version does not met requirement.
+     */
+    protected function checkRequirements()
+    {
+        if (!defined('APP_ENV')) {
+            define('APP_ENV', 'production');
+        }
+
+        // Check required constants.
+        $requiredConstants = ['ROOT_PATH', 'STORAGE_PATH', 'MODULE_PATH', 'PUBLIC_PATH'];
+        foreach ($requiredConstants as $eachConstant) {
+            if (!defined($eachConstant)) {
+                throw new \Exception('The constant ' . $eachConstant . ' is not defined.');
+            }
+        }// endforeach;
+        unset($eachConstant, $requiredConstants);
+
+        // Check required PHP version.
+        if (version_compare(phpversion(), '7.1', '<')) {
+            throw new \RuntimeException('Required at least PHP 7.1');
+        }
+    }// checkRequirements
 
 
     /**
