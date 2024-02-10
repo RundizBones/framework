@@ -82,7 +82,7 @@ class App
     /**
      * Check requirements such as constants, PHP version.
      * 
-     * The constants and maybe set them or throw the exception if not defined.<br>
+     * Maybe set constant or throw the exception if not defined.<br>
      * This method was called from `__construct()`.
      * 
      * @since 1.1.7
