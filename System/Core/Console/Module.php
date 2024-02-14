@@ -497,7 +497,7 @@ class Module extends BaseConsole
                     }
 
                     // remove moduleComposer.json ---------------------------------------------------------
-                    $composerDefault = $this->getComposerDefault();
+                    $composerDefault = $this->Modules->getComposerDefault();
                     if (
                         is_file(ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.json') &&
                         !empty($composerDefault)
@@ -631,7 +631,7 @@ class Module extends BaseConsole
                 }
 
                 // copy moduleComposer.json --------------------------------------------------------------
-                $composerDefault = $this->getComposerDefault();
+                $composerDefault = $this->Modules->getComposerDefault();
                 if (
                     is_file(ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.json') &&
                     !empty($composerDefault)
@@ -682,27 +682,6 @@ class Module extends BaseConsole
             return 0;
         }
     }// executeUpdate
-
-
-    /**
-     * Get default composer json file.
-     * 
-     * Check for composer.mydefault.json first, if not exists then use composer.default.json, if not exists then return empty string.<br>
-     * The composer.default.json file is come with the framework and it can be override when update.<br>
-     * The composer.mydefault.json is user modified and will not be override when update.
-     * 
-     * @return string Return full path to composer default json file. Or return empty string if not found.
-     */
-    private function getComposerDefault(): string
-    {
-        if (is_file(ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.mydefault.json')) {
-            return ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.mydefault.json';
-        } elseif (is_file(ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.default.json')) {
-            return ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.default.json';
-        }
-
-        return '';
-    }// getComposerDefault
 
 
     /**

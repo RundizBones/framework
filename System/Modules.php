@@ -342,6 +342,29 @@ class Modules
 
 
     /**
+     * Get default composer json file.
+     * 
+     * Check for composer.mydefault.json first, if not exists then use composer.default.json, if not exists then return empty string.<br>
+     * The composer.default.json file is come with the framework and it can be override when update.<br>
+     * The composer.mydefault.json is user modified and will not be override when update.
+     * 
+     * @since 1.1.4 On `\Rdb\System\Core\Console\Module` 
+     * @since 1.1.8 Moved to `\Rdb\System\Modules`
+     * @return string Return full path to composer default json file. Or return empty string if not found.
+     */
+    public function getComposerDefault(): string
+    {
+        if (is_file(ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.mydefault.json')) {
+            return ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.mydefault.json';
+        } elseif (is_file(ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.default.json')) {
+            return ROOT_PATH . DIRECTORY_SEPARATOR . 'composer.default.json';
+        }
+
+        return '';
+    }// getComposerDefault
+
+
+    /**
      * Get current module.
      * 
      * To use this, you must call to `setCurrentModule()` method before.
