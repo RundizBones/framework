@@ -36,7 +36,7 @@ class Storage extends BaseConsole
     /**
      * {@inheritDoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('system:storage')
             ->setDescription('Manage all files & folders in storage folder.')
@@ -84,7 +84,7 @@ class Storage extends BaseConsole
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $Input, OutputInterface $Output)
+    protected function execute(InputInterface $Input, OutputInterface $Output): int
     {
         $Io = new SymfonyStyle($Input, $Output);
         $this->FileSystem = new \Rdb\System\Libraries\FileSystem(STORAGE_PATH);

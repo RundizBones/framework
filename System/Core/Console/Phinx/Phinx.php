@@ -28,7 +28,7 @@ class Phinx
      * 
      * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct(\Rdb\System\Container $Container = null)
+    public function __construct(?\Rdb\System\Container $Container = null)
     {
         $this->PhinxApplication = new \Phinx\Console\PhinxApplication();
     }// __construct

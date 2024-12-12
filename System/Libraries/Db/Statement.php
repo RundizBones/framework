@@ -41,7 +41,7 @@ class Statement extends \PDOStatement
      * 
      * @param \Rdb\System\Container $Container The DI container class.
      */
-    protected function __construct(\Rdb\System\Container $Container = null)
+    protected function __construct(?\Rdb\System\Container $Container = null)
     {
         if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;

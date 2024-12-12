@@ -34,7 +34,7 @@ class Input
      * 
      * @param \Rdb\System\Container $Container The DI container class. Only required for some method.
      */
-    public function __construct(\Rdb\System\Container $Container = null)
+    public function __construct(?\Rdb\System\Container $Container = null)
     {
         if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;

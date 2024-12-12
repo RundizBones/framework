@@ -11,7 +11,7 @@ class RouterExtended extends \Rdb\System\Router
 {
 
 
-    public function __construct(\Rdb\System\Container $Container = null)
+    public function __construct(?\Rdb\System\Container $Container = null)
     {
         if ($Container === null) {
             $Container = new \Rdb\System\Container();

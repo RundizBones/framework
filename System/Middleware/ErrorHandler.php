@@ -75,7 +75,6 @@ class ErrorHandler
         $eqFwDonotLogLevel = 0;
 
         switch ($errno) {
-            case E_STRICT:
             case E_DEPRECATED:
             case E_USER_DEPRECATED:
                 $eqFwDonotLogLevel = 1;

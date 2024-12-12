@@ -27,7 +27,7 @@ class Url
      * 
      * @param \Rdb\System\Container $Container The DI container class. This is only required for some method, leave null if you don't use it.
      */
-    public function __construct(\Rdb\System\Container $Container = null)
+    public function __construct(?\Rdb\System\Container $Container = null)
     {
         if ($Container instanceof \Rdb\System\Container) {
             $this->Container = $Container;

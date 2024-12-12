@@ -60,7 +60,7 @@ class Views
      * @return string Return full path to views file if the file was found.
      * @throws \RuntimeException Throw exception if views file was not found.
      */
-    protected function locateViews(string $viewsFile, string $currentModule = null): string
+    protected function locateViews(string $viewsFile, ?string $currentModule = null): string
     {
         if (empty($currentModule)) {
             // if current module was not set.

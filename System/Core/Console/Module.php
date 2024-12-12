@@ -37,7 +37,7 @@ class Module extends BaseConsole
     /**
      * {@inheritDoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('system:module')
             ->setDescription('Manage a module.')
@@ -133,7 +133,7 @@ class Module extends BaseConsole
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $Input, OutputInterface $Output)
+    protected function execute(InputInterface $Input, OutputInterface $Output): int
     {
         $Io = new SymfonyStyle($Input, $Output);
 

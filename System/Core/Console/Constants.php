@@ -29,7 +29,7 @@ class Constants extends BaseConsole
     /**
      * {@inheritDoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this->setName('system:constants')
             ->setDescription('Display constants for use with other programming languages.')
@@ -75,7 +75,7 @@ class Constants extends BaseConsole
     /**
      * {@inheritDoc}
      */
-    protected function execute(InputInterface $Input, OutputInterface $Output)
+    protected function execute(InputInterface $Input, OutputInterface $Output): int
     {
         $Io = new SymfonyStyle($Input, $Output);
         $optionGroup = $Input->getOption('group');

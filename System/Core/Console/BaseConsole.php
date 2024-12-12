@@ -31,7 +31,7 @@ class BaseConsole extends Command
      * 
      * @param \Rdb\System\Container $Container The DI container class.
      */
-    public function __construct($name = null, \Rdb\System\Container $Container = null)
+    public function __construct($name = null, ?\Rdb\System\Container $Container = null)
     {
         parent::__construct($name);
 
