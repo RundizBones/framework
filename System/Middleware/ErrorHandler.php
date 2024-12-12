@@ -114,8 +114,8 @@ class ErrorHandler
         if (defined('E_USER_ERROR') && E_USER_ERROR === $errno) {
             // if error number is matched `E_USER_ERROR`. 
             // this constant is deprecated in `trigger_error()` since PHP 8.4 and possible to be removed in the future so move it to be check here.
-                // mark `E_USER_ERROR` as do not log under level 4.
-                $eqFwDonotLogLevel = 4;
+            // mark `E_USER_ERROR` as do not log under level 4.
+            $eqFwDonotLogLevel = 4;
         }
         // end special check. -------------------------------------------------------------------------------------------------
 
