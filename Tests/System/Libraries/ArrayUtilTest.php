@@ -17,7 +17,7 @@ class ArrayUtilTest extends \Rdb\Tests\BaseTestCase
             'cat',
             'bear',
             'fruitred' => 'apple',
-            3.1 => 'dog',
+            3 => 'dog',// can't use array key as 3.1 because errors "Deprecated: Implicit conversion from float 3.1 to int loses precision" since PHP 8.1.
             null => 'null',
         ];
         $array2 = [

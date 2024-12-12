@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<phpunit backupGlobals="false"
-         backupStaticAttributes="false"
-         bootstrap="./Tests/phpunit.php"
-         colors="true"
-         convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
-         convertWarningsToExceptions="true"
-         processIsolation="false"
-         stderr="true"
-         stopOnFailure="false"
-         verbose="true"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+        xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.0/phpunit.xsd" 
+        backupGlobals="false" 
+        backupStaticProperties="false"
+        bootstrap="./Tests/phpunit.php" 
+        cacheDirectory=".phpunit.cache" 
+        colors="true" 
+        processIsolation="false" 
+        stderr="true" 
+        stopOnFailure="false" 
 >
-	<testsuites>
-		<testsuite name="tests/phpunit">
-			<directory>Tests</directory>
-		</testsuite>
-	</testsuites>
+  <testsuites>
+    <testsuite name="tests/phpunit">
+        <directory>Tests</directory>
+    </testsuite>
+  </testsuites>
+  <php>
+    <ini name="memory_limit" value="512M"/>
+  </php>
 </phpunit>
