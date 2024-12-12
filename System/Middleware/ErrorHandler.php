@@ -92,7 +92,6 @@ class ErrorHandler
             case E_ERROR:
             case E_CORE_ERROR:
             case E_COMPILE_ERROR:
-            case E_USER_ERROR:
             case E_RECOVERABLE_ERROR:
                 $eqFwDonotLogLevel = 4;
                 break;
@@ -100,6 +99,25 @@ class ErrorHandler
                 $eqFwDonotLogLevel = 5;
                 break;
         }
+
+        // special check some constants that may deprecated and removed in some PHP version. -------------------
+        if (version_compare(PHP_VERSION, '8.4', '<')) {
+            // if PHP version older than 8.4. 
+            // some constants are deprecated since PHP 8.4 so, it can't be checked with the `switch..case` above.
+            if (defined('E_STRICT') && E_STRICT === $errno) {
+                // if error number is matched `E_STRICT`.
+                // mark `E_STRICT` as do not log under level 1.
+                $eqFwDonotLogLevel = 1;
+            }
+        }
+
+        if (defined('E_USER_ERROR') && E_USER_ERROR === $errno) {
+            // if error number is matched `E_USER_ERROR`. 
+            // this constant is deprecated in `trigger_error()` since PHP 8.4 and possible to be removed in the future so move it to be check here.
+                // mark `E_USER_ERROR` as do not log under level 4.
+                $eqFwDonotLogLevel = 4;
+        }
+        // end special check. -------------------------------------------------------------------------------------------------
 
         if (isset($eqFwDonotLogLevel) && $this->donotLogLevel <= $eqFwDonotLogLevel) {
             ini_set('log_errors', true);
