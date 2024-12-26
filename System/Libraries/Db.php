@@ -648,6 +648,13 @@ class Db
             }
         }
 
+        if ($this->Container->has('Logger')) {
+            /** @var \Rdb\System\Libraries\Logger $Logger */
+            $Logger = $this->Container->get('Logger');
+            $Logger->write('system/libraries/db:connection', 0, 'Creating new PDO');
+            unset($Logger);
+        }// endif;
+
         // create new connection.
         $this->PDO[$connectionKey] = new \PDO($dbConfig['dsn'], $dbConfig['username'], $dbConfig['passwd'], $dbConfig['options']);
         unset($dbConfig);
@@ -968,6 +975,13 @@ class Db
             $Profiler->Console->log('debug', 'DB disconnected.', __FILE__, __LINE__);
             unset($Profiler);
         }
+
+        if ($this->Container->has('Logger')) {
+            /** @var \Rdb\System\Libraries\Logger $Logger */
+            $Logger = $this->Container->get('Logger');
+            $Logger->write('system/libraries/db:connection', 0, 'Had unset selected PDO (' . (is_scalar($connectionKey) ? $connectionKey : '') . ')');
+            unset($Logger);
+        }// endif;
     }// disconnect
 
 
@@ -994,6 +1008,13 @@ class Db
         if (function_exists('gc_collect_cycles')) {
             gc_collect_cycles();
         }
+
+        if ($this->Container->has('Logger')) {
+            /** @var \Rdb\System\Libraries\Logger $Logger */
+            $Logger = $this->Container->get('Logger');
+            $Logger->write('system/libraries/db:connection', 0, 'Had unset all PDO');
+            unset($Logger);
+        }// endif;
     }// disconnectAll
 
 
