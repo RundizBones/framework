@@ -387,7 +387,7 @@ class Url
     /**
      * Encode all parts of the URL.
      * 
-     * This will not encode username:password, path or segments, query string, fragment.
+     * This will be encode username:password, path or segments, query string, fragment.
      *
      * @since 1.0.5
      * @param string $url The original URL without encoded.
