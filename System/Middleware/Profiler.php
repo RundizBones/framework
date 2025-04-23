@@ -213,7 +213,7 @@ class Profiler
             $Stmt = $Dbh->PDO($Dbh->currentConnectionKey())->prepare('EXPLAIN '.$dataValues['data']);
             $Stmt->execute();
             if ($Stmt) {
-                echo '<div class="rdprofiler-log-newrow">' . PHP_EOL;
+                echo '<div class="rdprofiler-data-display-row">' . PHP_EOL;
                 echo '<div class="rdprofiler-log-db-explain">' . PHP_EOL;
                 if (isset($expData) && is_array($expData)) {
                     foreach ($expData as $key => $sqldata) {
@@ -244,7 +244,7 @@ class Profiler
             }
             unset($Stmt);
         } catch (\Exception $e) {
-            echo '<div class="rdprofiler-log-newrow">' . PHP_EOL;
+            echo '<div class="rdprofiler-data-display-row">' . PHP_EOL;
             echo '<div class="rdprofiler-log-db-explain">' . PHP_EOL;
             echo '<!-- ' . $e->getMessage() . ' -->' . PHP_EOL;
             echo '</div>' . PHP_EOL;
@@ -253,7 +253,7 @@ class Profiler
         unset($expData);
 
         if (is_array($dataValues) && array_key_exists('call_trace', $dataValues)) {
-            echo '<div class="rdprofiler-log-newrow">' . PHP_EOL;
+            echo '<div class="rdprofiler-data-display-row">' . PHP_EOL;
             echo '<div class="rdprofiler-log-db-trace">' . PHP_EOL;
             echo '<strong>Call trace:</strong><br>' . PHP_EOL;
             foreach ($dataValues['call_trace'] as $traceItem) {
