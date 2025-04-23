@@ -21,7 +21,7 @@
         "composer/semver": "^3.0"
     },
     "require-dev": {
-        "rundiz/profiler": "^1.1.2"
+        "rundiz/profiler": "^1.1.11"
     },
     "autoload": {
         "psr-4": {
