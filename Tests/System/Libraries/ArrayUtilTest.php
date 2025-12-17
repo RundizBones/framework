@@ -18,21 +18,21 @@ class ArrayUtilTest extends \Rdb\Tests\BaseTestCase
             'bear',
             'fruitred' => 'apple',
             3 => 'dog',// can't use array key as 3.1 because errors "Deprecated: Implicit conversion from float 3.1 to int loses precision" since PHP 8.1.
-            null => 'null',
+            '' => 'empty string',
         ];
         $array2 = [
             1 => 'polar bear',
             20 => 'monkey',
             'fruitred' => 'strawberry',
             'fruityellow' => 'banana',
-            null => 'another null',
+            '' => 'another empty string',
         ];
         $assert = [
             'cat', 
             1 => 'bear', // exists in first, keep it
             'fruitred' => 'strawberry', // duplicate string key, overwrite with second
             3 => 'dog', 
-            null => 'another null', // duplicate string key, overwrite with second
+            '' => 'another empty string', // duplicate string key, overwrite with second
             4 => 'polar bear', // new key but value from second
             20 => 'monkey', 
             'fruityellow' => 'banana',
